@@ -1,0 +1,4 @@
+include *.rst *.py
+recursive-include pyramid_fullauth *.py
+recursive-include docs *
+prune docs/build
