@@ -6,7 +6,7 @@ python:
     - "3.3"
 install:
     - "python setup.py install"
-    - "pip install pyramid_fullauth[tests] coverall --use-mirrors"
+    - "pip install pyramid_fullauth[tests] coveralls --use-mirrors"
 script:
     - "python setup.py nosetests"
 after_success:
