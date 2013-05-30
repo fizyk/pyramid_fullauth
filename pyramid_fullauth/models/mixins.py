@@ -12,7 +12,7 @@ from sqlalchemy.orm import validates
 
 try:  # pragma: no cover
     algorithms = hashlib.algorithms
-except AttributeError: # pragma: no cover
+except AttributeError:  # pragma: no cover
     # Simple tuple for Python 2.6
     algorithms = ('md5', 'sha1')
 
@@ -28,7 +28,7 @@ class PasswordMixin(object):
 
     #: hash_algorithm field
     _hash_algorithm = Column('hash_algorithm',
-                             Enum(*hashlib.algorithms, name="hash_algorithms_enum"),
+                             Enum(*algorithms, name="hash_algorithms_enum"),
                              default=u'sha1', nullable=False)
 
     #: salt field
