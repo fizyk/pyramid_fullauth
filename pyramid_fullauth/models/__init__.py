@@ -97,20 +97,10 @@ class User(PasswordMixin, Base):
         else:
             raise AttributeError('User has to be in the persistent state - stored in the DB')
 
-    @is_active.deleter
-    def is_active(self):
-        """is_active property deleter
-        """
-        pass
-
     def provider_id(self, provider):
-        provider_id = None
         for user_provider in self.providers:
             if user_provider.provider == provider:
-                provider_id = user_provider.provider_id
-                break
-
-        return provider_id
+                return user_provider.provider_id
 
     def __repr__(self):
         return "<User ('{0}', '{1}')>".format(self.id, str(self))

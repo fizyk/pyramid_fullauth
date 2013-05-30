@@ -10,9 +10,9 @@ from sqlalchemy import Enum
 from sqlalchemy import String
 from sqlalchemy.orm import validates
 
-try:
+try:  # pragma: no cover
     algorithms = hashlib.algorithms
-except AttributeError:
+except AttributeError: # pragma: no cover
     # Simple tuple for Python 2.6
     algorithms = ('md5', 'sha1')
 

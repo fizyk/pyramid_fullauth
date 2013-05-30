@@ -10,7 +10,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 
-from pyramid_fullauth.models import User, Base
+from pyramid_fullauth.models import Base
+from pyramid_fullauth.models import User
+from pyramid_fullauth.models import AuthenticationProvider
+
+from pyramid_fullauth.exceptions import DeleteException
 
 
 class BaseTest(unittest.TestCase):
@@ -221,6 +225,15 @@ class UserValidateTest(BaseTest):
             self.assertEqual(user.address_ip, u'32.32.32.32')
 
 
+class UserSettersTest(BaseTest):
+
+    def test_is_active_error(self):
+        '''Is active can only be modified on object in session!'''
+        with self.assertRaises(AttributeError):
+            user = User()
+            user.is_active = True
+
+
 class UserReprTest(BaseTest):
 
     def test_introduce_email(self):
@@ -241,6 +254,32 @@ class UserReprTest(BaseTest):
         self.assertEqual(str(user), 'testowy', 'To string should return username')
         self.assertEqual(user.__repr__(), "<User ('1', 'testowy')>",
                          'User should be represented by "<User (\'1\', \'testowy\')>"')
+
+
+class EmailChangeTest(BaseTest):
+
+    '''
+        User implementation tests
+    '''
+
+    def setUp(self):
+        BaseTest.setUp(self)
+        self.create_user()
+
+    def test_set_new_email(self):
+        '''User::set_new_email'''
+        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        user.set_new_email(u'new@example.com')
+
+        self.assertIsNotNone(user.email_change_key)
+
+    def test_change_email(self):
+        '''User::change_email'''
+        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        user.set_new_email(u'new@example.com')
+        user.change_email()
+
+        self.assertIsNone(user.email_change_key)
 
 
 class PasswordTest(BaseTest):
@@ -341,3 +380,44 @@ class AdminTest(BaseTest):
 
         self.assertRaises(AttributeError, remove_is_admin)
         self.session.commit()
+
+    def test_delete_admin(self):
+        '''Admin user soft delete'''
+
+        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        self.create_user(email=u'test2@example.com', is_admin=True)
+
+        user.is_admin = True
+        self.session.commit()
+
+        user.delete()
+
+        self.assertIsNotNone(user.deleted_at)
+
+    def test_delete_last_admin(self):
+        '''Admin user soft delete'''
+
+        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+
+        user.is_admin = True
+        self.session.commit()
+
+        with self.assertRaises(DeleteException):
+            user.delete()
+
+
+class ProvidersTest(BaseTest):
+
+    def test_user_provider_id(self):
+        self.create_user()
+
+        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        self.assertIsNone(user.provider_id('email'), 'Provider does not exists yet')
+        provider = AuthenticationProvider()
+        provider.provider = u'email'
+        provider.provider_id = user.email
+        user.providers.append(provider)
+        self.session.commit()
+
+        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        self.assertIsNotNone(user.provider_id('email'), 'Provider does not exists yet')
