@@ -12,7 +12,8 @@ with open(os.path.join(here, 'pyramid_fullauth', '__init__.py')) as v_file:
 def read(fname):
     return open(os.path.join(here, fname)).read()
 
-requirements = ['pyramid']
+requirements = ['pyramid',
+'tzf.pyramid_yml >= 0.2']
 
 test_requires = [
     'WebTest',
