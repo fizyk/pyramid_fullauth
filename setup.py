@@ -13,7 +13,8 @@ def read(fname):
     return open(os.path.join(here, fname)).read()
 
 requirements = ['pyramid',
-'tzf.pyramid_yml >= 0.2']
+                'tzf.pyramid_yml >= 0.2',
+                'pyramid_basemodel']
 
 test_requires = [
     'WebTest',
