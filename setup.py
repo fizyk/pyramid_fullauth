@@ -14,7 +14,8 @@ def read(fname):
 
 requirements = ['pyramid',
                 'tzf.pyramid_yml >= 0.2',
-                'pyramid_basemodel']
+                'pyramid_basemodel <=0.1.5, !=0.1.4'  # since all other versions contains requirements for inflect, which isn't python3 compatible
+                ]
 
 test_requires = [
     'WebTest',
