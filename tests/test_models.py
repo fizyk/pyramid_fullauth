@@ -144,7 +144,7 @@ class UserValidateTest(BaseTest):
         '''User::validate e-mail::ok'''
 
         user = User()
-        email = u"test@test.info"
+        email = text_type('test@test.info')
         user.email = email
         self.assertEqual(user.email, email, 'email is {0}, user has {1} email'.format(email, user.email))
 
