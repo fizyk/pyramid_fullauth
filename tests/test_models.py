@@ -106,6 +106,13 @@ class UserValidateTest(BaseTest):
             user = self.session.query(User).filter(User.username == text_type('u1')).one()
             self.assertEqual(user.email, email)
 
+    def test_email_empty(self):
+        '''Test reaction of email validator for empty email'''
+        user = User()
+        def assign_email():
+            user.email = text_type('')
+        self.assertRaises(AttributeError, assign_email)
+
     def test_email_invalid_formats(self):
         ''' Check all invalid formats of Email (RFC 5321) can not be set by user
         '''
@@ -365,8 +372,6 @@ class PasswordTest(BaseTest):
         self.assertFalse(user.password == old_password, 'Passwords should be different!')
         self.assertFalse(user._salt == old_salt, 'Salt has not changed!')
         self.assertTrue(user.check_password(new_password), 'User password is different that excepted!')
-
-
 
     def test_set_reset(self):
         '''User::set_reset()'''

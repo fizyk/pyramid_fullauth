@@ -113,7 +113,7 @@ class User(PasswordMixin, Base):
         else:
             return str(self.id)
 
-    def __str__(self):
+    def __str__(self): # pragma: no cover
         if sys.version[0] == '3':
             return self.__unicode__()
         else:
