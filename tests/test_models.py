@@ -6,6 +6,8 @@ Created on 18-07-2012
 '''
 import warnings
 import unittest
+
+from nose.plugins.skip import Skip, SkipTest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
@@ -167,7 +169,7 @@ class UserValidateTest(BaseTest):
             user = self.session.query(User).filter(User.username == u'u1').one()
             self.assertEqual(user.address_ip, ip)
 
-    @unittest.skip('No ip validation yet implemented')
+    # @unittest.skip('No ip validation yet implemented') Not available in python 2.6
     def test_address_ip_invalid(self):
         '''Check invalid (RFC 3330: private, testing, special purposes) IP
         addresses can not be set by system to user model
@@ -206,6 +208,7 @@ class UserValidateTest(BaseTest):
             # C addresses, was initially and is still reserved by the IANA.
             '255.255.255.255',  # Multicast address
         )
+        raise SkipTest('No ip validation yet implemented')
         user = User()
         user.username = u'u1'
         user.password = u'password1'
