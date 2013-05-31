@@ -9,6 +9,7 @@ from sqlalchemy import Unicode
 from sqlalchemy import Enum
 from sqlalchemy import String
 from sqlalchemy.orm import validates
+from pyramid.compat import text_type
 
 try:  # pragma: no cover
     algorithms = hashlib.algorithms
@@ -29,7 +30,7 @@ class PasswordMixin(object):
     #: hash_algorithm field
     _hash_algorithm = Column('hash_algorithm',
                              Enum(*algorithms, name="hash_algorithms_enum"),
-                             default=u'sha1', nullable=False)
+                             default=text_type('sha1'), nullable=False)
 
     #: salt field
     _salt = Column('salt', Unicode(50), nullable=False)
@@ -45,7 +46,7 @@ class PasswordMixin(object):
             :returns: True, if password is same, False if not
             :rtype: bool
         '''
-        if password and self.hash_password(password, self._salt, self._hash_algorithm.encode('utf-8')) == self.password:
+        if password and self.hash_password(password, self._salt, self._hash_algorithm) == self.password:
                 return True
 
         return False
@@ -74,8 +75,13 @@ class PasswordMixin(object):
             hash_method = getattr(hashlib, hash_method)
 
         # let's convert password to string from unicode
-        if isinstance(password, unicode):
+        if isinstance(password, text_type):
             password = password.encode('utf-8')
+
+        # it's actually for Python 3, where str is unicode not bytestring,
+        # and haslib methods accepts only bytestr
+        if isinstance(salt, text_type):
+            salt = salt.encode('utf-8')
 
         # generating salted hash
         return hash_method(password + salt).hexdigest()
@@ -127,5 +133,5 @@ class PasswordMixin(object):
 
         # storing used hash algorithm
         self._hash_algorithm = hash_algorithm
-        self._salt = unicode(salt_value)
-        return unicode(self.__class__.hash_password(password, salt_value, hash_method))
+        self._salt = text_type(salt_value)
+        return text_type(self.__class__.hash_password(password, salt_value, hash_method))

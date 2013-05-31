@@ -4,7 +4,7 @@
     | Models needed for registration, and user servicing.
     | Contains basic user definition
 '''
-
+import sys
 import re
 import uuid
 
@@ -114,7 +114,10 @@ class User(PasswordMixin, Base):
             return str(self.id)
 
     def __str__(self):
-        return self.__unicode__().encode('utf-8')
+        if sys.version[0] == '3':
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf-8')
 
     @validates('email', 'new_email')
     def validate_email(self, key, address):

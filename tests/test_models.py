@@ -11,6 +11,7 @@ from nose.plugins.skip import Skip, SkipTest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from pyramid.compat import text_type
 
 from pyramid_fullauth.models import Base
 from pyramid_fullauth.models import User
@@ -23,9 +24,9 @@ class BaseTest(unittest.TestCase):
 
     '''Basic test class, to be used in data model tests'''
 
-    user_data = {'password': u'password1',
-                 'email': u'test@example.com',
-                 'address_ip': u'32.32.32.32'}
+    user_data = {'password': text_type('password1'),
+                 'email': text_type('test@example.com'),
+                 'address_ip': text_type('32.32.32.32')}
 
     def setUp(self):
         '''
@@ -78,23 +79,23 @@ class UserValidateTest(BaseTest):
         ''' Check all valid formats of Email (RFC 5321) can be set by user
         '''
         emails = (
-            u'very.common@example.com',
-            u'a.little.lengthy.but.fine@dept.example.com',
-            u'disposable.style.email.with+symbol@example.com',
-            u'"very.unusual.@.unusual.com"@example.com',
-            u'!#$%&\'*+-/=?^_`{}|~@example.org',
-            u'""@example.org',
-            u'"much.more unusual"@example.com',
-            u'"()<>[]:,;@\\\"!#$%&\'*+-/=?^_`{}| ~  ? ^_`{}|~.a"@example.org',
+            text_type('very.common@example.com'),
+            text_type('a.little.lengthy.but.fine@dept.example.com'),
+            text_type('disposable.style.email.with+symbol@example.com'),
+            text_type('"very.unusual.@.unusual.com"@example.com'),
+            text_type('!#$%&\'*+-/=?^_`{}|~@example.org'),
+            text_type('""@example.org'),
+            text_type('"much.more unusual"@example.com'),
+            text_type('"()<>[]:,;@\\\"!#$%&\'*+-/=?^_`{}| ~  ? ^_`{}|~.a"@example.org'),
             #            TODO: make listed below validateable too
-            # u'postbox@com',  # (top-level domains are valid hostnames)
-            # u'user@[IPv6:2001:db8:1ff::a0b:dbd0]',
-            # u'"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com',
+            # text_type('postbox@com'),  # (top-level domains are valid hostnames)
+            # text_type('user@[IPv6:2001:db8:1ff::a0b:dbd0]'),
+            # text_type('"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com'),
         )
-        self.create_user(username=u'u1')
+        self.create_user(username=text_type('u1'))
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
-        self.assertEqual(user.email, u'test@example.com')
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertEqual(user.email, text_type('test@example.com'))
 
         for email in emails:
             try:
@@ -102,7 +103,7 @@ class UserValidateTest(BaseTest):
                 self.session.commit()
             except AttributeError:
                 raise AttributeError('email: {0} did not validate'.format(email))
-            user = self.session.query(User).filter(User.username == u'u1').one()
+            user = self.session.query(User).filter(User.username == text_type('u1')).one()
             self.assertEqual(user.email, email)
 
     def test_email_invalid_formats(self):
@@ -119,10 +120,10 @@ class UserValidateTest(BaseTest):
             'this\ still\"not\\allowed@example.com'  # (even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)
         )
 
-        self.create_user(username=u'u1')
+        self.create_user(username=text_type('u1'))
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
-        self.assertEqual(user.email, u'test@example.com')
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertEqual(user.email, text_type('test@example.com'))
 
         for email in emails:
             def assign_email():
@@ -130,14 +131,14 @@ class UserValidateTest(BaseTest):
                 self.session.commit()
 
             self.assertRaises(AttributeError, assign_email)
-            user = self.session.query(User).filter(User.username == u'u1').one()
-            self.assertEqual(user.email, u'test@example.com')
+            user = self.session.query(User).filter(User.username == text_type('u1')).one()
+            self.assertEqual(user.email, text_type('test@example.com'))
 
     def test_validate_email_bad(self):
         '''User::validate e-mail::bad'''
 
         user = User()
-        self.assertRaises(AttributeError, lambda: setattr(user, "email", u'bad-mail'))
+        self.assertRaises(AttributeError, lambda: setattr(user, "email", text_type('bad-mail')))
 
     def test_validate_email_ok(self):
         '''User::validate e-mail::ok'''
@@ -151,16 +152,16 @@ class UserValidateTest(BaseTest):
         ''' Check all valid ip addresses can be set by system to user model
         '''
         ips = (
-            u'32.32.32.32',
-            u'2001:cdba:0000:0000:0000:0000:3257:9652',
-            u'2001:cdba:0:0:0:0:3257:9652',
-            u'2001:cdba::3257:9652',
+            text_type('32.32.32.32'),
+            text_type('2001:cdba:0000:0000:0000:0000:3257:9652'),
+            text_type('2001:cdba:0:0:0:0:3257:9652'),
+            text_type('2001:cdba::3257:9652'),
         )
 
-        self.create_user(username=u'u1')
+        self.create_user(username=text_type('u1'))
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
-        self.assertEqual(user.email, u'test@example.com')
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertEqual(user.email, text_type('test@example.com'))
 
         for ip in ips:
             try:
@@ -168,7 +169,7 @@ class UserValidateTest(BaseTest):
                 self.session.commit()
             except AttributeError:
                 raise AttributeError('ip: {0} did not validate'.format(ip))
-            user = self.session.query(User).filter(User.username == u'u1').one()
+            user = self.session.query(User).filter(User.username == text_type('u1')).one()
             self.assertEqual(user.address_ip, ip)
 
     # @unittest.skip('No ip validation yet implemented') Not available in python 2.6
@@ -212,23 +213,23 @@ class UserValidateTest(BaseTest):
         )
         raise SkipTest('No ip validation yet implemented')
         user = User()
-        user.username = u'u1'
-        user.password = u'password1'
-        user.email = u'test@example.com'
-        user.address_ip = u'32.32.32.32'
+        user.username = text_type('u1')
+        user.password = text_type('password1')
+        user.email = text_type('test@example.com')
+        user.address_ip = text_type('32.32.32.32')
 
         self.session.add(user)
         self.session.commit()
-        user = self.session.query(User).filter(User.username == u'u1').one()
-        self.assertEqual(user.email, u'test@example.com')
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertEqual(user.email, text_type('test@example.com'))
 
         for ip in ips:
             def assign_ip():
                 user.address_ip = ip
                 self.session.commit()
             self.assertRaises(AttributeError, assign_ip)
-            user = self.session.query(User).filter(User.username == u'u1').one()
-            self.assertEqual(user.address_ip, u'32.32.32.32')
+            user = self.session.query(User).filter(User.username == text_type('u1')).one()
+            self.assertEqual(user.address_ip, text_type('32.32.32.32'))
 
 
 class UserSettersTest(BaseTest):
@@ -247,7 +248,7 @@ class UserReprTest(BaseTest):
     def test_introduce_email(self):
         '''user gets introduced by e-mail only'''
         user = User()
-        user.email = u'test@test.pl'
+        user.email = text_type('test@test.pl')
         self.assertEqual(str(user), 'test@...', 'To string should return concatenated email')
 
     def test_introduce_username(self):
@@ -257,8 +258,8 @@ class UserReprTest(BaseTest):
         user.id = 1
         self.assertEqual(str(user), '1', 'User with id=1 should be represented by \'1\'')
 
-        user.email = u'test@test.pl'
-        user.username = u'testowy'
+        user.email = text_type('test@test.pl')
+        user.username = text_type('testowy')
         self.assertEqual(str(user), 'testowy', 'To string should return username')
         self.assertEqual(user.__repr__(), "<User ('1', 'testowy')>",
                          'User should be represented by "<User (\'1\', \'testowy\')>"')
@@ -276,15 +277,15 @@ class EmailChangeTest(BaseTest):
 
     def test_set_new_email(self):
         '''User::set_new_email'''
-        user = self.session.query(User).filter(User.email == u'test@example.com').one()
-        user.set_new_email(u'new@example.com')
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
+        user.set_new_email(text_type('new@example.com'))
 
         self.assertNotEqual(user.email_change_key, None)
 
     def test_change_email(self):
         '''User::change_email'''
-        user = self.session.query(User).filter(User.email == u'test@example.com').one()
-        user.set_new_email(u'new@example.com')
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
+        user.set_new_email(text_type('new@example.com'))
         user.change_email()
 
         self.assertEqual(user.email_change_key, None)
@@ -298,26 +299,26 @@ class PasswordTest(BaseTest):
 
     def setUp(self):
         BaseTest.setUp(self)
-        self.create_user(username=u'u1')
+        self.create_user(username=text_type('u1'))
 
     def test_hash_checkout(self):
         '''User::check_password()'''
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
-        self.assertTrue(user.check_password(u'password1'))
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertTrue(user.check_password(text_type('password1')))
 
     def test_password_change(self):
         '''User::password change'''
 
-        new_password = u'haselko'
+        new_password = text_type('haselko')
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         old_password = user.password
         old_salt = user._salt
         user.password = new_password
         self.session.commit()
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         self.assertFalse(user.password == old_password, 'Passwords should be different!')
         self.assertFalse(user._salt == old_salt, 'Salt has not changed!')
         self.assertTrue(user.check_password(new_password), 'User password is different that excepted!')
@@ -326,8 +327,8 @@ class PasswordTest(BaseTest):
         '''User::empty password change'''
 
         def empty_pass():
-            user = self.session.query(User).filter(User.username == u'u1').one()
-            user.password = u''
+            user = self.session.query(User).filter(User.username == text_type('u1')).one()
+            user.password = text_type('')
             self.session.commit()
 
         self.assertRaises(ValueError, empty_pass)
@@ -335,15 +336,15 @@ class PasswordTest(BaseTest):
     def test_password_very_long(self):
         '''User::password change long'''
 
-        new_password = u'haselko' * 10000
+        new_password = text_type('haselko') * 10000
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         old_password = user.password
         old_salt = user._salt
         user.password = new_password
         self.session.commit()
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         self.assertFalse(user.password == old_password, 'Passwords should be different!')
         self.assertFalse(user._salt == old_salt, 'Salt has not changed!')
         self.assertTrue(user.check_password(new_password), 'User password is different that excepted!')
@@ -357,29 +358,29 @@ class AdminTest(BaseTest):
 
     def setUp(self):
         BaseTest.setUp(self)
-        self.create_user(username=u'u1')
+        self.create_user(username=text_type('u1'))
 
     def test_regular_user_not_admin(self):
         '''Regular user is_admin flag test
         '''
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         self.assertFalse(user.is_admin, 'Default user should have flag is_admin equal False')
 
     def test_regular_user_admin(self):
         '''Admin user is_admin flag test'''
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         user.is_admin = True
         self.session.commit()
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         self.assertTrue(user.is_admin, 'Admin user should have flag is_admin equal True')
 
     def test_remove_last_admin(self):
         '''Admin user is_admin flag test'''
 
-        user = self.session.query(User).filter(User.username == u'u1').one()
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
         user.is_admin = True
         self.session.commit()
 
@@ -392,8 +393,8 @@ class AdminTest(BaseTest):
     def test_delete_admin(self):
         '''Admin user soft delete'''
 
-        user = self.session.query(User).filter(User.email == u'test@example.com').one()
-        self.create_user(email=u'test2@example.com', is_admin=True)
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
+        self.create_user(email=text_type('test2@example.com'), is_admin=True)
 
         user.is_admin = True
         self.session.commit()
@@ -405,7 +406,7 @@ class AdminTest(BaseTest):
     def test_delete_last_admin(self):
         '''Admin user soft delete'''
 
-        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
 
         user.is_admin = True
         self.session.commit()
@@ -418,13 +419,13 @@ class ProvidersTest(BaseTest):
     def test_user_provider_id(self):
         self.create_user()
 
-        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
         self.assertEqual(user.provider_id('email'), None, 'Provider does not exists yet')
         provider = AuthenticationProvider()
-        provider.provider = u'email'
+        provider.provider = text_type('email')
         provider.provider_id = user.email
         user.providers.append(provider)
         self.session.commit()
 
-        user = self.session.query(User).filter(User.email == u'test@example.com').one()
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
         self.assertNotEqual(user.provider_id('email'), None, 'Provider does not exists yet')
