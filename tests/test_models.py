@@ -242,6 +242,17 @@ class UserSettersTest(BaseTest):
 
         self.assertRaises(AttributeError, set_active)
 
+    def test_is_active(self):
+        '''User:is_active'''
+        self.create_user()
+
+        user = self.session.query(User).filter(User.email == text_type('test@example.com')).one()
+        self.assertFalse(user.is_active)
+        user.is_active = True
+        self.assertTrue(user.is_active)
+        user.is_active = False
+        self.assertFalse(user.is_active)
+
 
 class UserReprTest(BaseTest):
 
