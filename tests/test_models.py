@@ -125,9 +125,11 @@ class UserValidateTest(BaseTest):
         self.assertEqual(user.email, u'test@example.com')
 
         for email in emails:
-            with self.assertRaises(AttributeError):
+            def assign_email():
                 user.email = email
                 self.session.commit()
+
+            self.assertRaises(AttributeError, assign_email)
             user = self.session.query(User).filter(User.username == u'u1').one()
             self.assertEqual(user.email, u'test@example.com')
 
@@ -221,9 +223,10 @@ class UserValidateTest(BaseTest):
         self.assertEqual(user.email, u'test@example.com')
 
         for ip in ips:
-            with self.assertRaises(AttributeError):
+            def assign_ip():
                 user.address_ip = ip
                 self.session.commit()
+            self.assertRaises(AttributeError, assign_ip)
             user = self.session.query(User).filter(User.username == u'u1').one()
             self.assertEqual(user.address_ip, u'32.32.32.32')
 
@@ -232,9 +235,11 @@ class UserSettersTest(BaseTest):
 
     def test_is_active_error(self):
         '''Is active can only be modified on object in session!'''
-        with self.assertRaises(AttributeError):
+        def set_active():
             user = User()
             user.is_active = True
+
+        self.assertRaises(AttributeError, set_active)
 
 
 class UserReprTest(BaseTest):
@@ -274,7 +279,7 @@ class EmailChangeTest(BaseTest):
         user = self.session.query(User).filter(User.email == u'test@example.com').one()
         user.set_new_email(u'new@example.com')
 
-        self.assertIsNotNone(user.email_change_key)
+        self.assertNotEqual(user.email_change_key, None)
 
     def test_change_email(self):
         '''User::change_email'''
@@ -282,7 +287,7 @@ class EmailChangeTest(BaseTest):
         user.set_new_email(u'new@example.com')
         user.change_email()
 
-        self.assertIsNone(user.email_change_key)
+        self.assertEqual(user.email_change_key, None)
 
 
 class PasswordTest(BaseTest):
@@ -395,7 +400,7 @@ class AdminTest(BaseTest):
 
         user.delete()
 
-        self.assertIsNotNone(user.deleted_at)
+        self.assertNotEqual(user.deleted_at, None)
 
     def test_delete_last_admin(self):
         '''Admin user soft delete'''
@@ -405,8 +410,7 @@ class AdminTest(BaseTest):
         user.is_admin = True
         self.session.commit()
 
-        with self.assertRaises(DeleteException):
-            user.delete()
+        self.assertRaises(DeleteException, lambda: user.delete())
 
 
 class ProvidersTest(BaseTest):
@@ -415,7 +419,7 @@ class ProvidersTest(BaseTest):
         self.create_user()
 
         user = self.session.query(User).filter(User.email == u'test@example.com').one()
-        self.assertIsNone(user.provider_id('email'), 'Provider does not exists yet')
+        self.assertEqual(user.provider_id('email'), None, 'Provider does not exists yet')
         provider = AuthenticationProvider()
         provider.provider = u'email'
         provider.provider_id = user.email
@@ -423,4 +427,4 @@ class ProvidersTest(BaseTest):
         self.session.commit()
 
         user = self.session.query(User).filter(User.email == u'test@example.com').one()
-        self.assertIsNotNone(user.provider_id('email'), 'Provider does not exists yet')
+        self.assertNotEqual(user.provider_id('email'), None, 'Provider does not exists yet')
