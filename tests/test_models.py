@@ -318,6 +318,12 @@ class PasswordTest(BaseTest):
         user = self.session.query(User).filter(User.username == text_type('u1')).one()
         self.assertTrue(user.check_password(text_type('password1')))
 
+    def test_hash_checkout_bad(self):
+        '''User::check_password() False'''
+
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertFalse(user.check_password(text_type('password2')))
+
     def test_password_change(self):
         '''User::password change'''
 
@@ -359,6 +365,16 @@ class PasswordTest(BaseTest):
         self.assertFalse(user.password == old_password, 'Passwords should be different!')
         self.assertFalse(user._salt == old_salt, 'Salt has not changed!')
         self.assertTrue(user.check_password(new_password), 'User password is different that excepted!')
+
+
+
+    def test_set_reset(self):
+        '''User::set_reset()'''
+
+        user = self.session.query(User).filter(User.username == text_type('u1')).one()
+        self.assertEqual(user.reset_key, None)
+        user.set_reset()
+        self.assertNotEqual(user.reset_key, None)
 
 
 class AdminTest(BaseTest):
