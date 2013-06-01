@@ -1,0 +1,5 @@
+fullauth:
+    register:
+        password:
+            require: True
+            confirm: False

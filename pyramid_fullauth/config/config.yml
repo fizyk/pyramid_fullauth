@@ -1,1 +1,12 @@
-fullauth: True
+fullauth:
+    check_csrf: True
+    register:
+        password:
+            require: True
+            length_min: 6
+            confirm: True
+    AuthTkt:
+        secret: fullauth_psst
+        hashalg: sha512
+    login:
+        cookie_max_age: 2592000  # 30 days

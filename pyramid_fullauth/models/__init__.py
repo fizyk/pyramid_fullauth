@@ -113,7 +113,7 @@ class User(PasswordMixin, Base):
         else:
             return str(self.id)
 
-    def __str__(self): # pragma: no cover
+    def __str__(self):  # pragma: no cover
         if sys.version[0] == '3':
             return self.__unicode__()
         else:
@@ -161,7 +161,7 @@ class User(PasswordMixin, Base):
         '''
             Performs soft delete action. along with checking if it's super admin, or not
 
-            :rises redsky.pyramid.registerlogin.exceptions.DeleteException: if you try to delete last super admin.
+            :rises pyramid_fullauth.exceptions.DeleteException: if you try to delete last super admin.
 
             .. note::
                 You should use this method to delete users
