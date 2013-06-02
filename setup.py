@@ -16,7 +16,7 @@ requirements = ['pyramid >=1.4',
                 'tzf.pyramid_yml >= 0.2',
                 'pyramid_basemodel <=0.1.5, !=0.1.4',
                 # since all other versions contains requirements for inflect, which isn't python3 compatible
-                'velruse'
+                'velruse'  # but on the other hand, neither is velruse
                 ]
 
 test_requires = [

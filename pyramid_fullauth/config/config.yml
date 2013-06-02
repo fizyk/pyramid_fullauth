@@ -11,3 +11,5 @@ fullauth:
         hashalg: sha512         # default authentication policy hash algorithm
     login:
         cookie_max_age: 2592000     # 30 days
+    redirects: # route name, to redirect to. I f None, then redirects just to /
+        logout: None
