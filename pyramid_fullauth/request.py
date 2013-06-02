@@ -26,7 +26,7 @@ def login_perform(request, user, location=None, remember_me=False):
         :param bool remember_me: if True set cookie max_age to one month (60 * 60 * 24 * 30 seconds)
 
         :returns: redirect exception
-        :rtype: HTTPFound
+        :rtype: pyramid.httpexceptions.HTTPFound
     '''
     user.logged_at = func.now()
     if remember_me:  # if remember in POST set cookie timeout to one from configure

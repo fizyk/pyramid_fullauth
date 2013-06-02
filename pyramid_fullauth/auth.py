@@ -18,7 +18,7 @@ def groupfinder(userid, request):
 
             Might be useful, when you want restrict access to some parts of your application, but still allow log in, and access to some other parts.
 
-        :param integer userid: user identity
+        :param int userid: user identity
         :param pyramid.request.Request request: request object
         :returns: list of groups
         :rtype: list

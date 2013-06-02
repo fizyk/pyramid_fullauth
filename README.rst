@@ -10,3 +10,18 @@ pyramid_fullauth
     :alt: Coverage Status
 
 Pyramid fullauth's goal is to provide full plug-in registration functionality for pyramid, with user managing
+
+Instalation:
+============
+
+``pip install pyramid_fullauth``
+
+or add **pyramid_fullauth* to your **setup.py** requirements.
+
+
+Tests:
+======
+
+You'll need: **nose**, **WebTest**, **coverage** to run tests, and then:
+
+``python setup.py nosetests``

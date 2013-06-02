@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pyramid_fullauth'
-basename = ''.join([project.split('.')])
+basename = ''.join(project.split('.'))
 author = u'Grzegorz Śliwiński'
 copyright = u'2013, ' + author
 
@@ -229,7 +229,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', basename, package + u' Documentation',
+    ('index', basename, project + u' Documentation',
      [author], 1)
 ]
 
@@ -243,7 +243,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', basename, package + u' Documentation',
+    ('index', basename, project + u' Documentation',
      author, basename, 'One line description of project.',
      'Miscellaneous'),
 ]
@@ -261,7 +261,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = package
+epub_title = project
 epub_author = author
 epub_publisher = author
 epub_copyright = u'2013, ' + author
@@ -305,4 +305,5 @@ epub_copyright = u'2013, ' + author
 autoclass_content = 'both'
 
 # Intersphinx configuration
-intersphinx_mapping = {'http://docs.python.org/': None}
+intersphinx_mapping = {'python': ('http://docs.python.org/', None),
+                        'pyramid': ('http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/', None)}

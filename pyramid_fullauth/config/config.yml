@@ -1,12 +1,13 @@
+# pyramid_fullauth's default configuration
 fullauth:
-    check_csrf: True
+    check_csrf: True    # Whether login processes should work with csrf token, or without
     register:
         password:
-            require: True
-            length_min: 6
-            confirm: True
+            require: True   # set to false to not read password during register, and generate random one
+            length_min: 6   # will be used either to check password's length or generate this length random password
+            confirm: True   # by default there will be a field for password confirmation on the registration form
     AuthTkt:
-        secret: fullauth_psst
-        hashalg: sha512
+        secret: fullauth_psst   # default secret used to hash auth_tk cookie
+        hashalg: sha512         # default authentication policy hash algorithm
     login:
-        cookie_max_age: 2592000  # 30 days
+        cookie_max_age: 2592000     # 30 days
