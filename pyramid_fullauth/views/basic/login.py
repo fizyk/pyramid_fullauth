@@ -114,4 +114,4 @@ class LoginViews(BaseView):
         if self.request.config.fullauth.redirects.logout:
             location = self.request.route_path(self.request.config.fullauth.redirects.logout)
 
-        return HTTPFound(location=, headers=forget(self.request))
+        return HTTPFound(location=location, headers=forget(self.request))
