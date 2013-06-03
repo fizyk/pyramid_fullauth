@@ -34,5 +34,7 @@ Before the plugin has been made published outside of RedSky, it gained contribut
 - Veronica Zgirvaci
     - registration improvements and fixes
     - documentation improvements
+- Tomasz Święcicki
+    - various social login/registration fixes
 
 If I omitted anyone else, please let me know, so I could extend it.
