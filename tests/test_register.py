@@ -299,6 +299,7 @@ class RegisterNoPasswordTest(BaseTestCase):
         self.assertTrue(user is not None)
         self.assertEqual(user.email, post_data['email'], 'Emails should be the same')
 
+
 class RegisterNoPassConfirm(BaseTestCase):
 
     def setUp(self):

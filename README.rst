@@ -9,6 +9,14 @@ pyramid_fullauth
     :target: https://coveralls.io/r/fizyk/pyramid_fullauth?branch=master
     :alt: Coverage Status
 
+.. image:: https://pypip.in/v/pyramid_fullauth/badge.png
+    :target: https://crate.io/packages/pyramid_fullauth/
+    :alt: Latest PyPI version
+
+.. image:: https://pypip.in/d/pyramid_fullauth/badge.png
+    :target: https://crate.io/packages/pyramid_fullauth/
+    :alt: Number of PyPI downloads
+
 Pyramid fullauth's goal is to provide full plug-in registration functionality for pyramid, with user managing
 
 Instalation:
