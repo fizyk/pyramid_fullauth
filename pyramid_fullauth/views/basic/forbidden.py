@@ -35,6 +35,11 @@ class ForbiddenViews(BaseView):
         self.request.response.status = '403 Forbidden'
         # do not allow a user to login if they are already logged in
         if authenticated_userid(self.request):
-            return {'status': False, 'msg': 'You are not allowed to use this function'}
+            return {'status': False, 'msg':
+                    self.request._('forbidden-notallowed',
+                                   default='You are not allowed to use this function',
+                                   domain='pyramid_fullauth')}
 
-        return {'status': False, 'msg': 'You have to be logged in to use this function', 'login_url': self.request.route_path('login')}
+        return {'status': False,
+                'msg': self.request._('forbidde-logged', default='You have to be logged in to use this function'),
+                'login_url': self.request.route_path('login')}

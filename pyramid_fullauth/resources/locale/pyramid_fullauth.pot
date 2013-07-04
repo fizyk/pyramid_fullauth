@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyramid_fullauth 0.0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-05 00:12+0200\n"
+"POT-Creation-Date: 2013-07-05 00:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,7 +108,7 @@ msgid "Please, log in"
 msgstr ""
 
 #: pyramid_fullauth/resources/templates/register.mako:2
-msgid "Please, register:</h1>"
+msgid "Please, register"
 msgstr ""
 
 #: pyramid_fullauth/resources/templates/register.mako:11
@@ -134,5 +134,26 @@ msgstr ""
 
 #: pyramid_fullauth/resources/templates/reset.proceed.mako:3
 msgid "Recover your password - choose new password"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/forbidden.py:39
+msgid "forbidden-notallowed"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/forbidden.py:44
+msgid "forbidde-logged"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/login.py:37
+msgid "Login error"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/login.py:55
+msgid "CSRF token did not match."
+msgstr ""
+
+#: pyramid_fullauth/views/basic/login.py:97
+#: pyramid_fullauth/views/basic/login.py:103
+msgid "Wrong e-mail or password."
 msgstr ""
 
