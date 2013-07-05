@@ -34,7 +34,7 @@ class LoginViews(BaseView):
 
         after = self.request.params.get('after') or self.request.referer
         return_dict = {'status': False,
-                       'msg': self.reset._('Login error', domain='pyramid_fullauth'),
+                       'msg': self.request._('Login error', domain='pyramid_fullauth'),
                        'after': after, 'token': token}
 
         if authenticated_userid(self.request):
@@ -52,8 +52,8 @@ class LoginViews(BaseView):
         # Code copied from alternative. Not yes implemented
         if self.request.method == 'POST':
             if self.check_csrf and token != self.request.POST.get('token'):
-                return_dict['msg'] = self.reset._('CSRF token did not match.',
-                                                  domain='pyramid_fullauth')
+                return_dict['msg'] = self.request._('CSRF token did not match.',
+                                                    domain='pyramid_fullauth')
                 return return_dict
 
             email = self.request.POST.get('email', '')
@@ -94,14 +94,14 @@ class LoginViews(BaseView):
                         else:
                             return redirect
                 else:
-                    return_dict['msg'] = self.reset._('Wrong e-mail or password.',
-                                                      domain='pyramid_fullauth')
+                    return_dict['msg'] = self.request._('Wrong e-mail or password.',
+                                                        domain='pyramid_fullauth')
                     return return_dict
             except NoResultFound:
                 self.request.registry.notify(BeforeLogIn(self.request, None))
 
-                return_dict['msg'] = self.reset._('Wrong e-mail or password.',
-                                                  domain='pyramid_fullauth')
+                return_dict['msg'] = self.request._('Wrong e-mail or password.',
+                                                    domain='pyramid_fullauth')
                 return return_dict
         else:
             self.request.registry.notify(BeforeLogIn(self.request, None))
