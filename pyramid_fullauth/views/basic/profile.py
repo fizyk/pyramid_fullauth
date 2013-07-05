@@ -47,10 +47,17 @@ class ProfileViews(BaseView):
         else:
             token = ''
         if self.check_csrf and token != self.request.POST.get('token'):
-            return {'status': False, 'msg': 'CSRF token did not match.', 'token': token}
+            return {'status': False,
+                    'msg': self.request._('csrf-mismatch',
+                                          default='CSRF token did not match.',
+                                          domain='pyramid_fullauth'),
+                    'token': token}
         try:
             Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
-            return {'status': False, 'msg': 'User with this email exists', 'token': token}
+            return {'status': False,
+                    'msg': self.request._('User with this email exists',
+                                          domain='pyramid_fullauth'),
+                    'token': token}
         except NoResultFound:
             pass
 
@@ -65,7 +72,9 @@ class ProfileViews(BaseView):
         except AttributeError as e:
             return {'status': False, 'msg': e.message, 'token': token}
 
-        response_values = {'status': True, 'msg': 'We sent you email to activate your new email address'}
+        response_values = {'status': True,
+                           'msg': self.request._('We sent you email to activate your new email address',
+                                                 domain='pyramid_fullauth')}
         try:
             self.request.registry.notify(AfterEmailChange(self.request, user))
         except HTTPFound as redirect:
@@ -121,11 +130,19 @@ class ProfileViews(BaseView):
         else:
             token = ''
         if self.check_csrf and token != self.request.POST.get('token'):
-            return {'status': False, 'msg': 'CSRF token did not match.', 'token': token}
+            return {'status': False,
+                    'msg': self.request._('csrf-mismatch',
+                                          default='CSRF token did not match.',
+                                          domain='pyramid_fullauth'),
+                    'token': token}
         try:
             user = Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
         except NoResultFound:
-            return {'status': False, 'msg': 'User does not exists', 'token': token}
+            return {'status': False,
+                    'msg': self.request._('user-not-exists',
+                                          default='User does not exists',
+                                          domain='pyramid_fullauth'),
+                    'token': token}
 
         user.set_reset()
         try:
@@ -146,10 +163,15 @@ class ProfileViews(BaseView):
             token = self.request.session.get_csrf_token()
         else:
             token = ''
+
         if self.request.method == 'POST':
             # if turned on, check for csrf token
             if self.check_csrf and token != self.request.POST.get('token'):
-                return {'status': False, 'msg': 'CSRF token did not match.', 'token': token}
+                return {'status': False,
+                        'msg': self.request._('csrf-mismatch',
+                                              default='CSRF token did not match.',
+                                              domain='pyramid_fullauth'),
+                        'token': token}
 
             password = self.request.POST.get('password', None)
             password_confirm = self.request.POST.get('confirm_password', None)
@@ -161,9 +183,12 @@ class ProfileViews(BaseView):
                     user.reset_key = None
                     try:
                         Session.query(AuthenticationProvider).filter(
-                            AuthenticationProvider.user_id == user.id, AuthenticationProvider.provider == u'email').one()
+                            AuthenticationProvider.user_id == user.id,
+                            AuthenticationProvider.provider == u'email').one()
                     except NoResultFound:
-                        user.providers.append(AuthenticationProvider(provider=u'email', provider_id=user.id))
+                        user.providers.append(
+                            AuthenticationProvider(provider=u'email',
+                                                   provider_id=user.id))
 
                     Session.flush()
                 except AttributeError as e:
@@ -174,6 +199,10 @@ class ProfileViews(BaseView):
                 except HTTPFound as redirect:
                     return redirect
             else:
-                return {'status': False, 'msg': 'Password doesn\'t match', 'token': token}
+                return {'status': False,
+                        'msg': self.request._('password-mismatch',
+                                              default='Password doesn\'t match',
+                                              domain='pyramid_fullauth'),
+                        'token': token}
 
         return {'status': True, 'token': token}
