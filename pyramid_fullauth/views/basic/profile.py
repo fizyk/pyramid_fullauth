@@ -146,9 +146,11 @@ class ProfileViews(BaseView):
             token = self.request.session.get_csrf_token()
         else:
             token = ''
-        if self.check_csrf and token != self.request.POST.get('token'):
-            return {'status': False, 'msg': 'CSRF token did not match.', 'token': token}
         if self.request.method == 'POST':
+            # if turned on, check for csrf token
+            if self.check_csrf and token != self.request.POST.get('token'):
+                return {'status': False, 'msg': 'CSRF token did not match.', 'token': token}
+
             password = self.request.POST.get('password', None)
             password_confirm = self.request.POST.get('confirm_password', None)
             if password and password == password_confirm:
