@@ -12,3 +12,6 @@ fullauth:
     AuthTkt:
         timeout: 2
         reissue_time: 0.2
+    session_factory:
+        default: encrypted
+

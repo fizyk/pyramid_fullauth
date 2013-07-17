@@ -236,7 +236,8 @@ class RegisterTest(BaseTestCase):
 
         # check if login works after activation
         res = self.app.get('/login')
-        self.assertTrue(len(res.headers['Set-Cookie']) > 150)
+        if self.config.registry['config'].fullauth.session_factory.default == 'unencrypted':
+            self.assertTrue(len(res.headers['Set-Cookie']) > 150)
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
         res = res.form.submit()

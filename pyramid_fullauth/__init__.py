@@ -5,7 +5,7 @@ from tzf.pyramid_yml import config_defaults
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
-
+from pyramid_beaker import session_factory_from_settings
 
 from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
@@ -31,7 +31,7 @@ def includeme(configurator):
     configurator.set_authentication_policy(AuthTktAuthenticationPolicy(callback=groupfinder,
                                                                        **configurator.registry['config'].fullauth.AuthTkt))
 
-    configurator.set_session_factory(UnencryptedCookieSessionFactoryConfig('alternative.secret'))
+    make_session_factory_from_config(configurator)
 
     # add routes
     configurator.add_route(name='login', pattern='/login')
@@ -70,3 +70,13 @@ def includeme(configurator):
     # we'll add some request methods:
     configurator.add_request_method(login_perform, name='login_perform')
     configurator.add_request_method(user, name='user', reify=True)
+
+def make_session_factory_from_config(configurator):
+
+    session_config = configurator.registry['config'].fullauth.session_factory
+    session_type = session_config.default
+    if session_type == 'unencrypted':
+        session_factory = UnencryptedCookieSessionFactoryConfig(session_config.unencrypted.secret)
+    elif session_type == 'encrypted':
+        session_factory = session_factory_from_settings(session_config.encrypted)
+    configurator.set_session_factory(session_factory)

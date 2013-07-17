@@ -13,3 +13,13 @@ fullauth:
         cookie_max_age: 2592000     # 30 days
     redirects: # route name, to redirect to. If False, then redirects just to /
         logout: False
+    session_factory:
+        default: unencrypted
+        unencrypted:
+            secret: alternative.secret
+        encrypted:
+            session.type : ext:database                         # storage for session
+            session.secret : 9EeJZCvADyaW6ECd2Yf3AXoQUKQMPca3   # random generated string used with HMAC hashing
+            session.url : sqlite:///:memory                     # database url
+            session.lock_dir : beaker_sessions/var/lock         # path to lock file used to coordinate session locking
+            session.key : user_session                          # name which will be set for cookie

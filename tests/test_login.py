@@ -27,8 +27,8 @@ class LoginTest(BaseTestCase):
         res = self.app.get('/secret', status=302)
         assert res
         res = self.app.get('/login?after=%2Fsecret')
-
-        self.assertTrue(len(res.headers['Set-Cookie']) > 150)
+        if self.config.registry['config'].fullauth.session_factory.default == 'unencrypted':
+            self.assertTrue(len(res.headers['Set-Cookie']) > 150)
 
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
@@ -45,8 +45,8 @@ class LoginTest(BaseTestCase):
         res = self.app.get('/secret', status=302)
         assert res
         res = self.app.get('/login?after=%2Fsecret')
-
-        self.assertTrue(len(res.headers['Set-Cookie']) > 150)
+        if self.config.registry['config'].fullauth.session_factory.default == 'unencrypted':
+            self.assertTrue(len(res.headers['Set-Cookie']) > 150)
 
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
@@ -61,8 +61,8 @@ class LoginTest(BaseTestCase):
         '''Login:Action test with clicks if user is inactive'''
         self.create_user()
         res = self.app.get('/login')
-
-        self.assertTrue(len(res.headers['Set-Cookie']) > 150)
+        if self.config.registry['config'].fullauth.session_factory.default == 'unencrypted':
+            self.assertTrue(len(res.headers['Set-Cookie']) > 150)
 
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
