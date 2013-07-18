@@ -28,10 +28,21 @@ def includeme(configurator):
     config_defaults(configurator, 'pyramid_fullauth:config')
 
     configurator.set_authorization_policy(ACLAuthorizationPolicy())
-    configurator.set_authentication_policy(AuthTktAuthenticationPolicy(callback=groupfinder,
-                                                                       **configurator.registry['config'].fullauth.AuthTkt))
+    configurator.set_authentication_policy(
+        AuthTktAuthenticationPolicy(callback=groupfinder,
+                                    **configurator.registry['config'].fullauth.AuthTkt))
 
-    configurator.set_session_factory(UnencryptedCookieSessionFactoryConfig('alternative.secret'))
+    # loading and setting session factory
+    # first, divide provided path for module, and factory name
+    module, factory = configurator.registry['config'].fullauth.session.factory.rsplit('.', 1)
+    # import session module first
+    session_module = __import__(module, fromlist=[module])
+    # get the  factory class
+    session_factory = getattr(session_module, factory)
+
+    # set the new session factory
+    configurator.set_session_factory(
+        session_factory(**configurator.registry['config'].fullauth.session.settings))
 
     # add routes
     configurator.add_route(name='login', pattern='/login')
@@ -50,7 +61,8 @@ def includeme(configurator):
 
     # check for the social. If social is not available, we will not turn it on!
     if 'social' in configurator.registry['config'].fullauth:
-        # Velruse init (for social auth)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        # Velruse init (for
+                                                                                                # social auth)
 
         # scan social views
         configurator.scan('pyramid_fullauth.views.social')

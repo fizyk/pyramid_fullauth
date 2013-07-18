@@ -13,3 +13,7 @@ fullauth:
         cookie_max_age: 2592000     # 30 days
     redirects: # route name, to redirect to. If False, then redirects just to /
         logout: False
+    session:
+        factory: pyramid.session.UnencryptedCookieSessionFactoryConfig
+        settings:
+            secret: THATS_NOT_SECRET_ITS_A_SECRET
