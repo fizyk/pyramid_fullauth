@@ -23,7 +23,7 @@ registerlogin uses **AuthTktAuthenticationPolicy**. It's default settings are st
 
 .. seealso::
    For more information about additional settings that could be included in your AuthTktAuthenticationPolicy
-   as well as how to set optimal values for timeout and reissue_time please see http://pyramid.readthedocs.org/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy.
+   as well as how to set optimal values for timeout and reissue_time please see :class:`~pyramid.authentication.AuthTktAuthenticationPolicy`.
 
    .. warning::
       **callback** setting is already defined by registerlogin as :meth:`pyramid_fullauth.auth.groupfinder`.
@@ -58,11 +58,12 @@ Plugin emits several events throughout the registration process, login and sever
 
 All of them, along with details description can be found in the :mod:`pyramid_fullauth.events` package.
 
-Read the http://pyramid.readthedocs.org/en/latest/api/events.html to see how to
-add an event subscriber to Your application and handle those events.
+Read the :ref:`events_chapter` chapter of Pyramid's documentation to see how to add an event subscriber to Your application and handle those events.
 
 
 Session Factory
 ---------------
 
-*pyramid_fullauth* allows you to connect custom session factory within application, by default, it uses pyramid's :class:`~pyramid.session.UnencryptedCookieSessionFactoryConfig`, but using different session factory is just a matter of appropriate settings in **fullauth.session**. See :ref:`configuration` section.
+*pyramid_fullauth* allows you to connect custom session factory within application, by default, it uses pyramid's :func:`~pyramid.session.UnencryptedCookieSessionFactoryConfig`, but using different session factory is just a matter of appropriate settings in **fullauth.session**. See :ref:`configuration` section on how to configure.
+
+More on sessions and session factory can be read in _ :ref:`sessions_chapter` chapter of Pyramid's documentation
