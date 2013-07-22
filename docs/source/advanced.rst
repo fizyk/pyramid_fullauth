@@ -60,3 +60,9 @@ All of them, along with details description can be found in the :mod:`pyramid_fu
 
 Read the http://pyramid.readthedocs.org/en/latest/api/events.html to see how to
 add an event subscriber to Your application and handle those events.
+
+
+Session Factory
+---------------
+
+*pyramid_fullauth* allows you to connect custom session factory within application, by default, it uses pyramid's :class:`~pyramid.session.UnencryptedCookieSessionFactoryConfig`, but using different session factory is just a matter of appropriate settings in **fullauth.session**. See :ref:`configuration` section.
