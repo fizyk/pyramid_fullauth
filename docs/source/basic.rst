@@ -47,6 +47,9 @@ Events can be found in the :mod:`pyramid_fullauth.events` package.
 Read the http://pyramid.readthedocs.org/en/latest/api/events.html to see how to
 add an event subscriber to Your application and handle those events.
 
+
+.. _configuration:
+
 Configuration
 -------------
 
