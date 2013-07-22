@@ -12,7 +12,7 @@ from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform
 from pyramid_fullauth.request import user
 
-__version__ = '0.0.4'
+__version__ = '0.1.0dev'
 
 
 logger = logging.getLogger(__name__)
