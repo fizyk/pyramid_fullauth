@@ -9,5 +9,6 @@ Here's the api for pyramid_fullauth
    api/models
    api/auth
    api/events
+   api/exceptions
    api/request
    api/tools

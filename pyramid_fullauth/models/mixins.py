@@ -10,6 +10,7 @@ from sqlalchemy import Enum
 from sqlalchemy import String
 from sqlalchemy.orm import validates
 from pyramid.compat import text_type
+from pyramid_fullauth.exceptions import EmptyPasswordError
 
 try:  # pragma: no cover
     algorithms = hashlib.algorithms
@@ -98,6 +99,7 @@ class PasswordMixin(object):
             :param initiatior: the attribute implementation object which initiated this event.
             :returns: hashed and salted password
             :rtype: str
+            :raises: pyramid_fullauth.exceptions.EmptyPasswordError
 
             .. note::
 
@@ -113,12 +115,12 @@ class PasswordMixin(object):
 
                 For more information on Attribute Events in sqlalchemy see:
 
-                http://docs.sqlalchemy.org/en/rel_0_7/orm/events.html#sqlalchemy.orm.events.AttributeEvents.set
+                :meth:`sqlalchemy.orm.events.AttributeEvents.set`
 
         '''
 
         if not password:
-            raise ValueError('Password cannot be empty')
+            raise EmptyPasswordError('password-empty')
 
         # reading default hash_algorithm
         hash_algorithm = self.__class__._hash_algorithm.property.columns[0].default.arg
