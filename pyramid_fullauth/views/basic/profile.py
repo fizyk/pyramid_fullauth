@@ -22,6 +22,8 @@ from pyramid_fullauth.events import AfterEmailChangeActivation
 from pyramid_fullauth.events import BeforeReset
 from pyramid_fullauth.events import AfterResetRequest
 from pyramid_fullauth.events import AfterReset
+from pyramid_fullauth.exceptions import ValidateError
+from pyramid_fullauth.tools import validate_passsword
 
 
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
@@ -108,7 +110,8 @@ class ProfileViews(BaseView):
             return redirect
         return HTTPFound(location='/')
 
-    @view_config(route_name='password:reset', renderer='pyramid_fullauth:resources/templates/reset.mako')
+    @view_config(route_name='password:reset',
+                 renderer='pyramid_fullauth:resources/templates/reset.mako')
     def reset(self):
         '''
             Password reset method
@@ -120,7 +123,8 @@ class ProfileViews(BaseView):
 
         return {'status': True, 'token': token}
 
-    @view_config(route_name='password:reset', request_method='POST', renderer='pyramid_fullauth:resources/templates/reset.mako')
+    @view_config(route_name='password:reset', request_method='POST',
+                 renderer='pyramid_fullauth:resources/templates/reset.mako')
     def reset_POST(self):
         '''
             Processes POST requests to generate reset password hashes
@@ -129,6 +133,7 @@ class ProfileViews(BaseView):
             token = self.request.session.get_csrf_token()
         else:
             token = ''
+
         if self.check_csrf and token != self.request.POST.get('token'):
             return {'status': False,
                     'msg': self.request._('csrf-mismatch',
@@ -136,7 +141,8 @@ class ProfileViews(BaseView):
                                           domain='pyramid_fullauth'),
                     'token': token}
         try:
-            user = Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
+            user = Session.query(User).filter(
+                User.email == self.request.POST.get('email', '')).one()
         except NoResultFound:
             return {'status': False,
                     'msg': self.request._('user-not-exists',
@@ -153,7 +159,8 @@ class ProfileViews(BaseView):
         return HTTPFound(location='/')
 
     @force_logout()
-    @view_config(route_name='password:reset:continue', renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
+    @view_config(route_name='password:reset:continue',
+                 renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
     def reset_continue(self):
         '''
             Method that serves password reset page
@@ -175,11 +182,12 @@ class ProfileViews(BaseView):
 
             password = self.request.POST.get('password', None)
             password_confirm = self.request.POST.get('confirm_password', None)
-            if password and password == password_confirm:
-                user.password = password
+            if password == password_confirm:
 
                 try:
                     self.request.registry.notify(BeforeReset(self.request, user))
+                    validate_passsword(self.request, password, user)
+
                     user.reset_key = None
                     try:
                         Session.query(AuthenticationProvider).filter(
@@ -191,7 +199,7 @@ class ProfileViews(BaseView):
                                                    provider_id=user.id))
 
                     Session.flush()
-                except AttributeError as e:
+                except (ValidateError, AttributeError) as e:
                     return {'status': False, 'msg': str(e), 'token': token}
 
                 try:

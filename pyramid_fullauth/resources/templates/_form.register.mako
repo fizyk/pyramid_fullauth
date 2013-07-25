@@ -23,12 +23,12 @@
             password_options = request.config.fullauth.register.password
         %>
         % if password_options['confirm']:
-            <div class="control-group ${'error' if 'password_confirm' in errors else ''}">
+            <div class="control-group ${'error' if 'confirm_password' in errors else ''}">
                 <label class="control-label">${_('Confirm password', domain='pyramid_fullauth')}:</label>
                 <div class="controls">
-                    <input type="password" name="password_confirm" id="password_confirm" required="required"/>
-                    % if 'password_confirm' in errors:
-                        <span class="help-inline">${errors['password_confirm']}</span>
+                    <input type="password" name="confirm_password" id="confirm_password" required="required"/>
+                    % if 'confirm_password' in errors:
+                        <span class="help-inline">${errors['confirm_password']}</span>
                     % endif
                 </div>
             </div>
