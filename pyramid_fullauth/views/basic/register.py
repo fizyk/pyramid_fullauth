@@ -122,9 +122,9 @@ class RegisterViews(BaseView):
                 if password_options['confirm']:
                     password_confirm = self.request.POST.get('password_confirm', u'')
                     if password != password_confirm:
-                        invalid_fields['password_confirm'] = self.request._(
-                            'Passwords don\'t match',
-                            domain='pyramid_fullauth')
+                        invalid_fields['password_confirm'] = self.request._('password-mismatch',
+                                                                            default='Passwords don\'t match',
+                                                                            domain='pyramid_fullauth')
 
             else:
                 password = tools.password_generator(getattr(

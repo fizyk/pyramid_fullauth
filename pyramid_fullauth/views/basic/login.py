@@ -52,7 +52,8 @@ class LoginViews(BaseView):
         # Code copied from alternative. Not yes implemented
         if self.request.method == 'POST':
             if self.check_csrf and token != self.request.POST.get('token'):
-                return_dict['msg'] = self.request._('CSRF token did not match.',
+                return_dict['msg'] = self.request._('csrf-mismatch',
+                                                    default='CSRF token did not match.',
                                                     domain='pyramid_fullauth')
                 return return_dict
 

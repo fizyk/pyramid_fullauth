@@ -41,5 +41,6 @@ class ForbiddenViews(BaseView):
                                    domain='pyramid_fullauth')}
 
         return {'status': False,
-                'msg': self.request._('forbidde-logged', default='You have to be logged in to use this function'),
+                'msg': self.request._('forbidden-login',
+                                      default='You have to be logged in to use this function'),
                 'login_url': self.request.route_path('login')}

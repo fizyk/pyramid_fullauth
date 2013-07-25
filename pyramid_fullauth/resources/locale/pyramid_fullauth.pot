@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyramid_fullauth 0.0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-25 19:56+0200\n"
+"POT-Creation-Date: 2013-07-25 20:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,7 +112,13 @@ msgid "Please, register"
 msgstr ""
 
 #: pyramid_fullauth/resources/templates/register.mako:11
-msgid "CSRF Attack detected!"
+#: pyramid_fullauth/views/basic/login.py:55
+#: pyramid_fullauth/views/basic/profile.py:51
+#: pyramid_fullauth/views/basic/profile.py:134
+#: pyramid_fullauth/views/basic/profile.py:168
+#: pyramid_fullauth/views/basic/register.py:73
+#: pyramid_fullauth/views/basic/register.py:85
+msgid "csrf-mismatch"
 msgstr ""
 
 #: pyramid_fullauth/resources/templates/register.mako:17
@@ -141,28 +147,16 @@ msgid "forbidden-notallowed"
 msgstr ""
 
 #: pyramid_fullauth/views/basic/forbidden.py:44
-msgid "forbidde-logged"
+msgid "forbidden-login"
 msgstr ""
 
 #: pyramid_fullauth/views/basic/login.py:37
 msgid "Login error"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/login.py:55
-msgid "CSRF token did not match."
-msgstr ""
-
-#: pyramid_fullauth/views/basic/login.py:97
-#: pyramid_fullauth/views/basic/login.py:103
+#: pyramid_fullauth/views/basic/login.py:98
+#: pyramid_fullauth/views/basic/login.py:104
 msgid "Wrong e-mail or password."
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:51
-#: pyramid_fullauth/views/basic/profile.py:134
-#: pyramid_fullauth/views/basic/profile.py:168
-#: pyramid_fullauth/views/basic/register.py:73
-#: pyramid_fullauth/views/basic/register.py:85
-msgid "csrf-mismatch"
 msgstr ""
 
 #: pyramid_fullauth/views/basic/profile.py:58
@@ -178,6 +172,7 @@ msgid "user-not-exists"
 msgstr ""
 
 #: pyramid_fullauth/views/basic/profile.py:200
+#: pyramid_fullauth/views/basic/register.py:125
 msgid "password-mismatch"
 msgstr ""
 
@@ -192,10 +187,6 @@ msgstr ""
 
 #: pyramid_fullauth/views/basic/register.py:117
 msgid "Password is too short"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/register.py:125
-msgid "Passwords don't match"
 msgstr ""
 
 #: pyramid_fullauth/views/basic/register.py:154
