@@ -24,7 +24,7 @@ Instalation:
 
 ``pip install pyramid_fullauth``
 
-or add **pyramid_fullauth* to your **setup.py** requirements.
+or add **pyramid_fullauth** to your **setup.py** requirements.
 
 
 Tests:

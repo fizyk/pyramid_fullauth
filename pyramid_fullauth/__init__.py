@@ -26,6 +26,7 @@ def includeme(configurator):
     '''
 
     config_defaults(configurator, 'pyramid_fullauth:config')
+    configurator.include('pyramid_localize')
 
     configurator.set_authorization_policy(ACLAuthorizationPolicy())
     configurator.set_authentication_policy(
