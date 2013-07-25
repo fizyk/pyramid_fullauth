@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyramid_fullauth 0.0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-05 09:18+0200\n"
+"POT-Creation-Date: 2013-07-25 19:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,6 +160,8 @@ msgstr ""
 #: pyramid_fullauth/views/basic/profile.py:51
 #: pyramid_fullauth/views/basic/profile.py:134
 #: pyramid_fullauth/views/basic/profile.py:168
+#: pyramid_fullauth/views/basic/register.py:73
+#: pyramid_fullauth/views/basic/register.py:85
 msgid "csrf-mismatch"
 msgstr ""
 
@@ -177,5 +179,26 @@ msgstr ""
 
 #: pyramid_fullauth/views/basic/profile.py:200
 msgid "password-mismatch"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:93
+msgid "User with given e-mail already exists!"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:114
+#: pyramid_fullauth/views/basic/register.py:137
+msgid "Please enter your password"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:117
+msgid "Password is too short"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:125
+msgid "Passwords don't match"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:154
+msgid "You have successfully registered"
 msgstr ""
 

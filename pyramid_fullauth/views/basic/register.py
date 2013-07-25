@@ -28,7 +28,8 @@ from pyramid_fullauth.auth import force_logout
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
 class RegisterViews(BaseView):
 
-    @view_config(route_name='register:activate', renderer="pyramid_fullauth:resources/templates/activate.mako")
+    @view_config(route_name='register:activate',
+                 renderer="pyramid_fullauth:resources/templates/activate.mako")
     def activate(self):
         '''
             Process account activation
@@ -44,7 +45,8 @@ class RegisterViews(BaseView):
             return e
         return {}
 
-    @view_config(route_name='register', renderer="pyramid_fullauth:resources/templates/register.mako")
+    @view_config(route_name='register',
+                 renderer="pyramid_fullauth:resources/templates/register.mako")
     def register(self):
         '''
             Processes register
@@ -56,8 +58,10 @@ class RegisterViews(BaseView):
             token = ''
         return {'status': True, 'msg': None, 'token': token, 'errors': {}}
 
-    @view_config(route_name='register', request_method='POST', renderer="pyramid_fullauth:resources/templates/register.mako")
-    @view_config(route_name='register', request_method='POST', xhr=True, renderer="json")
+    @view_config(route_name='register', request_method='POST',
+                 renderer="pyramid_fullauth:resources/templates/register.mako")
+    @view_config(route_name='register', request_method='POST', xhr=True,
+                 renderer="json")
     def register_POST(self):
         '''
             Process POST register request
@@ -65,7 +69,11 @@ class RegisterViews(BaseView):
 
         invalid_fields = {}
         response_values = {
-            'status': False, 'msg': text_type('There are errors in your registration form'), 'token': ''}
+            'status': False,
+            'msg': self.request._('csrf-mismatch',
+                                  default='CSRF token did not match.',
+                                  domain='pyramid_fullauth'),
+            'token': ''}
         response_values['errors'] = invalid_fields
         if self.check_csrf:
             token = self.request.session.get_csrf_token()
@@ -74,13 +82,16 @@ class RegisterViews(BaseView):
 
         response_values['token'] = token
         if self.check_csrf and token != self.request.POST.get('token'):
-            invalid_fields['token'] = text_type('CSRF token did not match.')
+            invalid_fields['token'] = self.request._('csrf-mismatch',
+                                                     default='CSRF token did not match.',
+                                                     domain='pyramid_fullauth'),
 
         email = self.request.POST.get('email', u'')
         # here if e-mail is already in database
         try:
             Session.query(User).filter(User.email == email).one()
-            invalid_fields['email'] = 'User with given e-mail already exists!'
+            invalid_fields['email'] = self.request._('User with given e-mail already exists!',
+                                                     domain='pyramid_fullauth')
         except NoResultFound:
             pass
 
@@ -100,17 +111,20 @@ class RegisterViews(BaseView):
                 passwordMinLen = self.request.config.fullauth.register.password.length_min
                 password_confirm = self.request.POST.get('password_confirm', u'')
                 if not password:
-                    invalid_fields['password'] = text_type('Please enter your password')
+                    invalid_fields['password'] = self.request._('Please enter your password',
+                                                                domain='pyramid_fullauth')
                 elif passwordMinLen > 0 and len(password) < passwordMinLen:
-                    invalid_fields['password'] = text_type('Password is too short')
+                    invalid_fields['password'] = self.request._('Password is too short',
+                                                                domain='pyramid_fullauth')
 
                 # here if password doesn't match
                 password_options = self.request.config.fullauth.register.password
                 if password_options['confirm']:
                     password_confirm = self.request.POST.get('password_confirm', u'')
                     if password != password_confirm:
-                        invalid_fields[
-                            'password_confirm'] = text_type('Passwords don\'t match')
+                        invalid_fields['password_confirm'] = self.request._(
+                            'Passwords don\'t match',
+                            domain='pyramid_fullauth')
 
             else:
                 password = tools.password_generator(getattr(
@@ -120,14 +134,16 @@ class RegisterViews(BaseView):
                 user.password = password
             else:
                 if not 'password' in invalid_fields:
-                    invalid_fields['password'] = text_type('Please enter your password')
+                    invalid_fields['password'] = self.request._('Please enter your password',
+                                                                domain='pyramid_fullauth')
 
             self.request.registry.notify(BeforeRegister(self.request, user, invalid_fields))
             if not invalid_fields:
                 Session.add(user)
                 Session.flush()
                 # lets add AuthenticationProvider as email!
-                user.providers.append(AuthenticationProvider(provider=u'email', provider_id=user.id))
+                user.providers.append(
+                    AuthenticationProvider(provider=u'email', provider_id=user.id))
             else:
                 return response_values
         except AttributeError as e:
@@ -135,7 +151,8 @@ class RegisterViews(BaseView):
             return response_values
 
         response_values['status'] = True
-        response_values['msg'] = text_type('You have successfully registered')
+        response_values['msg'] = self.request._('You have successfully registered',
+                                                domain='pyramid_fullauth')
 
         try:
             self.request.registry.notify(AfterRegister(self.request, user, response_values))
