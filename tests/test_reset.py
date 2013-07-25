@@ -59,6 +59,7 @@ class ResetPasswordTest(BaseTestCase):
         }
         res = self.app.post(str('/password/reset/' + user.reset_key), post_data)
         assert res
+        print res
 
         user = self.read_user(self.user_data['email'])
         self.assertTrue(user.reset_key is None)

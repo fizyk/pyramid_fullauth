@@ -18,7 +18,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'],
+            'confirm_password': self.user_data['password'],
             'token': self.get_token('/register')
         }
         user = self.read_user(self.user_data['email'])
@@ -38,7 +38,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'],
+            'confirm_password': self.user_data['password'],
             'token': self.get_token('/register')
         }
         user = self.read_user(self.user_data['email'])
@@ -63,7 +63,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': str(self.user_data['email']),
             'password': str(self.user_data['password']),
-            'password_confirm': str(self.user_data['password']),
+            'confirm_password': str(self.user_data['password']),
             'token': self.get_token('/register')
         }
         user = self.read_user(self.user_data['email'])
@@ -79,7 +79,7 @@ class RegisterTest(BaseTestCase):
         '''
         post_data = {
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'],
+            'confirm_password': self.user_data['password'],
             'token': self.get_token('/register')
         }
         user = self.read_user(self.user_data['email'])
@@ -98,7 +98,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'] + u'sasasasa',
+            'confirm_password': self.user_data['password'] + u'sasasasa',
             'token': self.get_token('/register')
         }
         user = self.read_user(self.user_data['email'])
@@ -116,7 +116,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'] + u'sasasasa',
+            'confirm_password': self.user_data['password'] + u'sasasasa',
             'token': self.get_token('/register') + '1'
         }
         user = self.read_user(self.user_data['email'])
@@ -135,7 +135,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': email,
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'],
+            'confirm_password': self.user_data['password'],
             'token': self.get_token('/register')
         }
         user = self.read_user(email)
@@ -155,7 +155,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': '',
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'],
+            'confirm_password': self.user_data['password'],
             'token': self.get_token('/register')
         }
 
@@ -171,7 +171,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': email,
             'password': self.user_data['password'] * 10000,
-            'password_confirm': self.user_data['password'] * 10000,
+            'confirm_password': self.user_data['password'] * 10000,
             'token': self.get_token('/register')
         }
         user = self.read_user(email)
@@ -189,7 +189,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': email,
             'password': '12',
-            'password_confirm': self.user_data['password'] * 10000,
+            'confirm_password': self.user_data['password'] * 10000,
             'token': self.get_token('/register')
         }
         user = self.read_user(email)
@@ -208,7 +208,7 @@ class RegisterTest(BaseTestCase):
         post_data = {
             'email': email,
             'password': '',
-            'password_confirm': self.user_data['password'] * 10000,
+            'confirm_password': self.user_data['password'] * 10000,
             'token': self.get_token('/register')
         }
         user = self.read_user(email)
@@ -313,7 +313,7 @@ class RegisterNoPassConfirm(BaseTestCase):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'password_confirm': self.user_data['password'] + u'sasasasa',
+            'confirm_password': self.user_data['password'] + u'sasasasa',
             'token': self.get_token('/register')
         }
 

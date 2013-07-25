@@ -23,6 +23,7 @@ from pyramid_fullauth.events import BeforeReset
 from pyramid_fullauth.events import AfterReset
 from pyramid_fullauth import tools
 from pyramid_fullauth.auth import force_logout
+from pyramid_fullauth.exceptions import ValidateError
 
 
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
@@ -107,35 +108,15 @@ class RegisterViews(BaseView):
             user.address_ip = self.request.remote_addr
 
             if self.request.config.fullauth.register.password.require:
-                password = self.request.POST.get('password', u'')
-                passwordMinLen = self.request.config.fullauth.register.password.length_min
-                password_confirm = self.request.POST.get('password_confirm', u'')
-                if not password:
-                    invalid_fields['password'] = self.request._('Please enter your password',
-                                                                domain='pyramid_fullauth')
-                elif passwordMinLen > 0 and len(password) < passwordMinLen:
-                    invalid_fields['password'] = self.request._('Password is too short',
-                                                                domain='pyramid_fullauth')
-
-                # here if password doesn't match
-                password_options = self.request.config.fullauth.register.password
-                if password_options['confirm']:
-                    password_confirm = self.request.POST.get('password_confirm', u'')
-                    if password != password_confirm:
-                        invalid_fields['password_confirm'] = self.request._('password-mismatch',
-                                                                            default='Passwords don\'t match',
-                                                                            domain='pyramid_fullauth')
-
+                try:
+                    tools.validate_passsword(self.request,
+                                             self.request.POST.get('password', u''),
+                                             user)
+                except ValidateError as e:
+                    invalid_fields['password'] = e.message
             else:
-                password = tools.password_generator(getattr(
-                    self.request.config.fullauth.register.password, 'length_min', 8))
-
-            if password:
-                user.password = password
-            else:
-                if not 'password' in invalid_fields:
-                    invalid_fields['password'] = self.request._('Please enter your password',
-                                                                domain='pyramid_fullauth')
+                user.password = tools.password_generator(
+                    self.request.config.fullauth.register.password.length_min)
 
             self.request.registry.notify(BeforeRegister(self.request, user, invalid_fields))
             if not invalid_fields:

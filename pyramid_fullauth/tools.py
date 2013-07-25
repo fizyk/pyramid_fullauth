@@ -2,6 +2,9 @@
 
 import string
 from random import choice
+from pyramid_fullauth.exceptions import (
+    EmptyPasswordError, ShortPasswordError, PasswordConfirmMismatchError
+)
 
 
 def password_generator(length, chars=(string.letters + string.digits + string.punctuation)):
@@ -16,3 +19,44 @@ def password_generator(length, chars=(string.letters + string.digits + string.pu
         :param list chars: list of characters from which to choose
     '''
     return u''.join([choice(chars) for i in range(length)])
+
+
+def validate_passsword(request, password, user=None):
+    '''
+        Validates password according.
+
+        .. note::
+
+            If no user provided, password is just validated
+
+        :param pyramid.request.Request request: request object
+        :param str password: password to be set
+        :param pyramid_fullauth.models.User user: user object
+
+        :raises: pyramid_fullauth.exceptions.ValidateError
+
+    '''
+    password_config = request.config.fullauth.register.password
+    password_confirm = request.POST.get('password_confirm', u'')
+    if not password:
+        raise EmptyPasswordError(
+            request._('Please enter your password',
+                      domain='pyramid_fullauth'))
+
+    elif password_config.length_min and\
+            len(password) < password_config.length_min:
+        raise ShortPasswordError(
+            request._('Password is too short',
+                      domain='pyramid_fullauth'))
+
+    # here if password doesn't match
+    if password_config['confirm']:
+        confirm_password = request.POST.get('confirm_password', u'')
+        if password != confirm_password:
+            raise PasswordConfirmMismatchError(
+                request._('password-mismatch',
+                          default='Passwords don\'t match',
+                          domain='pyramid_fullauth'))
+
+    if user:
+        user.password = password
