@@ -2,7 +2,7 @@
     <input type="hidden" name="token" value="${token}" />
     <fieldset>
         <div class="control-group ${'error' if 'email' in errors else ''}">
-            <label class="control-label">E-mail:</label>
+            <label class="control-label">${_('E-mail', domain='pyramid_fullauth')}:</label>
             <div class="controls">
                 <input id="email" placeholder="username@hostname.com" type="email" name="email" required="required" value="${request.params.get('email','')}" />
                 % if 'email' in errors:
@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="control-group ${'error' if 'password' in errors else ''}">
-            <label class="control-label">Password:</label>
+            <label class="control-label">${_('Password', domain='pyramid_fullauth')}:</label>
             <div class="controls">
                 <input type="password" id="password" name="password" required="required"/>
                 % if 'password' in errors:
@@ -24,7 +24,7 @@
         %>
         % if password_options['confirm']:
             <div class="control-group ${'error' if 'password_confirm' in errors else ''}">
-                <label class="control-label">Confirm password:</label>
+                <label class="control-label">${_('Confirm password', domain='pyramid_fullauth')}:</label>
                 <div class="controls">
                     <input type="password" name="password_confirm" id="password_confirm" required="required"/>
                     % if 'password_confirm' in errors:
@@ -34,7 +34,7 @@
             </div>
         % endif
         <div>
-            <button id="submit_register" type="submit" class="btn btn-primary btn-large"><strong>Sign up</strong></button>
+            <button id="submit_register" type="submit" class="btn btn-primary btn-large"><strong>${_('Sign up', domain='pyramid_fullauth')}</strong></button>
         </div>
     </fieldset>
 </form>
