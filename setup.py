@@ -26,7 +26,9 @@ test_requires = [
     'nose',
     'coverage',
     'mock',
-    'lxml'
+    'lxml',
+    'pytest',
+    'pytest-cov'
 ]
 
 extras_require = {

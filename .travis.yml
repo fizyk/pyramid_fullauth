@@ -8,6 +8,6 @@ install:
     - "python setup.py install"
     - "pip install pyramid_fullauth[tests] coveralls --use-mirrors"
 script:
-    - "python setup.py nosetests"
+    - "py.test --cov pyramid_fullauth tests/"
 after_success:
     - coveralls

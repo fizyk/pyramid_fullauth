@@ -43,8 +43,8 @@ def validate_passsword(request, password, user=None):
             request._('Please enter your password',
                       domain='pyramid_fullauth'))
 
-    elif password_config.length_min and\
-            len(password) < password_config.length_min:
+    if password_config['length_min'] and\
+            len(password) < password_config['length_min']:
         raise ShortPasswordError(
             request._('Password is too short',
                       domain='pyramid_fullauth'))
