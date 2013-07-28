@@ -14,6 +14,7 @@ class ValidateError(ValueError):
     '''
         Base of every validate error in pyramid_fullauth
     '''
+    pass
 
 
 class EmptyPasswordError(ValidateError):
@@ -37,5 +38,4 @@ class PasswordConfirmMismatchError(ValidateError):
     '''
         Thrown when there's a mismatch with cpassword_confirm
     '''
-
     pass

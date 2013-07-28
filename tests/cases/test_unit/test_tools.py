@@ -1,26 +1,8 @@
 import pytest
-from mock import Mock
-from pyramid_fullauth.tools import validate_passsword
+from pyramid_fullauth.tools import validate_passsword, password_generator
 from pyramid_fullauth.exceptions import (
     EmptyPasswordError, ShortPasswordError, PasswordConfirmMismatchError
 )
-
-
-@pytest.fixture()
-def request():
-    request = Mock()
-
-    def _(message, *args, **kwargs):
-        return message
-    request._ = Mock(side_effect=_)
-    request.configure_mock(
-        **{'config.fullauth.register.password':
-            {'length_min': 8, 'confirm': True},
-            'POST': {'confirm_password': '987654321'}
-           }
-    )
-
-    return request
 
 
 class TestTools(object):
@@ -33,3 +15,7 @@ class TestTools(object):
     def test_raises_errors(self, request, password, exception):
         with pytest.raises(exception):
             validate_passsword(request, password)
+
+    @pytest.mark.parametrize('length', [5, 6])
+    def test_password_generator(self, length):
+        assert len(password_generator(length)) == length

@@ -33,3 +33,7 @@ Tests:
 You'll need: packages defined in extra_requires[tests] to run tests, and then:
 
 ``py.test``
+
+For detailed test report run this command:
+
+``py.test --cov-report term-missing --cov pyramid_fullauth tests/``
