@@ -23,7 +23,7 @@ from pyramid_fullauth.events import AfterResetRequest
 from pyramid_fullauth.events import AfterReset
 from pyramid_fullauth.exceptions import (
     ValidateError, EmptyError, EmailValidationError
-    )
+)
 from pyramid_fullauth.tools import validate_passsword
 
 
@@ -72,8 +72,18 @@ class ProfileViews(BaseView):
 
         try:
             user.set_new_email(self.request.POST.get('email', ''))
-        except ValidateError as e:
-            return {'status': False, 'msg': e.message, 'token': token}
+        except EmptyError:
+            return {'status': False,
+                    'msg': self.request._(
+                        'E-mail is empty',
+                        domain='pyramid_fullauth'),
+                    'token': token}
+        except EmailValidationError:
+            return {'status': False,
+                    'msg': self.request._(
+                        'Incorrect e-mail format',
+                        domain='pyramid_fullauth'),
+                    'token': token}
 
         response_values = {'status': True,
                            'msg': self.request._('We sent you email to activate your new email address',

@@ -19,7 +19,7 @@ except AttributeError:  # pragma: no cover
     algorithms = ('md5', 'sha1')
 
 
-class PasswordMixin(object):
+class UserPasswordMixin(object):
 
     '''
         Authentication field definition along with appropriate methods

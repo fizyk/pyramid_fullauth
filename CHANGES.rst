@@ -2,6 +2,12 @@
 CHANGES
 =======
 
+CURRENT
+-------
+- started test migration to py.test
+- extracted UserEmailMixin from User model
+- validation exception improvements
+
 0.1.0
 -----
 - add localize to requirements. Ability to translate registerlogin communicates
