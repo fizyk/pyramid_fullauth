@@ -17,10 +17,10 @@ class ValidateError(ValueError):
     pass
 
 
-class EmptyPasswordError(ValidateError):
+class EmptyError(ValidateError):
 
     '''
-        Thrown whenever user is trying to set empty password
+        Thrown whenever user is trying to set empty value
     '''
     pass
 
@@ -37,5 +37,13 @@ class PasswordConfirmMismatchError(ValidateError):
 
     '''
         Thrown when there's a mismatch with cpassword_confirm
+    '''
+    pass
+
+
+class EmailErrorValidation(ValidateError):
+
+    '''
+        Exception thwon, when there's incorrect email provided
     '''
     pass
