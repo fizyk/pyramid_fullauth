@@ -41,9 +41,9 @@ class PasswordConfirmMismatchError(ValidateError):
     pass
 
 
-class EmailErrorValidation(ValidateError):
+class EmailValidationError(ValidateError):
 
     '''
-        Exception thwon, when there's incorrect email provided
+        Exception thrown, when there's incorrect email provided
     '''
     pass

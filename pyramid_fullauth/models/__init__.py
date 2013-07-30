@@ -28,7 +28,7 @@ from sqlalchemy.orm.util import has_identity
 from pyramid_basemodel import Base
 from pyramid_fullauth import exceptions
 from pyramid_fullauth.models.mixins import PasswordMixin
-from pyramid_fullauth.exceptions import EmptyError, EmailErrorValidation
+from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
 from datetime import datetime
 
 pattern_mail = re.compile(
@@ -129,14 +129,14 @@ class User(PasswordMixin, Base):
 
                 More about simple validators: http://docs.sqlalchemy.org/en/latest/orm/mapper_config.html#simple-validators
 
-            :raises EmailErrorValidation:
+            :raises EmailValidationError:
             :raises EmptyError:
         '''
         if address:
             if pattern_mail.match(address):
                 return address
             else:
-                raise EmailErrorValidation('Incorrect e-mail format')
+                raise EmailValidationError('Incorrect e-mail format')
 
         raise EmptyError('E-mail is empty')
 

@@ -100,7 +100,7 @@ class RegisterViews(BaseView):
             user = User()
             try:
                 user.email = email
-            except AttributeError as e:
+            except ValidateError as e:
                 # do not overwrite existing error
                 if not 'email' in invalid_fields:
                     invalid_fields['email'] = str(e)

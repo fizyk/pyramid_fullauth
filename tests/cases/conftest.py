@@ -1,9 +1,14 @@
-import pytest
+
 from mock import Mock
+
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from pyramid_fullauth.models import Base, User
 
 
 @pytest.fixture()
-def request():
+def web_request():
     request = Mock()
 
     def _(message, *args, **kwargs):
@@ -17,3 +22,22 @@ def request():
     )
 
     return request
+
+
+@pytest.fixture(scope='function')
+def database(request):
+    connection = 'sqlite://'
+
+    engine = create_engine(connection, echo=False)
+
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+    session = sessionmaker(bind=engine)()
+
+    def destroy():
+        Base.metadata.drop_all(engine)
+        session.close()
+
+    request.addfinalizer(destroy)
+
+    return session
