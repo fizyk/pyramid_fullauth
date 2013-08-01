@@ -51,7 +51,7 @@ def secret_view(request):
     return dict()
 
 
-class BaseTestCase(unittest.TestCase):
+class BaseTestSuite(object):
 
     user_data = {
         'email': u'email@example.com',
@@ -78,10 +78,24 @@ class BaseTestCase(unittest.TestCase):
 
         transaction.commit()
 
-    def authenticate(self, email=user_data['email'], password=user_data['password'], token=None):
+    def get_token(self, url, app):
+        from lxml import etree
+        res = app.get(url, status=200)
+        node = etree.fromstring(res.body)
+        token = node.xpath('//input[@name="token"]/@value')[0]
+        return str(token)
+
+    def htmlToText(self, html):
+        html = lxml.html.fromstring(html)
+        html = lxml.html.clean.clean_html(html)
+        result = lxml.html.tostring(html, encoding="utf-8")
+        return result
+
+    def authenticate(self, app, email=user_data['email'],
+                     password=user_data['password'], token=None):
         """ Login user """
         if not token:
-            token = self.get_token('/login?after=%2Fsecret')
+            token = self.get_token('/login?after=%2Fsecret', app)
 
         post_data = {
             'email': email,
@@ -89,7 +103,12 @@ class BaseTestCase(unittest.TestCase):
             'token': token
         }
         headers = {'X-Requested-With': 'XMLHttpRequest'}
-        self.app.post('/login', post_data, headers=headers)
+        app.post('/login', post_data, headers=headers)
+
+
+class BaseTestCase(unittest.TestCase, BaseTestSuite):
+
+    '''old class, to be removed, after migrated to py.test completely'''
 
     def setUp(self, settings={}):
         """Configure the Pyramid application."""
@@ -107,7 +126,7 @@ class BaseTestCase(unittest.TestCase):
         '''
         Session.remove()
 
-    def get_token(self, url):
+    def get_token(self, url,):
         from lxml import etree
         res = self.app.get(url, status=200)
         node = etree.fromstring(res.body)
@@ -119,6 +138,20 @@ class BaseTestCase(unittest.TestCase):
         html = lxml.html.clean.clean_html(html)
         result = lxml.html.tostring(html, encoding="utf-8")
         return result
+
+    def authenticate(self, email=BaseTestSuite.user_data['email'],
+                     password=BaseTestSuite.user_data['password'], token=None):
+        """ Login user """
+        if not token:
+            token = self.get_token('/login?after=%2Fsecret')
+
+        post_data = {
+            'email': email,
+            'password': password,
+            'token': token
+        }
+        headers = {'X-Requested-With': 'XMLHttpRequest'}
+        self.app.post('/login', post_data, headers=headers)
 
 
 class ConfigTest(BaseTestCase):
