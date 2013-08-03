@@ -1,18 +1,10 @@
 
 from mock import Mock
 
-
-try:
-    from webtest import TestApp
-except ImportError:
-    raise ImportError("You need WebTest module!! (pip install WebTest)")
-
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from pyramid_fullauth.models import Base, User
-from tests import config_factory
-from pyramid_basemodel import Session
+from pyramid_fullauth.models import Base
 
 
 @pytest.fixture()
@@ -49,25 +41,3 @@ def database(request):
     request.addfinalizer(destroy)
 
     return session
-
-
-class App(object):
-
-    def __init__(self, app, config):
-        self.app = app
-        self.config = config
-
-
-@pytest.fixture(scope='function')
-def base_app(request):
-    """Configure the Pyramid application."""
-
-    # Configure redirect routes
-    config = config_factory(**{'yml.location': 'tests:config'})
-    # Add routes for change_password, change_username,
-
-    app = TestApp(config.make_wsgi_app())
-
-    request.addfinalizer(Session.remove)
-
-    return App(app, config)

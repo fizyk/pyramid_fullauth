@@ -311,16 +311,3 @@ class TestSocialLogin(BaseTestSuite):
         sv = SocialLoginViews(request)
         out = sv.register_social()
         assert out == {'status': True}
-
-
-#
-# unittests below
-#
-
-class SocialLoginTest(BaseTestCase):
-
-    # removing this makes register test fails
-    def test_social_login(self):
-        '''Login:Form displayed social form'''
-        res = self.app.get('/login')
-        assert ('Connect with facebook</a>' in res.body)
