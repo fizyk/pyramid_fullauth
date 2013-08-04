@@ -140,12 +140,3 @@ class BaseTestCase(unittest.TestCase, BaseTestSuite):
         }
         headers = {'X-Requested-With': 'XMLHttpRequest'}
         self.app.post('/login', post_data, headers=headers)
-
-
-class ConfigTest(BaseTestCase):
-
-    def test_defaults(self):
-        '''Load defaults config for fullauth'''
-
-        self.assertTrue('fullauth' in self.config.registry['config'],
-                        'Config should get created based on fullauth defaults')
