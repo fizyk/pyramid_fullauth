@@ -61,7 +61,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         :returns: Returns False if user account is not active (or deleted).
         :rtype: bool
         """
-        return not (self.deactivated_at or self.deleted_at or self.activate_key) and (self.activated_at is not None)
+        return not (self.deactivated_at or self.deleted_at or self.activate_key) and (self.activated_at)
 
     @is_active.setter
     def is_active(self, value):

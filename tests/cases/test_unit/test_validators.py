@@ -34,17 +34,17 @@ class TestUserValidates(object):
         text_type('"much.more unusual"@example.com'),
         text_type('"()<>[]:,;@\\\"!#$%&\'*+-/=?^_`{}| ~  ? ^_`{}|~.a"@example.org'),
     ])
-    def test_email_valid_formats(self, database, email):
+    def test_email_valid_formats(self, db, email):
         ''' Check all valid formats of Email (RFC 5321) can be set by user
         '''
-        self.create_user(database, username=text_type('u1'))
+        self.create_user(db, username=text_type('u1'))
 
-        user = database.query(User).filter(User.username == text_type('u1')).one()
+        user = db.query(User).filter(User.username == text_type('u1')).one()
 
         user.email = email
-        database.commit()
+        db.commit()
 
-        user = database.query(User).filter(
+        user = db.query(User).filter(
             User.username == text_type('u1')).one()
         assert user.email == email
 
@@ -65,19 +65,19 @@ class TestUserValidates(object):
         'this is"not\allowed@example.com'  # (spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash)
         'this\ still\"not\\allowed@example.com'  # (even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)
     ])
-    def test_email_invalid_formats(self, database, email):
+    def test_email_invalid_formats(self, db, email):
         '''
         Check all invalid formats of Email (RFC 5321) can not be set by user
         '''
 
-        self.create_user(database, username=text_type('u1'))
+        self.create_user(db, username=text_type('u1'))
 
-        user = database.query(User).filter(User.username == text_type('u1')).one()
+        user = db.query(User).filter(User.username == text_type('u1')).one()
         assert user.email == text_type('test@example.com')
 
         with pytest.raises(EmailValidationError):
             user.email = email
-            database.commit()
+            db.commit()
 
     def test_validate_email_bad(self):
         '''User::validate e-mail::bad'''

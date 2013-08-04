@@ -25,7 +25,7 @@ def web_request():
 
 
 @pytest.fixture(scope='function')
-def database(request):
+def db(request):
     connection = 'sqlite://'
 
     engine = create_engine(connection, echo=False)
