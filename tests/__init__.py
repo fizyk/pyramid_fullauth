@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-
-import unittest
+import re
 
 from pyramid.view import view_config
 from pyramid_basemodel import Session
 import transaction
-import lxml.html
-import lxml.html.clean
 
 try:
     from webtest import TestApp
@@ -50,6 +47,8 @@ def secret_view(request):
     '''Dummy view with redirect to login'''
     return dict()
 
+token_re = re.compile('^.*name="token" value="([a-z0-9]+)".*$', re.I + re.M + re.DOTALL)
+
 
 class BaseTestSuite(object):
 
@@ -79,11 +78,9 @@ class BaseTestSuite(object):
         transaction.commit()
 
     def get_token(self, url, app):
-        from lxml import etree
         res = app.get(url, status=200)
-        node = etree.fromstring(res.body)
-        token = node.xpath('//input[@name="token"]/@value')[0]
-        return str(token)
+        matches = token_re.search(res.body)
+        return str(matches.groups()[0])
 
     def authenticate(self, app, email=user_data['email'],
                      password=user_data['password'], token=None):
