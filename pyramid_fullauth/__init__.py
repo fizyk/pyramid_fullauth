@@ -27,15 +27,16 @@ def includeme(configurator):
 
     config_defaults(configurator, 'pyramid_fullauth:config')
     configurator.include('pyramid_localize')
+    fullauth_config = configurator.registry['config'].fullauth
 
     configurator.set_authorization_policy(ACLAuthorizationPolicy())
     configurator.set_authentication_policy(
         AuthTktAuthenticationPolicy(callback=groupfinder,
-                                    **configurator.registry['config'].fullauth.AuthTkt))
+                                    **fullauth_config.AuthTkt))
 
     # loading and setting session factory
     # first, divide provided path for module, and factory name
-    module, factory = configurator.registry['config'].fullauth.session.factory.rsplit('.', 1)
+    module, factory = fullauth_config.session.factory.rsplit('.', 1)
     # import session module first
     session_module = __import__(module, fromlist=[module])
     # get the  factory class
@@ -43,7 +44,7 @@ def includeme(configurator):
 
     # set the new session factory
     configurator.set_session_factory(
-        session_factory(**configurator.registry['config'].fullauth.session.settings))
+        session_factory(**fullauth_config.session.settings))
 
     # add routes
     configurator.add_route(name='login', pattern='/login')
@@ -61,23 +62,21 @@ def includeme(configurator):
     configurator.scan('pyramid_fullauth.views.basic')
 
     # check for the social. If social is not available, we will not turn it on!
-    if 'social' in configurator.registry['config'].fullauth:
+    if 'social' in fullauth_config:
         # Velruse init (for social auth)
 
         # scan social views
         configurator.scan('pyramid_fullauth.views.social')
-        providers = configurator.registry['config'].fullauth.social
+        providers = fullauth_config.social
         configurator.registry['config']['login_providers'] = providers
         for provider in providers:
             # Ugly hack for using google oauth2, not OpenID + Oauth2 from google
-            if provider == 'google':
-                configurator.include('velruse.providers.google_oauth2')
-                getattr(configurator, 'add_google_oauth2_login')(
-                    **configurator.registry['config']['fullauth']['social'][provider])
-            else:
-                configurator.include('velruse.providers.' + provider)
-                getattr(configurator, 'add_{0}_login'.format(provider))(
-                    **configurator.registry['config']['fullauth']['social'][provider])
+            provider_settings = fullauth_config['social'][provider]
+            if provider == 'google':  # pragma: no cover
+                provider = 'google_oauth2'
+
+            configurator.include('velruse.providers.' + provider)
+            getattr(configurator, 'add_{0}_login'.format(provider))(**provider_settings)
 
     # we'll add some request methods:
     configurator.add_request_method(login_perform, name='login_perform')
