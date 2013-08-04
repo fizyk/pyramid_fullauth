@@ -47,6 +47,22 @@ def app_no_password_required(request):
 
 
 @pytest.fixture(scope='function')
+def app_authable(request):
+    """Configure the Pyramid application."""
+
+    # Configure redirect routes
+    config = config_factory(**{'yml.location': 'tests:config',
+                               'env': 'login'})
+    # Add routes for change_password, change_username,
+
+    app = TestApp(config.make_wsgi_app())
+
+    request.addfinalizer(Session.remove)
+
+    return App(app, config)
+
+
+@pytest.fixture(scope='function')
 def app_no_password_confirm(request):
     """Configure the Pyramid application."""
 

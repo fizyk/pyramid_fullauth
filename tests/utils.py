@@ -99,7 +99,7 @@ class BaseTestSuite(object):
                      password=user_data['password'], token=None):
         """ Login user """
         if not token:
-            token = self.get_token('/login?after=%2Fsecret', app)
+            token = self.get_token('/login', app)
 
         post_data = {
             'email': email,
@@ -107,4 +107,4 @@ class BaseTestSuite(object):
             'token': token
         }
         headers = {'X-Requested-With': 'XMLHttpRequest'}
-        app.post('/login', post_data, headers=headers)
+        return app.post('/login', post_data, headers=headers)

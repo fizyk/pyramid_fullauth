@@ -43,10 +43,7 @@ class TestLogin(BaseTestSuite):
         '''Login:Action test with clicks'''
         self.create_user({'is_active': True})
 
-        res = base_app.app.get('/secret', status=302)
-        assert res
-        res = base_app.app.get('/login?after=%2Fsecret')
-
+        res = base_app.app.get('/login')
         assert len(res.headers['Set-Cookie']) > 150
 
         res.form.set('email', self.user_data['email'])
@@ -55,7 +52,6 @@ class TestLogin(BaseTestSuite):
         res = res.form.submit()
 
         assert len(res.headers['Set-Cookie']) > 150
-        assert res.status == '302 Found'
         assert 'Max-Age=' in str(res)
 
     def test_login_inactive(self, base_app):
@@ -205,6 +201,17 @@ class TestLogin(BaseTestSuite):
         assert postRes.content_type == 'application/json'
         assert len(postRes.headers['Set-Cookie']) > 150
         assert postRes.json['status']
+
+    def test_default_login_noredirect(self, app_authable):
+        self.create_user({'is_active': True})
+        authres = self.authenticate(app_authable.app)
+        res = authres.goto('/secret', status=403)
+        assert res
+        res = authres.goto('/login')
+        assert res
+        assert '<form id="login_form"' in res.body
+        res = authres.goto('/secret', status=403)
+        assert res
 
 
 class TestSocialLogin(BaseTestSuite):
