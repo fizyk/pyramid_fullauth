@@ -2,7 +2,7 @@
 
 import warnings
 from HTMLParser import HTMLParser
-from tests import BaseTestSuite
+from tests.utils import BaseTestSuite
 
 
 class TestRegister(BaseTestSuite):

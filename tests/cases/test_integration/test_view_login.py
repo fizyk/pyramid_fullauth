@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-from tests import BaseTestSuite
+from tests.utils import BaseTestSuite
 
 
 class TestLogin(BaseTestSuite):

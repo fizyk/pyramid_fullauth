@@ -4,7 +4,7 @@ try:
 except ImportError:
     raise ImportError("You need WebTest module!! (pip install WebTest)")
 
-from tests import config_factory
+from tests.utils import config_factory
 from pyramid_basemodel import Session
 
 

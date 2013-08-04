@@ -1,7 +1,7 @@
 
 import transaction
 
-from tests import BaseTestSuite
+from tests.utils import BaseTestSuite
 
 
 class TestEmail(BaseTestSuite):
