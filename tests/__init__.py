@@ -85,12 +85,6 @@ class BaseTestSuite(object):
         token = node.xpath('//input[@name="token"]/@value')[0]
         return str(token)
 
-    def htmlToText(self, html):
-        html = lxml.html.fromstring(html)
-        html = lxml.html.clean.clean_html(html)
-        result = lxml.html.tostring(html, encoding="utf-8")
-        return result
-
     def authenticate(self, app, email=user_data['email'],
                      password=user_data['password'], token=None):
         """ Login user """
@@ -126,18 +120,12 @@ class BaseTestCase(unittest.TestCase, BaseTestSuite):
         '''
         Session.remove()
 
-    def get_token(self, url,):
+    def get_token(self, url):
         from lxml import etree
         res = self.app.get(url, status=200)
         node = etree.fromstring(res.body)
         token = node.xpath('//input[@name="token"]/@value')[0]
         return str(token)
-
-    def htmlToText(self, html):
-        html = lxml.html.fromstring(html)
-        html = lxml.html.clean.clean_html(html)
-        result = lxml.html.tostring(html, encoding="utf-8")
-        return result
 
     def authenticate(self, email=BaseTestSuite.user_data['email'],
                      password=BaseTestSuite.user_data['password'], token=None):

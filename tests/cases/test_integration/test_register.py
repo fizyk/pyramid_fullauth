@@ -2,7 +2,6 @@
 
 import warnings
 from HTMLParser import HTMLParser
-from tests import BaseTestCase
 from tests import BaseTestSuite
 
 
