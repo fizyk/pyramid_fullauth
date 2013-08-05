@@ -4,7 +4,8 @@ CHANGES
 
 CURRENT
 -------
-- started test migration to py.test
+- migrated tests to py.test
+- removed nose and lxml from test requirements
 - extracted UserEmailMixin from User model
 - validation exception improvements
 
