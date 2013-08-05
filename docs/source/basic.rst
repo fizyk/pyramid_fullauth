@@ -52,6 +52,9 @@ Read the :ref:`events_chapter` chapter of Pyramid's documentation to see how to 
 Configuration
 -------------
 
+.. note::
+    Plugins uses `tzf.pyramid_yml <https://tzfpyramid_yml.readthedocs.org/en/latest/>`_ for its configuration settings
+
 Plugin, by default works on these assumptions:
 
 .. literalinclude:: ../../pyramid_fullauth/config/config.yml

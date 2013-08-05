@@ -13,8 +13,7 @@ from pyramid_basemodel import Session
 
 from pyramid_fullauth.views import BaseView
 from pyramid_fullauth.auth import force_logout
-from pyramid_fullauth.models import User
-from pyramid_fullauth.models import AuthenticationProvider
+from pyramid_fullauth.models import User, AuthenticationProvider
 
 from pyramid_fullauth.events import BeforeEmailChange
 from pyramid_fullauth.events import AfterEmailChange
@@ -22,7 +21,9 @@ from pyramid_fullauth.events import AfterEmailChangeActivation
 from pyramid_fullauth.events import BeforeReset
 from pyramid_fullauth.events import AfterResetRequest
 from pyramid_fullauth.events import AfterReset
-from pyramid_fullauth.exceptions import ValidateError
+from pyramid_fullauth.exceptions import (
+    ValidateError, EmptyError, EmailValidationError
+)
 from pyramid_fullauth.tools import validate_passsword
 
 
@@ -71,8 +72,18 @@ class ProfileViews(BaseView):
 
         try:
             user.set_new_email(self.request.POST.get('email', ''))
-        except AttributeError as e:
-            return {'status': False, 'msg': e.message, 'token': token}
+        except EmptyError:
+            return {'status': False,
+                    'msg': self.request._(
+                        'E-mail is empty',
+                        domain='pyramid_fullauth'),
+                    'token': token}
+        except EmailValidationError:
+            return {'status': False,
+                    'msg': self.request._(
+                        'Incorrect e-mail format',
+                        domain='pyramid_fullauth'),
+                    'token': token}
 
         response_values = {'status': True,
                            'msg': self.request._('We sent you email to activate your new email address',

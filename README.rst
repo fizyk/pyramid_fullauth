@@ -30,6 +30,10 @@ or add **pyramid_fullauth** to your **setup.py** requirements.
 Tests:
 ======
 
-You'll need: **nose**, **WebTest**, **coverage** to run tests, and then:
+You'll need: packages defined in extra_requires[tests] to run tests, and then:
 
-``python setup.py nosetests``
+``py.test``
+
+For detailed test report run this command:
+
+``py.test --cov-report term-missing --cov pyramid_fullauth tests/``

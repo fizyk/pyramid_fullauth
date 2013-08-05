@@ -14,12 +14,13 @@ class ValidateError(ValueError):
     '''
         Base of every validate error in pyramid_fullauth
     '''
+    pass
 
 
-class EmptyPasswordError(ValidateError):
+class EmptyError(ValidateError):
 
     '''
-        Thrown whenever user is trying to set empty password
+        Thrown whenever user is trying to set empty value
     '''
     pass
 
@@ -37,5 +38,12 @@ class PasswordConfirmMismatchError(ValidateError):
     '''
         Thrown when there's a mismatch with cpassword_confirm
     '''
+    pass
 
+
+class EmailValidationError(ValidateError):
+
+    '''
+        Exception thrown, when there's incorrect email provided
+    '''
     pass

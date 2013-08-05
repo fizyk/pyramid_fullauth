@@ -3,7 +3,7 @@
 import string
 from random import choice
 from pyramid_fullauth.exceptions import (
-    EmptyPasswordError, ShortPasswordError, PasswordConfirmMismatchError
+    EmptyError, ShortPasswordError, PasswordConfirmMismatchError
 )
 
 
@@ -39,12 +39,12 @@ def validate_passsword(request, password, user=None):
     password_config = request.config.fullauth.register.password
     password_confirm = request.POST.get('password_confirm', u'')
     if not password:
-        raise EmptyPasswordError(
+        raise EmptyError(
             request._('Please enter your password',
                       domain='pyramid_fullauth'))
 
-    elif password_config.length_min and\
-            len(password) < password_config.length_min:
+    if password_config['length_min'] and\
+            len(password) < password_config['length_min']:
         raise ShortPasswordError(
             request._('Password is too short',
                       domain='pyramid_fullauth'))

@@ -53,7 +53,6 @@ def user(request):
     if userid:
         try:
             user = Session.query(User).filter(User.id == userid).one()
-        except NoResultFound:
-            return None
-        else:
             return user
+        except NoResultFound:  # pragma: no cover
+            pass

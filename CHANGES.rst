@@ -2,6 +2,13 @@
 CHANGES
 =======
 
+CURRENT
+-------
+- migrated tests to py.test
+- removed nose and lxml from test requirements
+- extracted UserEmailMixin from User model
+- validation exception improvements
+
 0.1.0
 -----
 - add localize to requirements. Ability to translate registerlogin communicates
