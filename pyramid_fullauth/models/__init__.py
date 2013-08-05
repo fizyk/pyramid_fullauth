@@ -5,7 +5,6 @@
     | Contains basic user definition
 '''
 import sys
-import re
 import uuid
 
 from sqlalchemy import Column
@@ -27,31 +26,22 @@ from sqlalchemy.orm.util import has_identity
 
 from pyramid_basemodel import Base
 from pyramid_fullauth import exceptions
-from pyramid_fullauth.models.mixins import PasswordMixin
+from pyramid_fullauth.models.mixins import UserPasswordMixin, UserEmailMixin
 from datetime import datetime
 
-pattern_mail = re.compile(
-    r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]{0,256}(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+){0,256}"  # dot-atom
-    # quoted-string, see also http://tools.ietf.org/html/rfc2822#section-3.2.5
-    r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177 ]|\\[\001-\011\013\014\016-\177 ]){0,256}"'
-    r')@((?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2}\.?)$)'  # domain
-    r'|\[(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}\]$', re.IGNORECASE)  # literal form, ipv4 address (SMTP 4.1.3)
 
-
-class User(PasswordMixin, Base):
+class User(UserPasswordMixin, UserEmailMixin, Base):
 
     '''
         User object/mapper
     '''
 
     __tablename__ = 'users'
-    __pattern_mail = pattern_mail
 
     id = Column(Integer, Sequence(__tablename__ + '_sq'), primary_key=True)
     username = Column(Unicode(32), unique=True, nullable=True)
     firstname = Column(Unicode(100), nullable=True)
     lastname = Column(Unicode(100), nullable=True)
-    email = Column(Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)
     activate_key = Column(String(255), default=lambda: str(uuid.uuid4()), unique=True)
     address_ip = Column(String(15), nullable=False)
 
@@ -62,8 +52,6 @@ class User(PasswordMixin, Base):
     deleted_at = Column(DateTime, nullable=True)
 
     is_admin = Column(Boolean, default=False, nullable=False)
-    new_email = Column(Unicode(254), unique=True, nullable=True)  # RFC5321 and RFC3696(errata)
-    email_change_key = Column(String(255), default=None, unique=True)
 
     @property
     def is_active(self):
@@ -73,7 +61,7 @@ class User(PasswordMixin, Base):
         :returns: Returns False if user account is not active (or deleted).
         :rtype: bool
         """
-        return not (self.deactivated_at or self.deleted_at or self.activate_key) and (self.activated_at is not None)
+        return not (self.deactivated_at or self.deleted_at or self.activate_key) and (self.activated_at)
 
     @is_active.setter
     def is_active(self, value):
@@ -119,25 +107,6 @@ class User(PasswordMixin, Base):
         else:
             return self.__unicode__().encode('utf-8')
 
-    @validates('email', 'new_email')
-    def validate_email(self, key, address):
-        '''
-            Validates email address
-
-            .. note::
-
-                More about simple validators: http://docs.sqlalchemy.org/en/latest/orm/mapper_config.html#simple-validators
-
-            :raises AttributeError: Information about an error
-        '''
-        if address:
-            if pattern_mail.match(address):
-                return address
-            else:
-                raise AttributeError('Incorrect e-mail format')
-
-        raise AttributeError('E-mail is empty')
-
     @validates('is_admin')
     def validate_is_admin(self, key, value):
         '''
@@ -174,21 +143,6 @@ class User(PasswordMixin, Base):
                 raise exceptions.DeleteException('Can\'t delete last superadmin!')
 
         self.deleted_at = datetime.now()
-
-    def set_new_email(self, email_new):
-        '''
-            Set new email and generate new email change hash
-        '''
-        self.new_email = email_new
-        self.email_change_key = str(uuid.uuid4())
-
-    def change_email(self):
-        '''
-            Change email after activation
-            We don't clear new email field because of validator of email which won't allow to None value.
-        '''
-        self.email = self.new_email
-        self.email_change_key = None
 
 
 class Group(Base):

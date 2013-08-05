@@ -10,7 +10,7 @@ from sqlalchemy import Enum
 from sqlalchemy import String
 from sqlalchemy.orm import validates
 from pyramid.compat import text_type
-from pyramid_fullauth.exceptions import EmptyPasswordError
+from pyramid_fullauth.exceptions import EmptyError
 
 try:  # pragma: no cover
     algorithms = hashlib.algorithms
@@ -19,7 +19,7 @@ except AttributeError:  # pragma: no cover
     algorithms = ('md5', 'sha1')
 
 
-class PasswordMixin(object):
+class UserPasswordMixin(object):
 
     '''
         Authentication field definition along with appropriate methods
@@ -99,7 +99,7 @@ class PasswordMixin(object):
             :param initiatior: the attribute implementation object which initiated this event.
             :returns: hashed and salted password
             :rtype: str
-            :raises: pyramid_fullauth.exceptions.EmptyPasswordError
+            :raises: pyramid_fullauth.exceptions.EmptyError
 
             .. note::
 
@@ -120,7 +120,7 @@ class PasswordMixin(object):
         '''
 
         if not password:
-            raise EmptyPasswordError('password-empty')
+            raise EmptyError('password-empty')
 
         # reading default hash_algorithm
         hash_algorithm = self.__class__._hash_algorithm.property.columns[0].default.arg
