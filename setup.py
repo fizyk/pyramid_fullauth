@@ -30,7 +30,7 @@ test_requires = [
 ]
 
 extras_require = {
-    'docs': ['sphinx', 'sphinx_bootstrap_theme'],
+    'docs': ['sphinx'],
     'tests': test_requires
 }
 
@@ -46,13 +46,14 @@ setup(
     ),
     keywords='python authentication authorisation pyramid',
     author='Grzegorz Sliwinski',
-    author_email='username: fizyk, domain: fizyk.net.pl',
+    author_email='fizyk@fizyk.net.pl',
     url='https://github.com/fizyk/pyramid_fullauth',
+    license="MIT License",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: Public Domain',
+        'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',

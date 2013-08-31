@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
-# tzf.pyramid_yml documentation build configuration file, created by
+# This module is part of pyramid_fullauth and is released under
+# the MIT License (MIT): http://opensource.org/licenses/MIT
+#
+# pyramid_fullauth documentation build configuration file, created by
 # sphinx-quickstart on Thu Nov  8 20:47:06 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -13,9 +18,6 @@
 
 import sys
 import os
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not on_rtd:
-    import sphinx_bootstrap_theme
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -103,11 +105,8 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-if on_rtd:
-    html_theme = 'default'
-else:
-    html_theme = 'bootstrap'
-    html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+
+html_theme = 'default'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+#
+# This module is part of pyramid_fullauth and is released under
+# the MIT License (MIT): http://opensource.org/licenses/MIT
+
 '''
     pyramid_fullauth emits these events during whole cycle.
 '''
@@ -54,6 +59,7 @@ class AfterRegister(_BaseRegisterEvent):
             If HTTPFound is risen from event listener, then response_values will not be used!
 
     '''
+
     def __init__(self, request, user, response_values):
         '''
 
@@ -114,6 +120,7 @@ class AlreadyLoggedIn(object):
         .. note::
             Action emitting this event, should catch all HTTPFound that might be risen in event listener.
     '''
+
     def __init__(self, request):
         '''
             :param pyramid.request.Request request: request object
@@ -150,6 +157,7 @@ class _BaseSocialRegister(_BaseRegisterEvent):
     '''
         Base for all social requests
     '''
+
     def __init__(self, request, user, profile):
         '''
 
@@ -177,6 +185,7 @@ class AfterSocialRegister(_BaseSocialRegister):
         .. note::
             Action emitting this event, should catch all HTTPFound that might be risen in event listener.
     '''
+
     def __init__(self, request, user, profile, response_values):
         '''
 
@@ -208,6 +217,7 @@ class SocialAccountAlreadyConnected(_BaseSocialRegister):
         .. note::
             Action emitting this event, should catch all HTTPFound that might be risen in event listener.
     '''
+
     def __init__(self, request, user, profile, response_values):
         '''
 

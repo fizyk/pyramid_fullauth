@@ -26,7 +26,7 @@ Contributions:
 
 Before the plugin has been made published outside of RedSky, it gained contributions from these people:
 
-- Agnieszka Głąbała:
+- Agnieszka Głąbała
     - Social login/registration
     - email change
 - Andrzej Bistram

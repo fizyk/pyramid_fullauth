@@ -1,3 +1,8 @@
+# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+#
+# This module is part of pyramid_fullauth and is released under
+# the MIT License (MIT): http://opensource.org/licenses/MIT
+
 # pyramid_fullauth's default configuration
 fullauth:
     check_csrf: True    # Whether login processes should work with csrf token, or without
