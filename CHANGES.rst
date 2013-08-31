@@ -8,6 +8,7 @@ CURRENT
 - removed nose and lxml from test requirements
 - extracted UserEmailMixin from User model
 - validation exception improvements
+- set licensing to MIT License
 
 0.1.0
 -----
