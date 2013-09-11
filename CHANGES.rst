@@ -9,6 +9,7 @@ CURRENT
 - extracted UserEmailMixin from User model
 - validation exception improvements
 - set licensing to MIT License
+- fixed general error message for register_POST processing
 
 0.1.0
 -----

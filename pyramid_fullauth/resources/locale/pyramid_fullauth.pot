@@ -7,9 +7,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: pyramid_fullauth 0.0.2\n"
+"Project-Id-Version: pyramid_fullauth 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-07-25 20:02+0200\n"
+"POT-Creation-Date: 2013-09-11 21:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,178 +18,187 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: pyramid_fullauth/resources/templates/403.mako:4
-msgid "Sorry, we couldn't serve you this, your clearance code is too low!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.login.mako:4
-#: pyramid_fullauth/resources/templates/_form.register.mako:5
-msgid "E-mail"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.login.mako:14
-#: pyramid_fullauth/resources/templates/_form.register.mako:14
-#: pyramid_fullauth/resources/templates/reset.proceed.mako:13
-msgid "Password"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.login.mako:20
-msgid "Remember me"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.login.mako:27
-msgid "Forgot your password, right?"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.login.mako:28
-msgid "Want to join? Sign Up!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.login.mako:33
-msgid "Log in"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.register.mako:27
-#: pyramid_fullauth/resources/templates/reset.proceed.mako:20
-msgid "Confirm password"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_form.register.mako:37
-msgid "Sign up"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_social.login.mako:2
-msgid "Social login"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_social.login.mako:5
-msgid "Connect with facebook"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/_social.login.mako:8
-msgid "Connect with twitter"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/activate.mako:2
-msgid "Than you for activating your account!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/activate.mako:3
-msgid "And welcome to our site!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/email_change.mako:3
-msgid "Change your email"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/email_change.mako:8
-#: pyramid_fullauth/resources/templates/login.mako:4
-#: pyramid_fullauth/resources/templates/register.mako:6
-#: pyramid_fullauth/resources/templates/reset.mako:8
-#: pyramid_fullauth/resources/templates/reset.proceed.mako:7
-msgid "Error!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/email_change.mako:13
-#: pyramid_fullauth/resources/templates/reset.mako:13
-msgid "Your e-mail address"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/email_change.mako:20
-msgid "Change email"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/layout.mako:3
-msgid "Welcome, to pyramid_fullauth!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/login.mako:2
-msgid "Please, log in"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/register.mako:2
-msgid "Please, register"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/register.mako:11
-#: pyramid_fullauth/views/basic/login.py:55
-#: pyramid_fullauth/views/basic/profile.py:51
-#: pyramid_fullauth/views/basic/profile.py:134
-#: pyramid_fullauth/views/basic/profile.py:168
-#: pyramid_fullauth/views/basic/register.py:73
-#: pyramid_fullauth/views/basic/register.py:85
-msgid "csrf-mismatch"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/register.mako:17
-msgid "Success!"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/register.mako:17
-msgid "You have sucessfully registered"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/reset.mako:3
-msgid "Recover your password"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/reset.mako:20
-#: pyramid_fullauth/resources/templates/reset.proceed.mako:27
-msgid "Reset Password"
-msgstr ""
-
-#: pyramid_fullauth/resources/templates/reset.proceed.mako:3
-msgid "Recover your password - choose new password"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/forbidden.py:39
-msgid "forbidden-notallowed"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/forbidden.py:44
-msgid "forbidden-login"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/login.py:37
-msgid "Login error"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/login.py:98
-#: pyramid_fullauth/views/basic/login.py:104
-msgid "Wrong e-mail or password."
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:58
-msgid "User with this email exists"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:76
-msgid "We sent you email to activate your new email address"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:142
-msgid "user-not-exists"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:200
-#: pyramid_fullauth/views/basic/register.py:125
-msgid "password-mismatch"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/register.py:93
-msgid "User with given e-mail already exists!"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/register.py:114
-#: pyramid_fullauth/views/basic/register.py:137
+#: pyramid_fullauth/tools.py:49
 msgid "Please enter your password"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:117
+#: pyramid_fullauth/tools.py:55
 msgid "Password is too short"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:154
+#: pyramid_fullauth/tools.py:63 pyramid_fullauth/views/basic/profile.py:227
+msgid "password-mismatch"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/403.mako:11
+msgid "Sorry, we couldn't serve you this, your clearance code is too low!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.login.mako:11
+#: pyramid_fullauth/resources/templates/_form.register.mako:12
+msgid "E-mail"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.login.mako:21
+#: pyramid_fullauth/resources/templates/_form.register.mako:21
+#: pyramid_fullauth/resources/templates/reset.proceed.mako:20
+msgid "Password"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.login.mako:27
+msgid "Remember me"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.login.mako:34
+msgid "Forgot your password, right?"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.login.mako:35
+msgid "Want to join? Sign Up!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.login.mako:40
+msgid "Log in"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.register.mako:34
+#: pyramid_fullauth/resources/templates/reset.proceed.mako:27
+msgid "Confirm password"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_form.register.mako:44
+msgid "Sign up"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_social.login.mako:9
+msgid "Social login"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_social.login.mako:12
+msgid "Connect with facebook"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/_social.login.mako:15
+msgid "Connect with twitter"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/activate.mako:9
+msgid "Than you for activating your account!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/activate.mako:10
+msgid "And welcome to our site!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/email_change.mako:10
+msgid "Change your email"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/email_change.mako:15
+#: pyramid_fullauth/resources/templates/login.mako:11
+#: pyramid_fullauth/resources/templates/register.mako:13
+#: pyramid_fullauth/resources/templates/reset.mako:15
+#: pyramid_fullauth/resources/templates/reset.proceed.mako:14
+msgid "Error!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/email_change.mako:20
+#: pyramid_fullauth/resources/templates/reset.mako:20
+msgid "Your e-mail address"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/email_change.mako:27
+msgid "Change email"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/layout.mako:10
+msgid "Welcome, to pyramid_fullauth!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/login.mako:9
+msgid "Please, log in"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/register.mako:9
+msgid "Please, register"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/register.mako:18
+#: pyramid_fullauth/views/basic/login.py:60
+#: pyramid_fullauth/views/basic/profile.py:59
+#: pyramid_fullauth/views/basic/profile.py:155
+#: pyramid_fullauth/views/basic/profile.py:194
+#: pyramid_fullauth/views/basic/register.py:90
+msgid "csrf-mismatch"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/register.mako:24
+msgid "Success!"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/register.mako:24
+msgid "You have sucessfully registered"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/reset.mako:10
+msgid "Recover your password"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/reset.mako:27
+#: pyramid_fullauth/resources/templates/reset.proceed.mako:34
+msgid "Reset Password"
+msgstr ""
+
+#: pyramid_fullauth/resources/templates/reset.proceed.mako:10
+msgid "Recover your password - choose new password"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/forbidden.py:44
+msgid "forbidden-notallowed"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/forbidden.py:49
+msgid "forbidden-login"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/login.py:42
+msgid "Login error"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/login.py:103
+#: pyramid_fullauth/views/basic/login.py:109
+msgid "Wrong e-mail or password."
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile.py:66
+msgid "User with this email exists"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile.py:82
+msgid "E-mail is empty"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile.py:88
+msgid "Incorrect e-mail format"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile.py:94
+msgid "We sent you email to activate your new email address"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile.py:164
+msgid "user-not-exists"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:79
+msgid "You have an error in your form"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:98
+msgid "User with given e-mail already exists!"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/register.py:139
 msgid "You have successfully registered"
 msgstr ""
 

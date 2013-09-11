@@ -76,8 +76,7 @@ class RegisterViews(BaseView):
         invalid_fields = {}
         response_values = {
             'status': False,
-            'msg': self.request._('csrf-mismatch',
-                                  default='CSRF token did not match.',
+            'msg': self.request._('You have an error in your registration form',
                                   domain='pyramid_fullauth'),
             'token': ''}
         response_values['errors'] = invalid_fields
