@@ -10,6 +10,7 @@ CURRENT
 - validation exception improvements
 - set licensing to MIT License
 - fixed general error message for register_POST processing
+- activate action no longer gives 404 error after first use. Default is message about token being invalid or used [veronicazgirvaci]
 
 0.1.0
 -----
