@@ -40,16 +40,25 @@ class RegisterViews(BaseView):
         '''
             Process account activation
         '''
-        user = self.request.matchdict.get('user')
-        # let's clear activation_key
-        user.is_active = True
 
+        activate_hash = self.request.matchdict.get('hash')
+        user = None
+        response = {}
+        response['status'] = True
+        if activate_hash:
+            try:
+                user = Session.query(User).filter(User.activate_key == activate_hash).one()
+                if not user.is_active:
+                    user.is_active = True
+            except NoResultFound:
+                response['status'] = False
         try:
             self.request.registry.notify(AfterActivate(self.request, user))
         except HTTPFound as e:
             # it's a redirect, let's follow it!
             return e
-        return {}
+
+        return response
 
     @view_config(route_name='register',
                  renderer="pyramid_fullauth:resources/templates/register.mako")
