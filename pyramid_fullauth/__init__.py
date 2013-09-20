@@ -56,8 +56,7 @@ def includeme(configurator):
     configurator.add_route(name='login', pattern='/login')
     configurator.add_route(name='logout', pattern='/logout')
     configurator.add_route(name='register', pattern='/register')
-    configurator.add_route(name='register:activate', pattern='/register/activate/{hash}',
-                           custom_predicates=(predicates.activate_hash,))
+    configurator.add_route(name='register:activate', pattern='/register/activate/{hash}')
     configurator.add_route(name='password:reset', pattern='/password/reset')
     configurator.add_route(name='password:reset:continue', pattern='/password/reset/{hash}',
                            custom_predicates=(predicates.reset_hash,))
