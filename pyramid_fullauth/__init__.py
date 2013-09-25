@@ -52,6 +52,8 @@ def includeme(configurator):
     configurator.set_session_factory(
         session_factory(**fullauth_config.session.settings))
 
+    configurator.add_view_predicate('check_csrf', predicates.CSRFCheckPredicate)
+
     # add routes
     configurator.add_route(name='login', pattern='/login')
     configurator.add_route(name='logout', pattern='/logout')

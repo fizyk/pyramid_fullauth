@@ -60,7 +60,7 @@ class SocialLoginViews(BaseView):
             return True
 
         context = self.request.context
-        response_values = {'status': False, 'token': ''}
+        response_values = {'status': False, 'csrf_token': self.request.session.get_csrf_token()}
         user = self.request.user
 
         if user:

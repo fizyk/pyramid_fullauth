@@ -21,7 +21,7 @@ class TestResetPassword(BaseTestSuite):
 
         post_data = {
             'email': self.user_data['email'],
-            'token': self.get_token('/password/reset', base_app.app)
+            'csrf_token': self.get_token('/password/reset', base_app.app)
         }
         res = base_app.app.post('/password/reset', post_data)
         assert res
@@ -35,7 +35,7 @@ class TestResetPassword(BaseTestSuite):
 
         post_data = {
             'email': u'wrong@example.com',
-            'token': self.get_token('/password/reset', base_app.app)
+            'csrf_token': self.get_token('/password/reset', base_app.app)
         }
         res = base_app.app.post('/password/reset', post_data)
         assert '<div class="alert alert-error">Error! User does not exists</div>' in res
@@ -57,7 +57,7 @@ class TestResetPassword(BaseTestSuite):
             self.user_data['password'],
             'confirm_password':
             self.user_data['password'],
-            'token':
+            'csrf_token':
             self.get_token('/password/reset', base_app.app)
         }
         res = base_app.app.post(str('/password/reset/' + user.reset_key), post_data)
@@ -82,7 +82,7 @@ class TestResetPassword(BaseTestSuite):
             self.user_data['password'],
             'confirm_password':
             self.user_data['password'] + u'sasasa',
-            'token':
+            'csrf_token':
             self.get_token('/password/reset', base_app.app)
         }
         res = base_app.app.post(str('/password/reset/' + user.reset_key), post_data)
@@ -105,7 +105,7 @@ class TestResetPassword(BaseTestSuite):
             self.user_data['password'],
             'confirm_password':
             self.user_data['password'],
-            'token':
+            'csrf_token':
             self.get_token('/password/reset', base_app.app) + '1'
         }
         res = base_app.app.post(str('/password/reset/' + user.reset_key), post_data)

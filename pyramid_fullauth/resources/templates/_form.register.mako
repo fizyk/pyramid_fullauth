@@ -6,7 +6,7 @@ This module is part of pyramid_fullauth and is released under
 the MIT License (MIT): http://opensource.org/licenses/MIT
 </%doc>
 <form class="registerForm" id="register_form" name="register_form" method="POST" action="${request.route_path('register')}">
-    <input type="hidden" name="token" value="${token}" />
+    <input type="hidden" name="csrf_token" value="${csrf_token}" />
     <fieldset>
         <div class="control-group ${'error' if 'email' in errors else ''}">
             <label class="control-label">${_('E-mail', domain='pyramid_fullauth')}:</label>

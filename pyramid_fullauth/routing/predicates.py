@@ -9,6 +9,7 @@
 from sqlalchemy.orm.exc import NoResultFound
 from pyramid_basemodel import Session
 from pyramid_fullauth.models import User
+from pyramid.config.predicates import CheckCSRFTokenPredicate
 
 
 def reset_hash(info, request):
@@ -45,3 +46,12 @@ def change_email_hash(info, request):
         except NoResultFound:
             pass
     return False
+
+
+class CSRFCheckPredicate(CheckCSRFTokenPredicate):
+
+    def __call__(self, context, request):
+        if request.config.fullauth.check_csrf:
+            return CheckCSRFTokenPredicate.__call__(self, context, request)
+
+        return True

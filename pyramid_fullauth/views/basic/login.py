@@ -26,21 +26,21 @@ from pyramid_fullauth.events import AlreadyLoggedIn
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
 class LoginViews(BaseView):
 
-    @view_config(route_name='login', renderer='pyramid_fullauth:resources/templates/login.mako')
-    @view_config(route_name='login', request_method='POST', xhr=True, renderer="json")
+    @view_config(route_name='login', request_method='GET',
+                 renderer='pyramid_fullauth:resources/templates/login.mako')
+    @view_config(route_name='login', request_method='POST', check_csrf=True,
+                 renderer='pyramid_fullauth:resources/templates/login.mako')
+    @view_config(route_name='login', request_method='POST', check_csrf=True,
+                 xhr=True, renderer="json")
     def login(self):
         '''
             Login action
         '''
-        if self.check_csrf:
-            token = self.request.session.get_csrf_token()
-        else:
-            token = ''
 
         after = self.request.params.get('after') or self.request.referer
         return_dict = {'status': False,
                        'msg': self.request._('Login error', domain='pyramid_fullauth'),
-                       'after': after, 'token': token}
+                       'after': after, 'csrf_token': self.request.session.get_csrf_token()}
 
         if authenticated_userid(self.request):
             try:
@@ -56,11 +56,6 @@ class LoginViews(BaseView):
 
         # Code copied from alternative. Not yes implemented
         if self.request.method == 'POST':
-            if self.check_csrf and token != self.request.POST.get('token'):
-                return_dict['msg'] = self.request._('csrf-mismatch',
-                                                    default='CSRF token did not match.',
-                                                    domain='pyramid_fullauth')
-                return return_dict
 
             email = self.request.POST.get('email', '')
             password = self.request.POST.get('password', '')
