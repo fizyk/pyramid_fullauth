@@ -33,6 +33,7 @@ def includeme(configurator):
 
     config_defaults(configurator, 'pyramid_fullauth:config')
     configurator.include('pyramid_localize')
+    configurator.include('pyramid_mako')
     fullauth_config = configurator.registry['config'].fullauth
 
     configurator.set_authorization_policy(ACLAuthorizationPolicy())

@@ -15,6 +15,7 @@ def read(fname):
 requirements = [
     'pyramid_localize',
     'pyramid >=1.4',
+    'pyramid_mako',
     'tzf.pyramid_yml >= 0.2',
     'pyramid_basemodel',
     # since all other versions contains requirements for inflect, which isn't python3 compatible
