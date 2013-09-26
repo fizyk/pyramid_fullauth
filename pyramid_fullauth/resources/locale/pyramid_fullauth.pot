@@ -7,9 +7,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: pyramid_fullauth 0.2.0dev\n"
+"Project-Id-Version: pyramid_fullauth 0.2.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-09-20 18:35+0200\n"
+"POT-Creation-Date: 2013-09-26 22:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Password is too short"
 msgstr ""
 
-#: pyramid_fullauth/tools.py:63 pyramid_fullauth/views/basic/profile.py:227
+#: pyramid_fullauth/tools.py:63 pyramid_fullauth/views/basic/profile.py:200
 msgid "password-mismatch"
 msgstr ""
 
@@ -128,11 +128,6 @@ msgid "Please, register"
 msgstr ""
 
 #: pyramid_fullauth/resources/templates/register.mako:18
-#: pyramid_fullauth/views/basic/login.py:60
-#: pyramid_fullauth/views/basic/profile.py:59
-#: pyramid_fullauth/views/basic/profile.py:155
-#: pyramid_fullauth/views/basic/profile.py:194
-#: pyramid_fullauth/views/basic/register.py:99
 msgid "csrf-mismatch"
 msgstr ""
 
@@ -169,40 +164,40 @@ msgstr ""
 msgid "Login error"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/login.py:103
-#: pyramid_fullauth/views/basic/login.py:109
+#: pyramid_fullauth/views/basic/login.py:98
+#: pyramid_fullauth/views/basic/login.py:104
 msgid "Wrong e-mail or password."
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:66
+#: pyramid_fullauth/views/basic/profile.py:57
 msgid "User with this email exists"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:82
+#: pyramid_fullauth/views/basic/profile.py:73
 msgid "E-mail is empty"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:88
+#: pyramid_fullauth/views/basic/profile.py:79
 msgid "Incorrect e-mail format"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:94
+#: pyramid_fullauth/views/basic/profile.py:86
 msgid "We sent you email to activate your new email address"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:164
+#: pyramid_fullauth/views/basic/profile.py:143
 msgid "user-not-exists"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:88
+#: pyramid_fullauth/views/basic/register.py:86
 msgid "You have an error in your registration form"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:107
+#: pyramid_fullauth/views/basic/register.py:95
 msgid "User with given e-mail already exists!"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:148
+#: pyramid_fullauth/views/basic/register.py:136
 msgid "You have successfully registered"
 msgstr ""
 
