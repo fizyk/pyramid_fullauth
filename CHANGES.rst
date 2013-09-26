@@ -11,6 +11,15 @@ CURRENT
 - set licensing to MIT License
 - fixed general error message for register_POST processing
 - activate action no longer gives 404 error after first use. Default is message about token being invalid or used [veronicazgirvaci]
+- extending csrf_check predicate:
+    - Can be turned on/off in settings.
+    - Failed check rises 401 Unauthorised error
+
+*backward incompatibilities*
+
+- token variable is changed into csrf_token in fullatuh views
+- view no longer returns error messages on failed csrf token. Rises 401 Unauthorised error instead.
+
 
 0.1.0
 -----

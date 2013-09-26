@@ -73,3 +73,11 @@ Request object gets these methods:
 
 - :meth:`pyramid_fullauth.request.login_perform` - performs login action
 - :meth:`pyramid_fullauth.request.user` - returns logged in user or None
+
+CSRF Check
+----------
+
+CSRF can be turned on/off for fullauth views by modifying *fullauth.check_csrf* key. It's turned on by default.
+
+pyramid_fullauth extends pyrmid's check_csrf predicate in that way, that you can turn it on and off, and when check fails, it raises :class:`~pyramid.httpexceptions.HTTPUnauthorized` exception instead of returning False, which gives usually 404 Not Found error
+

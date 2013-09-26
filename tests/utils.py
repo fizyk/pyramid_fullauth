@@ -60,7 +60,8 @@ def secret_view(request):
     '''Dummy view with redirect to login'''
     return dict()
 
-token_re = re.compile('^.*name="token" value="([a-z0-9]+)".*$', re.I + re.M + re.DOTALL)
+token_re = re.compile('^.*name="csrf_token" value="([a-z0-9]+)".*$',
+                      re.I + re.M + re.DOTALL)
 
 
 class BaseTestSuite(object):
@@ -99,12 +100,12 @@ class BaseTestSuite(object):
                      password=user_data['password'], token=None):
         """ Login user """
         if not token:
-            token = self.get_token('/login', app)
+            csrf_token = self.get_token('/login', app)
 
         post_data = {
             'email': email,
             'password': password,
-            'token': token
+            'csrf_token': csrf_token
         }
         headers = {'X-Requested-With': 'XMLHttpRequest'}
         return app.post('/login', post_data, headers=headers)

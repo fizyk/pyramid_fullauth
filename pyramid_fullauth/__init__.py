@@ -33,6 +33,7 @@ def includeme(configurator):
 
     config_defaults(configurator, 'pyramid_fullauth:config')
     configurator.include('pyramid_localize')
+    configurator.include('pyramid_mako')
     fullauth_config = configurator.registry['config'].fullauth
 
     configurator.set_authorization_policy(ACLAuthorizationPolicy())
@@ -51,6 +52,8 @@ def includeme(configurator):
     # set the new session factory
     configurator.set_session_factory(
         session_factory(**fullauth_config.session.settings))
+
+    configurator.add_view_predicate('check_csrf', predicates.CSRFCheckPredicate)
 
     # add routes
     configurator.add_route(name='login', pattern='/login')

@@ -20,7 +20,7 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
                     <label class="control-label" for="reset[email]">${_('Your e-mail address', domain='pyramid_fullauth')}:</label>
                     <div class="controls">
                         <input type="email" placeholder="username@hostname.com" name="email" id="change[email]"/>
-                        <input type="hidden" name="token" value="${token}" />
+                        <input type="hidden" name="csrf_token" value="${csrf_token}" />
                     </div>
                 </div>
                 <div class="form-actions">
