@@ -6,6 +6,16 @@ from tests.utils import BaseTestSuite
 
 class TestLogin(BaseTestSuite):
 
+    def check_if_logged(self, app):
+        '''
+        Checks for auth_tkt cookies beeing set
+        '''
+        cookies = app.cookies
+        if 'auth_tkt' in cookies and cookies['auth_tkt']:
+
+            return True
+        return False
+
     def test_login_view(self, base_app):
         '''Login:Form displayed'''
 
@@ -29,13 +39,13 @@ class TestLogin(BaseTestSuite):
         assert res
         res = base_app.app.get('/login?after=%2Fsecret')
 
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == False
 
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
         res = res.form.submit()
 
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == True
         assert res.status == '302 Found'
         assert not 'Max-Age=' in str(res)
 
@@ -44,14 +54,14 @@ class TestLogin(BaseTestSuite):
         self.create_user({'is_active': True})
 
         res = base_app.app.get('/login')
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == False
 
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
         res.form.set('remember', '1')
         res = res.form.submit()
 
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == True
         assert 'Max-Age=' in str(res)
 
     def test_login_inactive(self, base_app):
@@ -59,13 +69,13 @@ class TestLogin(BaseTestSuite):
         self.create_user()
         res = base_app.app.get('/login')
 
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == False
 
         res.form.set('email', self.user_data['email'])
         res.form.set('password', self.user_data['password'])
         res = res.form.submit()
 
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == True
         assert res.status == '302 Found'
 
     def test_login_post(self, base_app):
@@ -75,12 +85,13 @@ class TestLogin(BaseTestSuite):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'token': self.get_token('/login?after=%2Fsecret', base_app.app)
+            'csrf_token': self.get_token('/login?after=%2Fsecret', base_app.app)
         }
         res = base_app.app.get('/secret', status=302)
         assert res
         res = base_app.app.post('/login?after=%2Fsecret', post_data)
-        assert len(res.headers['Set-Cookie']) > 150
+
+        assert self.check_if_logged(base_app.app) == True
         assert res.status == '302 Found'
 
     def test_login_wrong(self, base_app):
@@ -90,16 +101,17 @@ class TestLogin(BaseTestSuite):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'] + u'asasa',
-            'token': self.get_token('/login', base_app.app)
+            'csrf_token': self.get_token('/login', base_app.app)
         }
         res = base_app.app.get('/login', status=200)
         assert res
         res = base_app.app.post('/login', post_data)
+
         assert '<div class="alert alert-error">Error! Wrong e-mail or password.</div>' in res
         assert res
 
     def test_login_no_csrf(self, base_app):
-        '''Login:Action test: wrong password'''
+        '''Login:Action test: no csrf token'''
         self.create_user({'is_active': True})
 
         post_data = {
@@ -108,9 +120,9 @@ class TestLogin(BaseTestSuite):
         }
         res = base_app.app.get('/login', status=200)
         assert res
-        res = base_app.app.post('/login', post_data)
-        assert '<div class="alert alert-error">Error! CSRF token did not match.</div>' in res
-        assert res
+        res = base_app.app.post('/login', post_data, status=401)
+
+        assert self.check_if_logged(base_app.app) == False
 
     def test_login_wrong_csrf(self, base_app):
         '''Login:Action test: wrong password'''
@@ -119,13 +131,12 @@ class TestLogin(BaseTestSuite):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'token': '8934798289723789347892397832789432789'
+            'csrf_token': '8934798289723789347892397832789432789'
         }
         res = base_app.app.get('/login', status=200)
         assert res
-        res = base_app.app.post('/login', post_data)
-        assert '<div class="alert alert-error">Error! CSRF token did not match.</div>' in res
-        assert res
+        res = base_app.app.post('/login', post_data, status=401)
+        assert self.check_if_logged(base_app.app) == False
 
     def test_logout(self, base_app):
         '''Logout:Action test'''
@@ -134,14 +145,14 @@ class TestLogin(BaseTestSuite):
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'token': self.get_token('/login', base_app.app)
+            'csrf_token': self.get_token('/login', base_app.app)
         }
         res = base_app.app.post('/login', post_data, status=302)
-        assert len(res.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == True
 
         res = base_app.app.get('/logout', status=302)
         assert res
-        assert len(res.headers['Set-Cookie']) < 100
+        assert self.check_if_logged(base_app.app) == False
         res = base_app.app.get('/secret', status=302)
         assert res
 
@@ -174,22 +185,13 @@ class TestLogin(BaseTestSuite):
         res = base_app.app.get('/email/change')
         assert '<input type="email" placeholder="username@hostname.com" name="email" id="change[email]"/>' in res.body
 
-    def test_login_xhr_response(self, base_app):
-        '''Login:Xhr repsonse'''
-        res = base_app.app.post('/login', '',
-                                headers={'X-Requested-With': 'XMLHttpRequest'},
-                                expect_errors=True)
-        assert res.content_type == 'application/json'
-        assert u'status' in res.json
-        assert not res.json['status']
-
     def test_login_success_xhr(self, base_app):
         self.create_user({'is_active': True})
 
         post_data = {
             'email': self.user_data['email'],
             'password': self.user_data['password'],
-            'token': self.get_token('/login?after=%2Fsecret', base_app.app)
+            'csrf_token': self.get_token('/login?after=%2Fsecret', base_app.app)
         }
         res = base_app.app.get('/secret', status=302)
         assert res
@@ -199,7 +201,7 @@ class TestLogin(BaseTestSuite):
                                     'X-Requested-With': 'XMLHttpRequest'},
                                     expect_errors=True)
         assert postRes.content_type == 'application/json'
-        assert len(postRes.headers['Set-Cookie']) > 150
+        assert self.check_if_logged(base_app.app) == True
         assert postRes.json['status']
 
     def test_default_login_noredirect(self, app_authable):

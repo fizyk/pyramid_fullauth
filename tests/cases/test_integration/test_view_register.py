@@ -20,7 +20,7 @@ class TestRegister(BaseTestSuite):
             'email': self.user_data['email'],
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'],
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(self.user_data['email'])
         assert user is None
@@ -40,7 +40,7 @@ class TestRegister(BaseTestSuite):
             'email': self.user_data['email'],
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'],
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(self.user_data['email'])
         assert user is None
@@ -65,7 +65,7 @@ class TestRegister(BaseTestSuite):
             'email': str(self.user_data['email']),
             'password': str(self.user_data['password']),
             'confirm_password': str(self.user_data['password']),
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(self.user_data['email'])
         assert user is None
@@ -81,7 +81,7 @@ class TestRegister(BaseTestSuite):
         post_data = {
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'],
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(self.user_data['email'])
         assert user is None
@@ -102,7 +102,7 @@ class TestRegister(BaseTestSuite):
             'email': self.user_data['email'],
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'] + u'sasasasa',
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(self.user_data['email'])
         assert user is None
@@ -122,14 +122,14 @@ class TestRegister(BaseTestSuite):
             'email': self.user_data['email'],
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'] + u'sasasasa',
-            'token': self.get_token('/register', base_app.app) + '1'
+            'csrf_token': self.get_token('/register', base_app.app) + '1'
         }
         user = self.read_user(self.user_data['email'])
         assert user is None
         res = base_app.app.post('/register', post_data,
-                                extra_environ={'REMOTE_ADDR': '0.0.0.0'})
+                                extra_environ={'REMOTE_ADDR': '0.0.0.0'},
+                                status=401)
 
-        assert 'CSRF token did not match.' in res.body
         user = self.read_user(self.user_data['email'])
         # User profile should not be created!
         assert user is None
@@ -143,7 +143,7 @@ class TestRegister(BaseTestSuite):
             'email': email,
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'],
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(email)
         assert user is None
@@ -165,7 +165,7 @@ class TestRegister(BaseTestSuite):
             'email': '',
             'password': self.user_data['password'],
             'confirm_password': self.user_data['password'],
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
 
         res = base_app.app.post('/register', post_data,
@@ -182,7 +182,7 @@ class TestRegister(BaseTestSuite):
             'email': email,
             'password': self.user_data['password'] * 10000,
             'confirm_password': self.user_data['password'] * 10000,
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(email)
         assert user is None
@@ -202,7 +202,7 @@ class TestRegister(BaseTestSuite):
             'email': email,
             'password': '12',
             'confirm_password': self.user_data['password'] * 10000,
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(email)
         assert user is None
@@ -223,7 +223,7 @@ class TestRegister(BaseTestSuite):
             'email': email,
             'password': '',
             'confirm_password': self.user_data['password'] * 10000,
-            'token': self.get_token('/register', base_app.app)
+            'csrf_token': self.get_token('/register', base_app.app)
         }
         user = self.read_user(email)
         assert user is None
@@ -323,7 +323,7 @@ class TestRegister(BaseTestSuite):
         post_data = {
             'email':
             self.user_data['email'],
-            'token':
+            'csrf_token':
             self.get_token('/register', app_no_password_required.app)
         }
         user = self.read_user(self.user_data['email'])
@@ -350,7 +350,7 @@ class TestRegister(BaseTestSuite):
             self.user_data['password'],
             'confirm_password':
             self.user_data['password'] + u'sasasasa',
-            'token':
+            'csrf_token':
             self.get_token('/register', app_no_password_confirm.app)
         }
 

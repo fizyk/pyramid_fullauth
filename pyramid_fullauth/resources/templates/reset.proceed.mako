@@ -14,7 +14,7 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
             <div class="alert alert-error">${_('Error!', domain='pyramid_fullauth')} ${msg}</div>
         % endif
         <form class="form-horizontal" id="reset_password" name="reset_password" method="POST" action="${request.current_route_path()}">
-            <input type="hidden" name="token" value="${token}" />
+            <input type="hidden" name="csrf_token" value="${csrf_token}" />
             <fieldset>
                 <div class="control-group">
                     <label class="control-label" for="password">${_('Password', domain='pyramid_fullauth')}:</label>

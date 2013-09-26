@@ -34,7 +34,7 @@ class TestEmail(BaseTestSuite):
         new_email = 'email@email.com'
         post_data = {
             'email': new_email,
-            'token': self.get_token('/email/change', base_app.app)
+            'csrf_token': self.get_token('/email/change', base_app.app)
         }
         res = base_app.app.post('/email/change', post_data)
         assert res
@@ -57,7 +57,7 @@ class TestEmail(BaseTestSuite):
         new_email = 'email.email.com'
         post_data = {
             'email': new_email,
-            'token': self.get_token('/email/change', base_app.app)
+            'csrf_token': self.get_token('/email/change', base_app.app)
         }
         res = base_app.app.post('/email/change', post_data)
         assert 'Error! Incorrect e-mail format' in res

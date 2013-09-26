@@ -67,16 +67,14 @@ class RegisterViews(BaseView):
             Processes register
         '''
 
-        if self.check_csrf:
-            token = self.request.session.get_csrf_token()
-        else:
-            token = ''
-        return {'status': True, 'msg': None, 'token': token, 'errors': {}}
+        csrf_token = self.request.session.get_csrf_token()
+        return {'status': True, 'msg': None, 'csrf_token': csrf_token, 'errors': {}}
 
     @view_config(route_name='register', request_method='POST',
-                 renderer="pyramid_fullauth:resources/templates/register.mako")
+                 renderer="pyramid_fullauth:resources/templates/register.mako",
+                 check_csrf=True)
     @view_config(route_name='register', request_method='POST', xhr=True,
-                 renderer="json")
+                 check_csrf=True, renderer="json")
     def register_POST(self):
         '''
             Process POST register request
@@ -87,18 +85,8 @@ class RegisterViews(BaseView):
             'status': False,
             'msg': self.request._('You have an error in your registration form',
                                   domain='pyramid_fullauth'),
-            'token': ''}
+            'csrf_token': self.request.session.get_csrf_token()}
         response_values['errors'] = invalid_fields
-        if self.check_csrf:
-            token = self.request.session.get_csrf_token()
-        else:
-            token = ''
-
-        response_values['token'] = token
-        if self.check_csrf and token != self.request.POST.get('token'):
-            invalid_fields['token'] = self.request._('csrf-mismatch',
-                                                     default='CSRF token did not match.',
-                                                     domain='pyramid_fullauth'),
 
         email = self.request.POST.get('email', u'')
         # here if e-mail is already in database

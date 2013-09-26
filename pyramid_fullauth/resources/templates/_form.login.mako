@@ -14,7 +14,7 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
             % if after:
                 <input type="hidden" name="after" value="${after}" />
             % endif
-                <input type="hidden" name="token" value="${token}" />
+                <input type="hidden" name="csrf_token" value="${csrf_token}" />
             </div>
         </div>
         <div class="control-group">
