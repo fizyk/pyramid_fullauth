@@ -2,6 +2,11 @@
 CHANGES
 =======
 
+0.2.1
+-----
+- fixed csrf_check in password:reset:continue action
+- updated translation files
+
 0.2.0
 -----
 - migrated tests to py.test
@@ -15,7 +20,7 @@ CHANGES
     - Can be turned on/off in settings.
     - Failed check rises 401 Unauthorised error
 
-*backward incompatibilities*
+**backward incompatibilities**
 
 - token variable is changed into csrf_token in fullatuh views
 - view no longer returns error messages on failed csrf token. Rises 401 Unauthorised error instead.
