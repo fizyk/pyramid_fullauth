@@ -12,8 +12,8 @@ CURRENT
 - fixed general error message for register_POST processing
 - activate action no longer gives 404 error after first use. Default is message about token being invalid or used [veronicazgirvaci]
 - extending csrf_check predicate:
--- Can be turned on/off in settings.
--- Failed check rises 401 Unauthorised error
+    - Can be turned on/off in settings.
+    - Failed check rises 401 Unauthorised error
 
 *backward incompatibilities*
 

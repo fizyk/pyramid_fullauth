@@ -51,7 +51,17 @@ def change_email_hash(info, request):
 
 class CSRFCheckPredicate(CheckCSRFTokenPredicate):
 
+    '''
+    Runs csrf check dependant on configuration.
+    Raises HTTPUnauthorized exception if check fails.
+
+    :raises: pyramid.httpexceptions.HTTPUnauthorized
+    :returns: True if check succeeds or turned off.
+    :rtype: bool
+    '''
+
     def __call__(self, context, request):
+
         if request.config.fullauth.check_csrf:
             result = CheckCSRFTokenPredicate.__call__(self, context, request)
             if not result:
