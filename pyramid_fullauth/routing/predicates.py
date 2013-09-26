@@ -10,6 +10,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from pyramid_basemodel import Session
 from pyramid_fullauth.models import User
 from pyramid.config.predicates import CheckCSRFTokenPredicate
+from pyramid.httpexceptions import HTTPUnauthorized
 
 
 def reset_hash(info, request):
@@ -52,6 +53,8 @@ class CSRFCheckPredicate(CheckCSRFTokenPredicate):
 
     def __call__(self, context, request):
         if request.config.fullauth.check_csrf:
-            return CheckCSRFTokenPredicate.__call__(self, context, request)
+            result = CheckCSRFTokenPredicate.__call__(self, context, request)
+            if not result:
+                raise HTTPUnauthorized
 
         return True

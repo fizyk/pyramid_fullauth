@@ -120,7 +120,7 @@ class TestLogin(BaseTestSuite):
         }
         res = base_app.app.get('/login', status=200)
         assert res
-        res = base_app.app.post('/login', post_data, status=404)
+        res = base_app.app.post('/login', post_data, status=401)
 
         assert self.check_if_logged(base_app.app) == False
 
@@ -135,7 +135,7 @@ class TestLogin(BaseTestSuite):
         }
         res = base_app.app.get('/login', status=200)
         assert res
-        res = base_app.app.post('/login', post_data, status=404)
+        res = base_app.app.post('/login', post_data, status=401)
         assert self.check_if_logged(base_app.app) == False
 
     def test_logout(self, base_app):

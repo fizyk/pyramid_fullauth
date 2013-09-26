@@ -127,7 +127,8 @@ class TestRegister(BaseTestSuite):
         user = self.read_user(self.user_data['email'])
         assert user is None
         res = base_app.app.post('/register', post_data,
-                                extra_environ={'REMOTE_ADDR': '0.0.0.0'})
+                                extra_environ={'REMOTE_ADDR': '0.0.0.0'},
+                                status=401)
 
         user = self.read_user(self.user_data['email'])
         # User profile should not be created!
