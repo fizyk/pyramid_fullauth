@@ -12,12 +12,6 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
         <button type="button" class="close" data-dismiss="alert">x</button>
         <strong>${_('Error!', domain='pyramid_fullauth')}</strong> ${msg}
     </div>
-    % if 'token' in errors:
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">x</button>
-            <strong>${_('csrf-mismatch', default='CSRF Attack detected!', domain='pyramid_fullauth')}</strong> ${errors['token']}
-        </div>
-    % endif
 % elif not request.method == 'GET':
     <div class="alert alert-success">
       <button type="button" class="close" data-dismiss="alert">x</button>

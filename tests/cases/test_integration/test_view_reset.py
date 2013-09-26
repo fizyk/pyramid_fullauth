@@ -101,12 +101,9 @@ class TestResetPassword(BaseTestSuite):
         assert 'Recover your password - choose new password' in res
 
         post_data = {
-            'password':
-            self.user_data['password'],
-            'confirm_password':
-            self.user_data['password'],
-            'csrf_token':
-            self.get_token('/password/reset', base_app.app) + '1'
+            'password': self.user_data['password'],
+            'confirm_password': self.user_data['password'],
+            'csrf_token': self.get_token('/password/reset', base_app.app) + '1'
         }
-        res = base_app.app.post(str('/password/reset/' + user.reset_key), post_data)
-        assert 'CSRF token did not match' in res
+        res = base_app.app.post(str('/password/reset/' + user.reset_key),
+                                post_data, status=401)

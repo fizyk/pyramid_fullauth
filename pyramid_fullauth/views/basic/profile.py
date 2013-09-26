@@ -154,7 +154,10 @@ class ProfileViews(BaseView):
         return HTTPFound(location='/')
 
     @force_logout()
+    @view_config(route_name='password:reset:continue', request_method='GET',
+                 renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
     @view_config(route_name='password:reset:continue',
+                 request_method='POST', check_csrf=True,
                  renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
     def reset_continue(self):
         '''
@@ -165,13 +168,6 @@ class ProfileViews(BaseView):
         csrf_token = self.request.session.get_csrf_token()
 
         if self.request.method == 'POST':
-            # if turned on, check for csrf token
-            if self.check_csrf and csrf_token != self.request.POST.get('csrf_token'):
-                return {'status': False,
-                        'msg': self.request._('csrf-mismatch',
-                                              default='CSRF token did not match.',
-                                              domain='pyramid_fullauth'),
-                        'csrf_token': csrf_token}
 
             password = self.request.POST.get('password', None)
             password_confirm = self.request.POST.get('confirm_password', None)
