@@ -36,7 +36,8 @@ def login_perform(request, user, location=None, remember_me=False):
     '''
     user.logged_at = func.now()
     if remember_me:  # if remember in POST set cookie timeout to one from configure
-        headers = remember(request, user.id, max_age=request.config.fullauth.login.cookie_max_age)
+        headers = remember(request, user.id,
+                           max_age=request.config.fullauth.login.cookie_max_age)
     else:
         headers = remember(request, user.id)
     if not location:
@@ -44,7 +45,7 @@ def login_perform(request, user, location=None, remember_me=False):
 
     # this remembers user immediately, without the need to redirect (see below)
     request.response.headers.extend(headers)
-    return HTTPFound(location=location, headers=headers)
+    return HTTPFound(location=location, headers=request.response.headers)
 
 
 def user(request):
