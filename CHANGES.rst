@@ -2,6 +2,10 @@
 CHANGES
 =======
 
+0.2.2
+-----
+- copy all headers when login user. fixes issue, when headers set in AfterLogin event would not get passed
+
 0.2.1
 -----
 - fixed csrf_check in password:reset:continue action
