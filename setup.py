@@ -24,9 +24,9 @@ requirements = [
 
 test_requires = [
     'WebTest',
-    'coverage',
+    'coverage>=3.7',
     'mock',
-    'pytest',
+    'pytest>=2.4.2',
     'pytest-cov'
 ]
 
