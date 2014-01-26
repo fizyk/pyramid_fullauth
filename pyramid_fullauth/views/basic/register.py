@@ -108,7 +108,7 @@ class RegisterViews(BaseView):
 
             user.address_ip = self.request.remote_addr
 
-            if self.request.config.fullauth.register.password.require:
+            if self.request.registry['config'].fullauth.register.password.require:
                 try:
                     tools.validate_passsword(self.request,
                                              self.request.POST.get('password', u''),
@@ -117,7 +117,7 @@ class RegisterViews(BaseView):
                     invalid_fields['password'] = e.message
             else:
                 user.password = tools.password_generator(
-                    self.request.config.fullauth.register.password.length_min)
+                    self.request.registry['config'].fullauth.register.password.length_min)
 
             self.request.registry.notify(BeforeRegister(self.request, user, invalid_fields))
             if not invalid_fields:

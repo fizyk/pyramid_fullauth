@@ -111,7 +111,7 @@ class SocialLoginViews(BaseView):
                     set_provider(user, context.provider_name, context.profile['accounts'][0]['userid'])
                     Session.flush()
                 except NoResultFound:
-                    length_min = self.request.config.fullauth.register.password.length_min
+                    length_min = self.request.registry['config'].fullauth.register.password.length_min
                     user = User(email=email,
                                 password=tools.password_generator(length_min),
                                 address_ip=self.request.remote_addr)
