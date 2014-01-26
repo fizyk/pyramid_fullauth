@@ -42,7 +42,7 @@ def validate_passsword(request, password, user=None):
         :raises: pyramid_fullauth.exceptions.ValidateError
 
     '''
-    password_config = request.config.fullauth.register.password
+    password_config = request.registry['config'].fullauth.register.password
     password_confirm = request.POST.get('password_confirm', u'')
     if not password:
         raise EmptyError(

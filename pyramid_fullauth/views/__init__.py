@@ -13,4 +13,4 @@ class BaseView(object):
     def __init__(self, request):
         '''common init for views'''
         self.request = request
-        self.check_csrf = request.config.fullauth.check_csrf
+        self.config = request.registry['config'].fullauth

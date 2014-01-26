@@ -62,7 +62,7 @@ class CSRFCheckPredicate(CheckCSRFTokenPredicate):
 
     def __call__(self, context, request):
 
-        if request.config.fullauth.check_csrf:
+        if request.registry['config'].fullauth.check_csrf:
             result = CheckCSRFTokenPredicate.__call__(self, context, request)
             if not result:
                 raise HTTPUnauthorized

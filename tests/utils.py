@@ -38,13 +38,13 @@ def config_factory(**settings):
     settings['sqlalchemy.url'] = 'sqlite:///:memory:'
     settings['basemodel.should_drop_all'] = True
 
+    settings['pyramid.includes'] = ['pyramid_tm', 'pyramid_basemodel']
+
     # Initialise the ``Configurator`` and setup a session factory.
     config = Configurator(settings=settings,
                           root_factory=BaseACLRootFactoryMixin)
 
     # Include the dependencies.
-    config.include('pyramid_tm')
-    config.include('pyramid_basemodel')
     config.include('tzf.pyramid_yml')
     config.include('pyramid_fullauth')
 

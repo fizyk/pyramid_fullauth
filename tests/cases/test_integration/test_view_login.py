@@ -281,7 +281,7 @@ class TestSocialLogin(BaseTestSuite):
         user = None
         request = testing.DummyRequest()
         request.user = user
-        request.config = base_app.config.registry['config']
+        request.registry = base_app.config.registry
         request.remote_addr = u'127.0.0.123'
         request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
@@ -311,7 +311,7 @@ class TestSocialLogin(BaseTestSuite):
         user = self.read_user(self.user_data['email'])
         request = testing.DummyRequest()
         request.user = user
-        request.config = base_app.config.registry['config']
+        request.registry = base_app.config.registry
         request.remote_addr = u'127.0.0.123'
         request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
