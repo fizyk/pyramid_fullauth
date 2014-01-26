@@ -14,7 +14,6 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid_fullauth.views import BaseView
 
 
-@view_defaults(permission=NO_PERMISSION_REQUIRED)
 class ForbiddenViews(BaseView):
 
     @forbidden_view_config(renderer='pyramid_fullauth:resources/templates/403.mako')

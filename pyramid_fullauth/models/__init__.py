@@ -178,7 +178,7 @@ class AuthenticationProvider(Base):
     provider = Column(Unicode(15), primary_key=True)
     provider_id = Column(String(255), nullable=False)
 
-    user = relationship(User, lazy='load', backref='providers')
+    user = relationship(User, backref='providers')
 
 #: Association table between User and Group models.
 user_group = Table('users_groups', Base.metadata,
