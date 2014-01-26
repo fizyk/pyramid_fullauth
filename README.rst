@@ -44,16 +44,16 @@ Package resources
 * Bug tracker: https://github.com/fizyk/pypt/issues
 * Documentation: http://pypt.readthedocs.org/
 
-Instalation:
-============
+Instalation
+-----------
 
 ``pip install pyramid_fullauth``
 
 or add **pyramid_fullauth** to your **setup.py** requirements.
 
 
-Tests:
-======
+Tests
+-----
 
 You'll need: packages defined in extra_requires[tests] to run tests, and then:
 
