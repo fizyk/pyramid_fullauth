@@ -2,6 +2,12 @@
 CHANGES
 =======
 
+0.2.3
+-----
+- weaker pyramid_yml requirements. Use `registry['config']` instead of `request.config` which gets added only whet explicitly including tzf.pyramid_yml package.
+- remove default_config with permission set for forbidden views. Throwning errors in pyramid 1.5a3
+- remove lazy='load' for relationship between AuthenticationProvider and User models as it was incorrect. Fixes error while using with sqlalchemy 0.9
+
 0.2.2
 -----
 - copy all headers when login user. fixes issue, when headers set in AfterLogin event would not get passed

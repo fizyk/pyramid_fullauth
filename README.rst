@@ -1,21 +1,40 @@
 pyramid_fullauth
 ================
 
+.. image:: https://pypip.in/v/pyramid_fullauth/badge.png
+    :target: https://pypi.python.org/pypi/pyramid_fullauth/
+    :alt: Latest PyPI version
+
+.. image:: https://pypip.in/d/pyramid_fullauth/badge.png
+    :target: https://pypi.python.org/pypi/pyramid_fullauth/
+    :alt: Number of PyPI downloads
+
+.. image:: https://pypip.in/wheel/pyramid_fullauth/badge.png
+    :target: https://pypi.python.org/pypi/pyramid_fullauth/
+    :alt: Wheel Status
+
+.. image:: https://pypip.in/egg/pyramid_fullauth/badge.png
+    :target: https://pypi.python.org/pypi/pyramid_fullauth/
+    :alt: Egg Status
+
+.. image:: https://pypip.in/license/pyramid_fullauth/badge.png
+    :target: https://pypi.python.org/pypi/pyramid_fullauth/
+    :alt: License
+
+Package status
+--------------
+
 .. image:: https://travis-ci.org/fizyk/pyramid_fullauth.png?branch=master
     :target: https://travis-ci.org/fizyk/pyramid_fullauth
-    :alt: Tests for RandomWords
+    :alt: Tests
 
 .. image:: https://coveralls.io/repos/fizyk/pyramid_fullauth/badge.png?branch=master
     :target: https://coveralls.io/r/fizyk/pyramid_fullauth?branch=master
     :alt: Coverage Status
 
-.. image:: https://pypip.in/v/pyramid_fullauth/badge.png
-    :target: https://crate.io/packages/pyramid_fullauth/
-    :alt: Latest PyPI version
-
-.. image:: https://pypip.in/d/pyramid_fullauth/badge.png
-    :target: https://crate.io/packages/pyramid_fullauth/
-    :alt: Number of PyPI downloads
+.. image:: https://requires.io/github/fizyk/pyramid_fullauth/requirements.png?branch=master
+   :target: https://requires.io/github/fizyk/pyramid_fullauth/requirements/?branch=master
+   :alt: Requirements Status
 
 Pyramid fullauth's goal is to provide full plug-in registration functionality for pyramid, with user managing
 
