@@ -21,6 +21,8 @@ pyramid_fullauth
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: License
 
+Pyramid fullauth's goal is to provide full plug-in registration functionality for pyramid, with user managing
+
 Package status
 --------------
 
@@ -36,7 +38,11 @@ Package status
    :target: https://requires.io/github/fizyk/pyramid_fullauth/requirements/?branch=master
    :alt: Requirements Status
 
-Pyramid fullauth's goal is to provide full plug-in registration functionality for pyramid, with user managing
+Package resources
+-----------------
+
+* Bug tracker: https://github.com/fizyk/pypt/issues
+* Documentation: http://pypt.readthedocs.org/
 
 Instalation:
 ============
@@ -52,7 +58,3 @@ Tests:
 You'll need: packages defined in extra_requires[tests] to run tests, and then:
 
 ``py.test``
-
-For detailed test report run this command:
-
-``py.test --cov-report term-missing --cov pyramid_fullauth tests/``
