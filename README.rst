@@ -41,8 +41,8 @@ Package status
 Package resources
 -----------------
 
-* Bug tracker: https://github.com/fizyk/pypt/issues
-* Documentation: http://pypt.readthedocs.org/
+* Bug tracker: https://github.com/fizyk/pyramid_fullauth/issues
+* Documentation: http://pyramid-fullauth.readthedocs.org/en/latest/
 
 Instalation
 -----------
