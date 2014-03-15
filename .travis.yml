@@ -11,3 +11,14 @@ script:
     - "py.test --cov pyramid_fullauth tests/"
 after_success:
     - coveralls
+
+deploy:
+    provider: pypi
+    user: fizyk
+    password:
+        secure: Q6P2MZMJdd+BY8Hlh0AJAq1S5y5EKGWcsxb5CbhVoWeo0UiJ/uIqju6AkCijifm4v0wyZ1hjErV8ENMSiVZ4l9dmZDKDgk9MMxfNzCIVYvM1BIBMa1aQtvqOBcIwQ/wV1Dt4h+XftlJaI3p31IEOqScU/Kb/oqCkI/Gs096P+JU=
+    on:
+        tags: true
+        repo: fizyk/pyramid_fullauth
+    distributions: "sdist bdist bdist_wheel"
+
