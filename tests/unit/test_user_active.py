@@ -14,11 +14,10 @@ def test_is_active_error():
         user.is_active = True
 
 
-def test_is_active(db):
+def test_is_active(db_session, user):
     '''User:is_active'''
-    create_user(db)
+    user = db_session.merge(user)
 
-    user = db.query(User).filter(User.email == text_type('email@example.com')).one()
     assert not user.is_active
     assert not user.activated_at
     user.is_active = True

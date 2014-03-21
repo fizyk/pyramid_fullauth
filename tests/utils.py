@@ -4,8 +4,6 @@ import transaction
 from pyramid.view import view_config
 from pyramid_basemodel import Session
 
-from pyramid_fullauth.models import User
-
 try:
     from webtest import TestApp
 except ImportError:
