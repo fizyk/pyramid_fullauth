@@ -5,6 +5,7 @@ import pytest
 import transaction
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from pytest_pyramid import factories
 
 
 @pytest.fixture
@@ -53,10 +54,20 @@ def db_session(request):
 def user(db_session):
 
     from pyramid_fullauth.models import User
-    user = User(username='u1',
-                password='password1',
-                email='email@example.com',
-                address_ip='127.0.0.1')
+    from tests.tools import DEFAULT_USER
+    user = User(**DEFAULT_USER)
     db_session.add(user)
     transaction.commit()
     return user
+
+
+default_config = factories.pyramid_config({
+    'sqlalchemy.url': 'sqlite://',
+    'pyramid.includes': [
+        'pyramid_tm',
+        'pyramid_basemodel',
+        'pyramid_fullauth'
+    ]
+})
+
+default_app = factories.pyramid_app('default_config')
