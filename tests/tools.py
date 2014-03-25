@@ -1,3 +1,5 @@
+from pyramid.view import view_config
+
 DEFAULT_USER = {
     'username': 'u1',
     'password': 'password1',
@@ -7,7 +9,9 @@ DEFAULT_USER = {
 
 
 def authenticate(app, email=DEFAULT_USER['email'],
-                 password=DEFAULT_USER['password'], token=None):
+                 password=DEFAULT_USER['password'],
+                 remember=False,
+                 response_code=302):
     """ Login user """
 
     res = app.get('/login')
@@ -15,10 +19,23 @@ def authenticate(app, email=DEFAULT_USER['email'],
 
     form['email'] = email
     form['password'] = password
+    if remember:
+        form['remember'] = 1
 
     res = form.submit()
 
     # We've been redirected after log in
-    assert res.status_code == 302
+    assert res.status_code == response_code
 
     return res
+
+
+def include_views(config):
+    config.add_route('secret', '/secret')
+    config.scan('tests.tools')
+
+
+@view_config(route_name="secret", permission="super_high", renderer='json')
+def secret_view(request):
+    '''Dummy view with redirect to login'''
+    return dict()

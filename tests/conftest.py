@@ -101,4 +101,39 @@ default_config = factories.pyramid_config({
 })
 
 
+extended_config = factories.pyramid_config({
+    'pyramid.includes': [
+        'pyramid_tm',
+        'pyramid_fullauth',
+        'tests.tools.include_views'
+    ]
+})
+
+
+short_config = factories.pyramid_config({
+    'yml.location': 'tests:config/short_memory.yaml',
+    'pyramid.includes': [
+        'pyramid_tm',
+        'tzf.pyramid_yml',
+        'pyramid_fullauth',
+        'tests.tools.include_views'
+    ]
+})
+
+
+authable_config = factories.pyramid_config({
+    'yml.location': 'tests:config',
+    'env': 'login',
+    'pyramid.includes': [
+        'pyramid_tm',
+        'tzf.pyramid_yml',
+        'pyramid_fullauth',
+        'tests.tools.include_views'
+    ]
+})
+
+
 default_app = factories.pyramid_app('default_config')
+extended_app = factories.pyramid_app('extended_config')
+short_app = factories.pyramid_app('short_config')
+authable_app = factories.pyramid_app('authable_config')
