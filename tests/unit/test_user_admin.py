@@ -1,5 +1,6 @@
 import pytest
 from pyramid.compat import text_type
+import transaction
 
 from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import DeleteException
@@ -19,7 +20,8 @@ def test_remove_last_admin(db_session, user):
 
     user = db_session.merge(user)
     user.is_admin = True
-    db_session.commit()
+    transaction.commit()
+    user = db_session.merge(user)
 
     with pytest.raises(AttributeError):
         user.is_admin = False
@@ -35,7 +37,8 @@ def test_delete_admin(db_session, user):
                  is_admin=True)
     db_session.add(user2)
     user.is_admin = True
-    db_session.commit()
+    transaction.commit()
+    user = db_session.merge(user)
 
     user.delete()
 
@@ -47,7 +50,8 @@ def test_delete_last_admin(db_session, user):
     user = db_session.merge(user)
 
     user.is_admin = True
-    db_session.commit()
+    transaction.commit()
+    user = db_session.merge(user)
 
     with pytest.raises(DeleteException):
         user.delete()

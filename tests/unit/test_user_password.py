@@ -1,5 +1,6 @@
 import pytest
 from pyramid.compat import text_type
+import transaction
 
 from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import EmptyError
@@ -29,7 +30,7 @@ def test_password_change(db_session, user, password):
     old_password = user.password
     old_salt = user._salt
     user.password = new_password
-    db_session.commit()
+    transaction.commit()
 
     user = db_session.query(User).filter(User.username == text_type('u1')).one()
     assert not user.password == old_password
