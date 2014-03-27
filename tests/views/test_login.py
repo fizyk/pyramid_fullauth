@@ -170,7 +170,7 @@ def test_login_success_xhr(active_user, extended_app):
     extended_app.get('/secret', status=302)
     res = extended_app.post('/login?after=%2Fsecret',
                             post_data,
-                            headers={'X-Requested-With': 'XMLHttpRequest'},
+                            xhr=True,
                             expect_errors=True)
 
     assert res.content_type == 'application/json'
