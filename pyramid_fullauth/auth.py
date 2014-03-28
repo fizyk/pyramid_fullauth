@@ -5,11 +5,7 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 
-from pyramid.security import Allow
-from pyramid.security import Deny
-from pyramid.security import Everyone
-from pyramid.security import ALL_PERMISSIONS
-from pyramid.security import forget
+from pyramid.security import Allow, Everyone, forget, ALL_PERMISSIONS
 
 
 def groupfinder(userid, request):

@@ -44,4 +44,4 @@ def test_email_invalid_formats(db_session, user, invalid_email):
 
     with pytest.raises(EmailValidationError):
         user.email = invalid_email
-        db.commit()
+        db_session.commit()

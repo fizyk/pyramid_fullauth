@@ -61,7 +61,7 @@ def test_email_wrong_email_view(
     authenticate(app)
 
     email = DEFAULT_USER['email']
-    user = db_session.query(User).filter(User.email == email).one()
+    db_session.query(User).filter(User.email == email).one()
 
     res = app.get('/email/change')
     form = res.form

@@ -6,9 +6,7 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 
 from pyramid.view import forbidden_view_config
-from pyramid.view import view_defaults
 from pyramid.security import authenticated_userid
-from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.httpexceptions import HTTPFound
 
 from pyramid_fullauth.views import BaseView

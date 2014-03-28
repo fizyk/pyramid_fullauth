@@ -10,9 +10,7 @@
 '''
 
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import remember
-from pyramid.security import authenticated_userid
-from pyramid.security import unauthenticated_userid
+from pyramid.security import remember, unauthenticated_userid
 
 from sqlalchemy.sql.expression import func
 

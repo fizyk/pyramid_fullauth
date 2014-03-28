@@ -1,7 +1,4 @@
-import pytest
 from pyramid.compat import text_type
-
-from pyramid_fullauth.models import User
 
 
 def test_set_new_email(db_session, user):

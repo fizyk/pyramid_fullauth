@@ -1,7 +1,6 @@
 import pytest
 
 from pyramid_fullauth.auth import groupfinder
-from pyramid_fullauth.models import User
 
 
 @pytest.mark.parametrize(['is_admin', 'is_active', 'groups'],

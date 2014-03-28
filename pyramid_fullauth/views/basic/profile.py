@@ -5,11 +5,8 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 
-from pyramid.view import view_config
-from pyramid.view import view_defaults
+from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import authenticated_userid
-from pyramid.security import forget
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -62,7 +59,7 @@ class ProfileViews(BaseView):
 
         user = self.request.user
         try:
-            result = self.request.registry.notify(BeforeEmailChange(self.request, user))
+            self.request.registry.notify(BeforeEmailChange(self.request, user))
         except AttributeError as e:
             return {'status': False, 'msg': e.message, 'csrf_token': csrf_token}
 

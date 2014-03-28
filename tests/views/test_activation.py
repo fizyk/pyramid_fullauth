@@ -13,7 +13,7 @@ def test_account_activation(user, db_session, default_app):
     '''
     user = db_session.merge(user)
 
-    res = default_app.get('/register/activate/' + user.activate_key)
+    default_app.get('/register/activate/' + user.activate_key)
     transaction.commit()
     user = db_session.query(User).filter(User.email == user.email).one()
 
@@ -21,8 +21,8 @@ def test_account_activation(user, db_session, default_app):
     assert user.is_active
     assert user.activated_at
 
-    res = authenticate(default_app)
-    assert is_user_logged(default_app) == True
+    authenticate(default_app)
+    assert is_user_logged(default_app) is True
 
 
 def test_account_activation_wrong_key(user, db_session, default_app):
@@ -61,7 +61,7 @@ def test_account_activation_key_with_trash_chars(user, db_session, default_app):
     user = db_session.query(User).filter(User.email == user.email).one()
 
     assert user.activate_key == activate_key
-    assert not user.activate_key is None
+    assert user.activate_key is not None
     assert not user.activated_at
     # User should not have active account at this moment
     assert not user.is_active
