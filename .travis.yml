@@ -6,9 +6,10 @@ python:
     # - "3.3"
 install:
     - "python setup.py develop"
-    - "pip install pyramid_fullauth[tests] coveralls --use-mirrors"
+    - "pip install pyramid_fullauth[tests] coveralls pylama --use-mirrors"
 script:
     - "py.test --cov pyramid_fullauth tests/"
+    - "pylama"
 after_success:
     - coveralls
 

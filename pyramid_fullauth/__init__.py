@@ -10,7 +10,6 @@ import logging
 from tzf.pyramid_yml import config_defaults
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
-from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
 
 from pyramid_fullauth.auth import groupfinder

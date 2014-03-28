@@ -4,8 +4,6 @@ import pytest
 
 import transaction
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from zope.sqlalchemy import ZopeTransactionExtension
 
 from pyramid.compat import text_type
 from pytest_pyramid import factories

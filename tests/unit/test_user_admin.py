@@ -4,7 +4,6 @@ import transaction
 
 from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import DeleteException
-from tests.utils import create_user
 
 
 def test_regular_user_not_admin(db_session, user):

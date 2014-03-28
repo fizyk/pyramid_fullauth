@@ -1,9 +1,6 @@
 import pytest
 
-from pyramid.compat import text_type
-
 from pyramid_fullauth.models import User
-from tests.utils import create_user
 
 
 def test_is_active_error():

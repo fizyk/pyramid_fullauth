@@ -6,7 +6,9 @@ from setuptools import setup, find_packages
 
 here = os.path.dirname(__file__)
 with open(os.path.join(here, 'pyramid_fullauth', '__init__.py')) as v_file:
-    package_version = re.compile(r".*__version__ = '(.*?)'", re.S).match(v_file.read()).group(1)
+    package_version = re.compile(
+        r".*__version__ = '(.*?)'", re.S
+    ).match(v_file.read()).group(1)
 
 
 def read(fname):
@@ -18,7 +20,6 @@ requirements = [
     'pyramid_mako',
     'tzf.pyramid_yml >=1.0',
     'pyramid_basemodel',
-    # since all other versions contains requirements for inflect, which isn't python3 compatible
     'velruse'  # but on the other hand, neither is velruse
 ]
 

@@ -43,7 +43,6 @@ def validate_passsword(request, password, user=None):
 
     '''
     password_config = request.registry['config'].fullauth.register.password
-    password_confirm = request.POST.get('password_confirm', u'')
     if not password:
         raise EmptyError(
             request._('Please enter your password',

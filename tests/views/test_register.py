@@ -36,7 +36,7 @@ def test_register_success(db_session, default_app, email, password):
     user = db_session.query(User).filter(User.email == email).one()
 
     # User should not have active account at this moment
-    assert not user.is_active is None
+    assert user.is_active is not None
     assert user.check_password(password)
 
 
@@ -124,13 +124,13 @@ def test_no_pass_confirm(db_session, nopassconfirm_app):
     res.form['password'] = DEFAULT_USER['password']
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
 
-    assert not 'Passwords don\'t match!' in HTMLParser().unescape(res.body)
+    assert 'Passwords don\'t match!' not in HTMLParser().unescape(res.body)
     transaction.commit()
 
     user = db_session.query(User).filter(User.email == DEFAULT_USER['email']).one()
 
     # User should not have active account at this moment
-    assert not user.is_active is None
+    assert user.is_active is not None
     assert user.check_password(DEFAULT_USER['password'])
 
 

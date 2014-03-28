@@ -13,20 +13,12 @@
 import sys
 import uuid
 
-from sqlalchemy import Column
-from sqlalchemy import Unicode
-from sqlalchemy import String
-from sqlalchemy import Integer
-from sqlalchemy import Boolean
-from sqlalchemy import Sequence
-from sqlalchemy import DateTime
-from sqlalchemy import Table
-from sqlalchemy import ForeignKey
-from sqlalchemy import UniqueConstraint
+from sqlalchemy import (
+    Column, Unicode, String, Integer, Boolean, Sequence, DateTime,
+    Table, ForeignKey, UniqueConstraint
+)
 from sqlalchemy.sql import func
-from sqlalchemy.event import listen
-from sqlalchemy.orm import validates
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy.orm.session import object_session
 from sqlalchemy.orm.util import has_identity
 
@@ -127,7 +119,9 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         if self.is_admin and not value:
             admin_counter = object_session(self).query(User).filter(
-                User.is_admin == True, User.deleted_at == None).count()
+                User.is_admin == True,  # noqa
+                User.deleted_at == None
+            ).count()
             if admin_counter and admin_counter <= 1:
                 raise AttributeError('Can\'t delete last superadmin!')
         return value
@@ -144,7 +138,9 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         if self.is_admin:
             admin_counter = object_session(self).query(User).filter(
-                User.is_admin == True, User.deleted_at == None).count()
+                User.is_admin == True,  # noqa
+                User.deleted_at == None
+            ).count()
             if admin_counter and admin_counter <= 1:
                 raise exceptions.DeleteException('Can\'t delete last superadmin!')
 
