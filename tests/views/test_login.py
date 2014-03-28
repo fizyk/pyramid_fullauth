@@ -1,18 +1,7 @@
 import time
 
 import pytest
-from tests.tools import authenticate, DEFAULT_USER
-
-
-def check_if_logged(app):
-    '''
-    Checks for auth_tkt cookies beeing set
-    '''
-    cookies = app.cookies
-    if 'auth_tkt' in cookies and cookies['auth_tkt']:
-
-        return True
-    return False
+from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
 
 def test_login_view(default_app):
@@ -43,34 +32,34 @@ def test_login(active_user, extended_app):
     assert res
     res = extended_app.get('/login?after=%2Fsecret')
 
-    assert check_if_logged(extended_app) == False
+    assert is_user_logged(extended_app) == False
 
     res = authenticate(extended_app)
     assert 'Max-Age=' not in str(res)
 
-    assert check_if_logged(extended_app) == True
+    assert is_user_logged(extended_app) == True
 
 
 def test_login_remember(active_user, extended_app):
     '''Login:Action test with clicks'''
 
     res = extended_app.get('/login')
-    assert check_if_logged(extended_app) == False
+    assert is_user_logged(extended_app) == False
 
     res = authenticate(extended_app, remember=True)
 
-    assert check_if_logged(extended_app) == True
+    assert is_user_logged(extended_app) == True
     assert 'Max-Age=' in str(res)
 
 
 def test_login_inactive(user, extended_app):
     """Login:Action test with clicks if user is inactive"""
 
-    assert check_if_logged(extended_app) == False
+    assert is_user_logged(extended_app) == False
 
     authenticate(extended_app)
 
-    assert check_if_logged(extended_app) == True
+    assert is_user_logged(extended_app) == True
 
 
 def test_login_redirects(active_user, extended_app):
@@ -83,7 +72,7 @@ def test_login_redirects(active_user, extended_app):
     res.form['password'] = DEFAULT_USER['password']
     res = res.form.submit()
 
-    assert check_if_logged(extended_app) == True
+    assert is_user_logged(extended_app) == True
     assert res.status_code == 302
 
 
@@ -114,17 +103,17 @@ def test_login_csrf_error(active_user, extended_app, post_data):
     assert res
     res = extended_app.post('/login', post_data, status=401)
 
-    assert check_if_logged(extended_app) == False
+    assert is_user_logged(extended_app) == False
 
 
 def test_logout(active_user, extended_app):
     '''Logout:Action test'''
 
     authenticate(extended_app)
-    assert check_if_logged(extended_app) == True
+    assert is_user_logged(extended_app) == True
 
     extended_app.get('/logout', status=302)
-    assert check_if_logged(extended_app) == False
+    assert is_user_logged(extended_app) == False
     res = extended_app.get('/secret', status=302)
     assert res.status_code == 302
 
@@ -174,7 +163,7 @@ def test_login_success_xhr(active_user, extended_app):
                             expect_errors=True)
 
     assert res.content_type == 'application/json'
-    assert check_if_logged(extended_app) == True
+    assert is_user_logged(extended_app) == True
     assert res.json['status']
 
 

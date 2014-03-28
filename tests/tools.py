@@ -30,6 +30,17 @@ def authenticate(app, email=DEFAULT_USER['email'],
     return res
 
 
+def is_user_logged(app):
+    '''
+    Checks for auth_tkt cookies beeing set
+    '''
+    cookies = app.cookies
+    if 'auth_tkt' in cookies and cookies['auth_tkt']:
+
+        return True
+    return False
+
+
 def include_views(config):
     config.add_route('secret', '/secret')
     config.scan('tests.tools')

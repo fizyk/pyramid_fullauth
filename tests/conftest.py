@@ -156,9 +156,22 @@ nopassconfirm_config = factories.pyramid_config({
 })
 
 
+nopassregister_config = factories.pyramid_config({
+    'yml.location': 'tests:config/no_password_register.yaml',
+    'env': 'login',
+    'pyramid.includes': [
+        'pyramid_tm',
+        'tzf.pyramid_yml',
+        'pyramid_fullauth',
+        'tests.tools.include_views'
+    ]
+})
+
+
 default_app = factories.pyramid_app('default_config')
 extended_app = factories.pyramid_app('extended_config')
 short_app = factories.pyramid_app('short_config')
 social_app = factories.pyramid_app('social_config')
 authable_app = factories.pyramid_app('authable_config')
 nopassconfirm_app = factories.pyramid_app('nopassconfirm_config')
+nopassregister_app = factories.pyramid_app('nopassregister_config')

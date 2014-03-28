@@ -1,7 +1,8 @@
 from HTMLParser import HTMLParser
 
-import transaction
 import pytest
+import transaction
+from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.models import User
 from tests.tools import DEFAULT_USER
@@ -131,3 +132,19 @@ def test_no_pass_confirm(db_session, nopassconfirm_app):
     # User should not have active account at this moment
     assert not user.is_active is None
     assert user.check_password(DEFAULT_USER['password'])
+
+
+def test_register_action_no_password_required(db_session, nopassregister_app):
+    '''
+        Register:Register without password required
+    '''
+
+    with pytest.raises(NoResultFound):
+        db_session.query(User).filter(User.email == DEFAULT_USER['email']).one()
+
+    res = nopassregister_app.get('/register')
+    res.form['email'] = DEFAULT_USER['email']
+    res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
+    transaction.commit()
+
+    db_session.query(User).filter(User.email == DEFAULT_USER['email']).one()
