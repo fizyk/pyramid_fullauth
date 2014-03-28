@@ -1,0 +1,4 @@
+fullauth:
+    AuthTkt:
+        timeout: 2
+        reissue_time: 0.2

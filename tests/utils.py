@@ -4,8 +4,6 @@ import transaction
 from pyramid.view import view_config
 from pyramid_basemodel import Session
 
-from pyramid_fullauth.models import User
-
 try:
     from webtest import TestApp
 except ImportError:
@@ -47,9 +45,6 @@ def config_factory(**settings):
     # Include the dependencies.
     config.include('tzf.pyramid_yml')
     config.include('pyramid_fullauth')
-
-    config.add_route('secret', '/secret')
-    config.scan('tests.utils')
 
     # Return the configurator instance.
     return config

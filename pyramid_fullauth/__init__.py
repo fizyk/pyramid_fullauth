@@ -41,6 +41,9 @@ def includeme(configurator):
         AuthTktAuthenticationPolicy(callback=groupfinder,
                                     **fullauth_config.AuthTkt))
 
+    # TODO: Make a config option
+    configurator.set_root_factory('pyramid_fullauth.auth.BaseACLRootFactoryMixin')
+
     # loading and setting session factory
     # first, divide provided path for module, and factory name
     module, factory = fullauth_config.session.factory.rsplit('.', 1)

@@ -1,0 +1,6 @@
+fullauth:
+    social:
+        facebook:
+            consumer_key : 173883269419608
+            consumer_secret : f8421ff0856d742fc10aa764537be181
+            scope : email,offline_access

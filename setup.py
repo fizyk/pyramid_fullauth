@@ -16,17 +16,15 @@ requirements = [
     'pyramid_localize',
     'pyramid >=1.4',
     'pyramid_mako',
-    'tzf.pyramid_yml >= 0.2',
+    'tzf.pyramid_yml >=1.0',
     'pyramid_basemodel',
     # since all other versions contains requirements for inflect, which isn't python3 compatible
     'velruse'  # but on the other hand, neither is velruse
 ]
 
 test_requires = [
-    'WebTest',
-    'coverage>=3.7',
     'mock',
-    'pytest>=2.4.2',
+    'pytest_pyramid',
     'pytest-cov'
 ]
 
