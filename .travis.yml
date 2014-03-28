@@ -5,11 +5,12 @@ python:
     # - "3.2"
     # - "3.3"
 env:
-    - PYRAMID_VER="1.4.5" # test pyramid 1.4.x
-    - PYRAMID_VER="1.5b1" # test pyramid 1.5.x
+    - PYRAMID_VER="1.4.5" SQLALCHEMY_VER="0.9.3"
+    - PYRAMID_VER="1.5b1" SQLALCHEMY_VER="0.8.5"
+    - PYRAMID_VER="1.5b1" SQLALCHEMY_VER="0.9.3"
 install:
     - "python setup.py develop"
-    - "pip install pyramid_fullauth[tests] coveralls pyramid==$PYRAMID_VER --use-mirrors"
+    - "pip install pyramid_fullauth[tests] coveralls pyramid==$PYRAMID_VER sqlalchemy==$SQLALCHEMY_VER --use-mirrors"
 script:
     - "py.test --cov pyramid_fullauth tests/"
 after_success:
