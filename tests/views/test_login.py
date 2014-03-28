@@ -134,20 +134,6 @@ def test_automatic_logout(active_user, short_config, short_app):
     assert res.form
 
 
-def test_automatic_logout_not_expired(active_user, short_config, short_app):
-    ''' Test user not logged out,
-        timeout did not expire
-    '''
-    timeout = short_config.registry['config']['fullauth']['AuthTkt']['timeout'] - 1
-
-    authenticate(short_app)
-    # Simulating inactivity
-    time.sleep(timeout)
-    res = short_app.get('/email/change')
-    assert res.status_code == 200
-    assert res.form
-
-
 def test_login_success_xhr(active_user, extended_app):
 
     res = extended_app.get('/login')
