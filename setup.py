@@ -26,6 +26,9 @@ requirements = [
 test_requires = [
     'mock',
     'pytest_pyramid',
+    'pytest-dbfixtures',
+    'mysql-python',
+    'psycopg2',
     'pytest-cov'
 ]
 

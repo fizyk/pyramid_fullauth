@@ -4,10 +4,12 @@ import pytest
 
 import transaction
 from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from zope.sqlalchemy import ZopeTransactionExtension
 
 from pyramid.compat import text_type
 from pytest_pyramid import factories
-from pyramid_basemodel import bind_engine, Session
+import pyramid_basemodel
 
 
 @pytest.fixture
@@ -31,22 +33,32 @@ def web_request():
     return request
 
 
-@pytest.fixture(scope='function')
-def db_session(request):
+# @pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
+@pytest.fixture(scope='function', params=['sqlite', 'postgresql'])
+def db_session(request, postgresql_proc):
     from pyramid_fullauth.models import Base
 
-    connection = 'sqlite:///fullauth.sqlite'
+    if request.param == 'sqlite':
+        connection = 'sqlite:///fullauth.sqlite'
+    elif request.param == 'mysql':
+        request.getfuncargvalue('mysqldb')  # takes care of creating database
+        connection = 'mysql+mysqldb://root:@127.0.0.1:3307/tests?charset=utf8'
+    elif request.param == 'postgresql':
+        request.getfuncargvalue('postgresql')  # takes care of creating database
+        connection = 'postgresql+psycopg2://postgres:@127.0.0.1:5433/tests'
 
     engine = create_engine(connection, echo=False)
-    bind_engine(engine, Session, should_drop=True)
+    pyramid_basemodel.Session = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+    pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_drop=True)
 
     def destroy():
         transaction.commit()
         Base.metadata.drop_all(engine)
+        engine.dispose()
 
     request.addfinalizer(destroy)
 
-    return Session
+    return pyramid_basemodel.Session
 
 
 @pytest.fixture

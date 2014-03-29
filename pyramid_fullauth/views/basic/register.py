@@ -10,8 +10,8 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
+import pyramid_basemodel
 
-from pyramid_basemodel import Session
 from pyramid_fullauth.views import BaseView
 from pyramid_fullauth.models import User
 from pyramid_fullauth.models import AuthenticationProvider
@@ -38,7 +38,7 @@ class RegisterViews(BaseView):
         response['status'] = True
         if activate_hash:
             try:
-                user = Session.query(User).filter(User.activate_key == activate_hash).one()
+                user = pyramid_basemodel.Session.query(User).filter(User.activate_key == activate_hash).one()
                 if not user.is_active:
                     user.is_active = True
             except NoResultFound:
@@ -82,7 +82,7 @@ class RegisterViews(BaseView):
         email = self.request.POST.get('email', u'')
         # here if e-mail is already in database
         try:
-            Session.query(User).filter(User.email == email).one()
+            pyramid_basemodel.Session.query(User).filter(User.email == email).one()
             invalid_fields['email'] = self.request._('User with given e-mail already exists!',
                                                      domain='pyramid_fullauth')
         except NoResultFound:
@@ -112,8 +112,8 @@ class RegisterViews(BaseView):
 
             self.request.registry.notify(BeforeRegister(self.request, user, invalid_fields))
             if not invalid_fields:
-                Session.add(user)
-                Session.flush()
+                pyramid_basemodel.Session.add(user)
+                pyramid_basemodel.Session.flush()
                 # lets add AuthenticationProvider as email!
                 user.providers.append(
                     AuthenticationProvider(provider=u'email', provider_id=user.id))
