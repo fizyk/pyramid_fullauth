@@ -10,6 +10,7 @@ tests
 - rewritten tests to use pytest_pyramid
 - unified session with pyramid_basemodel's
 - parametrize tests against two most recent pyramid versions and sqlalchemy
+- add pytest-dbfixtures, and run tests against postgresql and mysql as well
 
 
 0.2.3
