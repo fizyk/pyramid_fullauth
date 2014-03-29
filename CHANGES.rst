@@ -1,5 +1,16 @@
-CHANGES
-=======
+CHANGELOG
+=========
+
+current
+-------
+
+tests
++++++
+
+- rewritten tests to use pytest_pyramid
+- unified session with pyramid_basemodel's
+- parametrize tests against two most recent pyramid versions and sqlalchemy
+
 
 0.2.3
 -----
@@ -29,7 +40,8 @@ CHANGES
     - Can be turned on/off in settings.
     - Failed check rises 401 Unauthorised error
 
-**backward incompatibilities**
+Backwards Incompatibilities
++++++++++++++++++++++++++++
 
 - token variable is changed into csrf_token in fullatuh views
 - view no longer returns error messages on failed csrf token. Rises 401 Unauthorised error instead.

@@ -19,22 +19,14 @@ Contents
    narrative
    customise
    api
+   changelog
 
 
-Contributions:
-==============
 
-Before the plugin has been made published outside of RedSky, it gained contributions from these people:
+License
+-------
 
-- Agnieszka Głąbała
-    - Social login/registration
-    - email change
-- Andrzej Bistram
-    - tests for social login/registration
-- Veronica Zgirvaci
-    - registration improvements and fixes
-    - documentation improvements
-- Tomasz Święcicki
-    - various social login/registration fixes
+Copyright (c) 2014 by pyramid_fullauth authors and contributors. See :ref:`authors`
 
-If I omitted anyone else, please let me know, so I could extend it.
+This module is part of pyramid_fullauth and is released under
+the MIT License (MIT): http://opensource.org/licenses/MIT
