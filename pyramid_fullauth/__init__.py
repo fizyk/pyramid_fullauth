@@ -8,8 +8,10 @@
 import logging
 
 from tzf.pyramid_yml import config_defaults
-from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.interfaces import (
+    IAuthorizationPolicy, IAuthenticationPolicy, IRootFactory, ISessionFactory
+)
 
 
 from pyramid_fullauth.auth import groupfinder
@@ -27,47 +29,61 @@ def includeme(configurator):
     '''
     pyramid_fullauth includeme method
 
-    :param pyramid.configurator.Configurator configurator: pyramid's configurator object
+    :param pyramid.configurator.Configurator configurator:
+        pyramid's configurator object
     '''
 
-    config_defaults(configurator, 'pyramid_fullauth:config')
+    config_defaults(configurator, 'pyramid_fullauth:config/default.yaml')
     configurator.include('pyramid_localize')
     configurator.include('pyramid_mako')
     fullauth_config = configurator.registry['config'].fullauth
 
-    configurator.set_authorization_policy(ACLAuthorizationPolicy())
-    configurator.set_authentication_policy(
-        AuthTktAuthenticationPolicy(callback=groupfinder,
-                                    **fullauth_config.AuthTkt))
+    if configurator.registry.queryUtility(IAuthorizationPolicy) is None:
+        configurator.set_authorization_policy(
+            'pyramid.authorization.ACLAuthorizationPolicy')
 
-    # TODO: Make a config option
-    configurator.set_root_factory('pyramid_fullauth.auth.BaseACLRootFactoryMixin')
+    # register authentication policy, only if not set already
+    if configurator.registry.queryUtility(IAuthenticationPolicy) is None:
+        configurator.set_authentication_policy(
+            AuthTktAuthenticationPolicy(callback=groupfinder,
+                                        **fullauth_config.AuthTkt))
 
-    # loading and setting session factory
-    # first, divide provided path for module, and factory name
-    module, factory = fullauth_config.session.factory.rsplit('.', 1)
-    # import session module first
-    session_module = __import__(module, fromlist=[module])
-    # get the  factory class
-    session_factory = getattr(session_module, factory)
+    # register root factory, only if not set already
+    if configurator.registry.queryUtility(IRootFactory) is None:
+        configurator.set_root_factory(
+            'pyramid_fullauth.auth.BaseACLRootFactoryMixin')
 
-    # set the new session factory
-    configurator.set_session_factory(
-        session_factory(**fullauth_config.session.settings))
+    # register session factory, only, if not already registered
+    if configurator.registry.queryUtility(ISessionFactory) is None:
+        # loading and setting session factory
+        # first, divide provided path for module, and factory name
+        module, factory = fullauth_config.session.factory.rsplit('.', 1)
+        # import session module first
+        session_module = __import__(module, fromlist=[module])
+        # get the  factory class
+        session_factory = getattr(session_module, factory)
 
-    configurator.add_view_predicate('check_csrf', predicates.CSRFCheckPredicate)
+        # set the new session factory
+        configurator.set_session_factory(
+            session_factory(**fullauth_config.session.settings))
+
+    configurator.add_view_predicate(
+        'check_csrf', predicates.CSRFCheckPredicate)
 
     # add routes
     configurator.add_route(name='login', pattern='/login')
     configurator.add_route(name='logout', pattern='/logout')
     configurator.add_route(name='register', pattern='/register')
-    configurator.add_route(name='register:activate', pattern='/register/activate/{hash}')
+    configurator.add_route(
+        name='register:activate', pattern='/register/activate/{hash}')
     configurator.add_route(name='password:reset', pattern='/password/reset')
-    configurator.add_route(name='password:reset:continue', pattern='/password/reset/{hash}',
-                           custom_predicates=(predicates.reset_hash,))
+    configurator.add_route(
+        name='password:reset:continue', pattern='/password/reset/{hash}',
+        custom_predicates=(predicates.reset_hash,))
     configurator.add_route(name='email:change', pattern='/email/change')
-    configurator.add_route(name='email:change:continue', pattern='/email/change/{hash}',
-                           custom_predicates=(predicates.change_email_hash,))
+    configurator.add_route(
+        name='email:change:continue', pattern='/email/change/{hash}',
+        custom_predicates=(predicates.change_email_hash,))
     # scan base views
     configurator.scan('pyramid_fullauth.views.basic')
 
