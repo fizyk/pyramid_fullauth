@@ -12,6 +12,7 @@ Features
 - configure session factory only if it hasn't been configured before
 - configure authorization policy only if it hasn't been configured before
 - configure authentication policy only if it hasn't been configured before
+- logged in user will be redirected always away from login page
 
 tests
 +++++
