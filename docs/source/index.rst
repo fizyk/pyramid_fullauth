@@ -1,10 +1,4 @@
-.. toctree::
-   :maxdepth: 2
-
-pyramid_fullauth!
-=================
-
-From here You can learn how to use and customize this plugin.
+.. include:: ../../README.rst
 
 
 Contents
