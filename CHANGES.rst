@@ -4,6 +4,15 @@ CHANGELOG
 current
 -------
 
+
+Features
+++++++++
+
+- configure root factory if it hasn't been already done
+- configure session factory only if it hasn't been configured before
+- configure authorization policy only if it hasn't been configured before
+- configure authentication policy only if it hasn't been configured before
+
 tests
 +++++
 

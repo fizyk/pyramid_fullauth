@@ -57,7 +57,7 @@ Configuration
 
 Plugin, by default works on these assumptions:
 
-.. literalinclude:: ../../pyramid_fullauth/config/config.yml
+.. literalinclude:: ../../pyramid_fullauth/config/default.yaml
     :language: yaml
     :linenos:
 
