@@ -53,9 +53,6 @@ def includeme(configurator):
         configurator.set_root_factory(
             'pyramid_fullauth.auth.BaseACLRootFactoryMixin')
 
-    import ipdb
-    ipdb.set_trace()
-
     # register session factory, only, if not already registered
     if configurator.registry.queryUtility(ISessionFactory) is None:
         # loading and setting session factory
