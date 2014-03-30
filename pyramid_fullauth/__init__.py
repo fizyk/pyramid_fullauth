@@ -8,6 +8,7 @@
 import logging
 
 from tzf.pyramid_yml import config_defaults
+from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.interfaces import (
     IAuthorizationPolicy, IAuthenticationPolicy, IRootFactory, ISessionFactory
@@ -39,8 +40,7 @@ def includeme(configurator):
     fullauth_config = configurator.registry['config'].fullauth
 
     if configurator.registry.queryUtility(IAuthorizationPolicy) is None:
-        configurator.set_authorization_policy(
-            'pyramid.authorization.ACLAuthorizationPolicy')
+        configurator.set_authorization_policy(ACLAuthorizationPolicy())
 
     # register authentication policy, only if not set already
     if configurator.registry.queryUtility(IAuthenticationPolicy) is None:
@@ -52,6 +52,9 @@ def includeme(configurator):
     if configurator.registry.queryUtility(IRootFactory) is None:
         configurator.set_root_factory(
             'pyramid_fullauth.auth.BaseACLRootFactoryMixin')
+
+    import ipdb
+    ipdb.set_trace()
 
     # register session factory, only, if not already registered
     if configurator.registry.queryUtility(ISessionFactory) is None:
