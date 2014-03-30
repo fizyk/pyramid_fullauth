@@ -42,7 +42,8 @@ Package resources
 -----------------
 
 * Bug tracker: https://github.com/fizyk/pyramid_fullauth/issues
-* Documentation: http://pyramid-fullauth.readthedocs.org/en/latest/
+* Documentation: http://pyramid-fullauth.readthedocs.org/
+* PyPI: https://pypi.python.org/pypi/pyramid_fullauth
 
 Instalation
 -----------
