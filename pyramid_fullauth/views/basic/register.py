@@ -71,33 +71,57 @@ class RegisterViews(BaseView):
             Process POST register request
         '''
 
-        invalid_fields = {}
-        response_values = {
+        response = {
             'status': False,
             'msg': self.request._('You have an error in your registration form',
                                   domain='pyramid_fullauth'),
-            'csrf_token': self.request.session.get_csrf_token()}
-        response_values['errors'] = invalid_fields
+            'csrf_token': self.request.session.get_csrf_token(),
+            'errors': {},
+        }
+
+        user = User()
+        user.address_ip = self.request.remote_addr
+
+        response = self._fillin_user(response, user)
+
+        if not response['errors']:
+            response['status'] = True
+            response['msg'] = self.request._(
+                'You have successfully registered', domain='pyramid_fullauth')
+
+        try:
+            self.request.registry.notify(AfterRegister(self.request, user, response))
+        except HTTPFound as redirect:
+            return redirect
+
+        return response
+
+    def _fillin_user(self, response, user):
+        """
+        Fill new user object in, with sent data.
+
+        :param dict response: response to return from register view
+        :param pyramid_fullauth.models.User user: new user object
+
+        :returns: response
+        :rtype: dict
+
+        """
 
         email = self.request.POST.get('email', u'')
         # here if e-mail is already in database
-        try:
-            Session.query(User).filter(User.email == email).one()
-            invalid_fields['email'] = self.request._('User with given e-mail already exists!',
-                                                     domain='pyramid_fullauth')
-        except NoResultFound:
-            pass
 
+        if Session.query(User).filter(User.email == email).count() != 0:
+            response['errors']['email'] = self.request._(
+                'User with given e-mail already exists!',
+                domain='pyramid_fullauth')
         try:
-            user = User()
             try:
                 user.email = email
             except ValidateError as e:
                 # do not overwrite existing error
-                if 'email' not in invalid_fields:
-                    invalid_fields['email'] = str(e)
-
-            user.address_ip = self.request.remote_addr
+                if 'email' not in response['errors']:
+                    response['errors']['email'] = str(e)
 
             if self.request.registry['config'].fullauth.register.password.require:
                 try:
@@ -105,31 +129,21 @@ class RegisterViews(BaseView):
                                              self.request.POST.get('password', u''),
                                              user)
                 except ValidateError as e:
-                    invalid_fields['password'] = e.message
+                    response['errors']['password'] = e.message
             else:
                 user.password = tools.password_generator(
                     self.request.registry['config'].fullauth.register.password.length_min)
 
-            self.request.registry.notify(BeforeRegister(self.request, user, invalid_fields))
-            if not invalid_fields:
+            self.request.registry.notify(BeforeRegister(self.request, user, response['errors']))
+            if not response['errors']:
                 Session.add(user)
                 Session.flush()
                 # lets add AuthenticationProvider as email!
                 user.providers.append(
                     AuthenticationProvider(provider=u'email', provider_id=user.id))
             else:
-                return response_values
+                return response
         except AttributeError as e:
-            invalid_fields['msg'] = str(e)
-            return response_values
+            response['errors']['msg'] = str(e)
 
-        response_values['status'] = True
-        response_values['msg'] = self.request._('You have successfully registered',
-                                                domain='pyramid_fullauth')
-
-        try:
-            self.request.registry.notify(AfterRegister(self.request, user, response_values))
-        except HTTPFound as redirect:
-            return redirect
-
-        return response_values
+        return response
