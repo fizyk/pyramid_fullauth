@@ -42,8 +42,8 @@ def test_social_login_register(social_config, db_session):
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
-    sv = SocialLoginViews(request)
-    out = sv.register_social()
+    view = SocialLoginViews(request)
+    out = view()
     assert out == {'status': True}
     transaction.commit()
 
@@ -76,8 +76,8 @@ def test_login_social_connect(social_config, active_user, db_session):
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
-    sv = SocialLoginViews(request)
-    out = sv.register_social()
+    view = SocialLoginViews(request)
+    out = view()
     assert out == {'status': True}
 
     user = db_session.merge(active_user)
@@ -106,8 +106,8 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
-    sv = SocialLoginViews(request)
-    out = sv.register_social()
+    view = SocialLoginViews(request)
+    out = view()
     assert out == {'status': True}
 
     transaction.commit()

@@ -153,13 +153,19 @@ def test_login_success_xhr(active_user, extended_app):
     assert res.json['status']
 
 
-def test_default_login_noredirect(active_user, authable_app):
+def test_default_login_forbidden(active_user, authable_app):
+    """
+    After successful login, user should get 403 on secret page.
+    """
 
-    authres = authenticate(authable_app)
-    res = authres.goto('/secret', status=403)
-    assert res
-    res = authres.goto('/login')
-    assert res
-    assert '<form id="login_form"' in res.body
-    res = authres.goto('/secret', status=403)
-    assert res
+    authenticate(authable_app)
+    authable_app.get('/secret', status=403)
+
+
+def test_default_login_redirectaway(active_user, authable_app):
+    """
+    After successful login, access to login page should result in redirect.
+    """
+
+    authenticate(authable_app)
+    authable_app.get('/login', status=302)
