@@ -123,7 +123,7 @@ class RegisterViews(BaseView):
                 if 'email' not in response['errors']:
                     response['errors']['email'] = str(e)
 
-            if self.request.registry['config'].fullauth.register.password.require:
+            if self.config.register.password.require:
                 try:
                     tools.validate_passsword(self.request,
                                              self.request.POST.get('password', u''),
@@ -132,7 +132,7 @@ class RegisterViews(BaseView):
                     response['errors']['password'] = e.message
             else:
                 user.password = tools.password_generator(
-                    self.request.registry['config'].fullauth.register.password.length_min)
+                    self.config.register.password.length_min)
 
             self.request.registry.notify(BeforeRegister(self.request, user, response['errors']))
             if not response['errors']:

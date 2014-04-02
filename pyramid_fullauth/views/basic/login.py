@@ -147,7 +147,7 @@ class LoginViews(BaseView):
             Logout method
         '''
         location = '/'
-        if self.request.registry['config'].fullauth.redirects.logout:
-            location = self.request.route_path(self.request.registry['config'].fullauth.redirects.logout)
+        if self.config.redirects.logout:
+            location = self.request.route_path(self.config.redirects.logout)
 
         return HTTPFound(location=location, headers=forget(self.request))

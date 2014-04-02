@@ -119,8 +119,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         if self.is_admin and not value:
             admin_counter = object_session(self).query(User).filter(
-                User.is_admin == True,  # noqa
-                User.deleted_at == None
+                User.is_admin, User.deleted_at.is_(None)
             ).count()
             if admin_counter and admin_counter <= 1:
                 raise AttributeError('Can\'t delete last superadmin!')
@@ -138,8 +137,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         if self.is_admin:
             admin_counter = object_session(self).query(User).filter(
-                User.is_admin == True,  # noqa
-                User.deleted_at == None
+                User.is_admin, User.deleted_at.is_(None)
             ).count()
             if admin_counter and admin_counter <= 1:
                 raise exceptions.DeleteException('Can\'t delete last superadmin!')
