@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Email mixin related module."""
 
 import re
 import uuid
@@ -26,7 +25,7 @@ pattern_mail = re.compile(
 
 class UserEmailMixin(object):
 
-    '''User email fields and functionality'''
+    """User email fields and functionality."""
 
     __pattern_mail = pattern_mail
 
@@ -36,16 +35,19 @@ class UserEmailMixin(object):
 
     @validates('email', 'new_email')
     def validate_email(self, key, address):
-        '''
-            Validates email address
+        """
+        Validate email addresses.
 
-            .. note::
+        .. note::
 
-                More about simple validators: http://docs.sqlalchemy.org/en/latest/orm/mapper_config.html#simple-validators
+            See pyramid docs about `simple validators <http://docs.sqlalchemy.org/en/latest/orm/mapper_config.html#simple-validators>`_
 
-            :raises EmailValidationError:
-            :raises EmptyError:
-        '''
+        :param str key: field key
+        :param str address: email address
+
+        :raises EmailValidationError:
+        :raises EmptyError:
+        """
         if address:
             if pattern_mail.match(address):
                 return address
@@ -55,21 +57,25 @@ class UserEmailMixin(object):
         raise EmptyError('E-mail is empty')
 
     def set_new_email(self, email_new):
-        '''
-            Set new email and generate new email change hash
+        """
+        Set new email and generate new email change hash.
 
-            :param str email_new: email address
+        :param str email_new: email address
 
-            :returns: generated email_change_key
-        '''
+        :returns: generated email_change_key
+        :trype: str
+
+        """
         self.new_email = email_new
         self.email_change_key = str(uuid.uuid4())
         return self.email_change_key
 
     def change_email(self):
-        '''
-            Change email after activation
-            We don't clear new email field because of validator of email which won't allow to None value.
-        '''
+        """
+        Change email after activation.
+
+        We don't clear new email field because of validator of email which won't allow to None value.
+
+        """
         self.email = self.new_email
         self.email_change_key = None

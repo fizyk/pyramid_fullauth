@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
-
+"""Routing predicate definitions."""
 
 from sqlalchemy.orm.exc import NoResultFound
 from pyramid_basemodel import Session
@@ -14,13 +12,16 @@ from pyramid.httpexceptions import HTTPUnauthorized
 
 
 def reset_hash(info, request):
-    '''
-        Checks whether reset hash is correct
+    """
+    Check whether reset hash is correct.
 
-        :param dict info: pyramid info dict with path fragments and info
-        :param pyramid.request.Request request: request object
-    '''
+    :param dict info: pyramid info dict with path fragments and info
+    :param pyramid.request.Request request: request object
 
+    :returns: whether reset hash exists or not
+    :rtype: bool
+
+    """
     reset_hash = info['match'].get('hash', None)
     if reset_hash:
         try:
@@ -32,13 +33,16 @@ def reset_hash(info, request):
 
 
 def change_email_hash(info, request):
-    '''
-        Checks whether change email hash is correct
+    """
+    Check whether change email hash is correct.
 
-        :param dict info: pyramid info dict with path fragments and info
-        :param pyramid.request.Request request: request object
-    '''
+    :param dict info: pyramid info dict with path fragments and info
+    :param pyramid.request.Request request: request object
 
+    :returns: whether change email hash exists or not
+    :rtype: bool
+
+    """
     change_email_hash = info['match'].get('hash', None)
     if change_email_hash:
         try:
@@ -51,17 +55,28 @@ def change_email_hash(info, request):
 
 class CSRFCheckPredicate(CheckCSRFTokenPredicate):
 
-    '''
-    Runs csrf check dependant on configuration.
-    Raises HTTPUnauthorized exception if check fails.
+    """
+    Run csrf check dependant on configuration.
+
+    .. note::
+
+        Raises HTTPUnauthorized exception if check fails.
 
     :raises: pyramid.httpexceptions.HTTPUnauthorized
+
     :returns: True if check succeeds or turned off.
     :rtype: bool
-    '''
+
+    """
 
     def __call__(self, context, request):
+        """
+        Run predicate check.
 
+        :param context:
+        :param pyramid.request.Request request:
+
+        """
         if request.registry['config'].fullauth.check_csrf:
             result = CheckCSRFTokenPredicate.__call__(self, context, request)
             if not result:
