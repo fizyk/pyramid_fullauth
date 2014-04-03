@@ -126,12 +126,17 @@ class SocialLoginViews(BaseView):
             if not self.set_provider(
                 user, context.provider_name, context.profile['accounts'][0]['userid']
             ):
-                response_values['msg'] = 'Your account is already connected to other {provider} account.'.format(
-                    provider=context.provider_name)
+                response_values['msg'] = self.request._(
+                    'Your account is already connected to other ${provider} account.',
+                    domain='pyramid_fullauth',
+                    mapping={'provider': context.provider_name}
+                )
                 return response_values
         except IntegrityError:
-            response_values['msg'] = 'This {provider} account is already connected with other account.'.format(
-                provider=context.provider_name
+            response_values['msg'] = self.request._(
+                'This ${provider} account is already connected with other account.',
+                domain='pyramid_fullauth',
+                mapping={'provider': context.provider_name}
             )
             try:
                 self.request.registry.notify(
