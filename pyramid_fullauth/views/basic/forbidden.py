@@ -14,6 +14,10 @@ from pyramid_fullauth.views import BaseView
 
 class ForbiddenViews(BaseView):
 
+    def __init__(self, request):
+        super(ForbiddenViews, self).__init__(request)
+        self.request.response.status = '403 Forbidden'
+
     @forbidden_view_config(renderer='pyramid_fullauth:resources/templates/403.mako')
     def forbidden(self):
         '''
@@ -22,7 +26,6 @@ class ForbiddenViews(BaseView):
 
         # do not allow a user to login if they are already logged in
         if authenticated_userid(self.request):
-            self.request.response.status = '403 Forbidden'
             return {}
 
         loc = self.request.route_path('login', _query=(('after', self.request.path),))
@@ -34,7 +37,6 @@ class ForbiddenViews(BaseView):
             Forbidden page view.
         '''
 
-        self.request.response.status = '403 Forbidden'
         # do not allow a user to login if they are already logged in
         if authenticated_userid(self.request):
             return {'status': False, 'msg':

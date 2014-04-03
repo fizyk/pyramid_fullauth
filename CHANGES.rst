@@ -20,6 +20,10 @@ tests
 - rewritten tests to use pytest_pyramid
 - unified session with pyramid_basemodel's
 - parametrize tests against two most recent pyramid versions and sqlalchemy
+- turned on pylama to check code with linters:
+    - pep8
+    - pyflakes
+    - mccabe
 
 
 0.2.3

@@ -50,9 +50,10 @@ class SocialLoginViews(BaseView):
             except NoResultFound:
                 pass
 
-        provider_auth = AuthenticationProvider()
-        provider_auth.provider = provider_name
-        provider_auth.provider_id = user_provider_id
+        provider_auth = AuthenticationProvider(
+            provider=provider_name,
+            provider_id=user_provider_id
+        )
         user.providers.append(provider_auth)
         Session.flush()
         return True
