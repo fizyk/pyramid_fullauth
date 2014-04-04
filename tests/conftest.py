@@ -33,8 +33,7 @@ def web_request():
     return request
 
 
-# @pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
-@pytest.fixture(scope='function', params=['sqlite', 'postgresql'])
+@pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
 def db_session(request, postgresql_proc):
     from pyramid_fullauth.models import Base
 
