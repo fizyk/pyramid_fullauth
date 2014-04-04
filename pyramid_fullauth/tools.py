@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
-
+"""Additional tools used in pyramid_fullauth."""
 
 import string
 from random import choice
@@ -14,34 +12,35 @@ from pyramid_fullauth.exceptions import (
 
 
 def password_generator(length, chars=(string.letters + string.digits + string.punctuation)):
-    '''
-        Generates random password
+    """
+    Generate random password.
 
-        .. warning::
+    .. warning::
 
-            TODO: tests!
+        TODO: tests!
 
-        :param int length: length of a password to Generates
-        :param list chars: list of characters from which to choose
-    '''
+    :param int length: length of a password to Generates
+    :param list chars: list of characters from which to choose
+    :returns: password
+    :rtype: str
+    """
     return u''.join([choice(chars) for i in range(length)])
 
 
 def validate_passsword(request, password, user=None):
-    '''
-        Validates password according.
+    """
+    Validate password properly.
 
-        .. note::
+    .. note::
 
-            If no user provided, password is just validated
+        If no user provided, password is just validated
 
-        :param pyramid.request.Request request: request object
-        :param str password: password to be set
-        :param pyramid_fullauth.models.User user: user object
+    :param pyramid.request.Request request: request object
+    :param str password: password to be set
+    :param pyramid_fullauth.models.User user: user object
 
-        :raises: pyramid_fullauth.exceptions.ValidateError
-
-    '''
+    :raises: pyramid_fullauth.exceptions.ValidateError
+    """
     password_config = request.registry['config'].fullauth.register.password
     if not password:
         raise EmptyError(
