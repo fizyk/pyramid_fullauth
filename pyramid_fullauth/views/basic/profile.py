@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Profile related views."""
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
@@ -32,9 +31,12 @@ from pyramid_fullauth.tools import validate_passsword
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
 class ProfileViews(BaseView):
 
+    """Profile related views."""
+
     @view_config(route_name='email:change', permission='email_change',
                  renderer='pyramid_fullauth:resources/templates/email_change.mako')
     def email_change(self):
+        """Display email change request form."""
         return {'status': True, 'csrf_token': self.request.session.get_csrf_token()}
 
     @view_config(route_name='email:change', permission='email_change',
@@ -44,9 +46,7 @@ class ProfileViews(BaseView):
                  request_method='POST', check_csrf='csrf_token',
                  xhr=True, renderer="json")
     def email_change_POST(self):
-        '''
-            Processes POST requests to generate change email hash
-        '''
+        """Process email change request."""
         csrf_token = self.request.session.get_csrf_token()
         try:
             Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
@@ -101,9 +101,7 @@ class ProfileViews(BaseView):
     @view_config(route_name='email:change:continue',
                  renderer='pyramid_fullauth:resources/templates/email_change.mako')
     def email_change_continue(self):
-        '''
-            Method that changes email address to new one after email activation
-        '''
+        """View that changes user email."""
         user = self.request.matchdict.get('user')
         user.change_email()
 
@@ -116,9 +114,7 @@ class ProfileViews(BaseView):
     @view_config(route_name='password:reset',
                  renderer='pyramid_fullauth:resources/templates/reset.mako')
     def reset(self):
-        '''
-            Password reset method
-        '''
+        """Password reset request view."""
         csrf_token = self.request.session.get_csrf_token()
 
         return {'status': True, 'csrf_token': csrf_token}
@@ -127,9 +123,7 @@ class ProfileViews(BaseView):
                  check_csrf=True,
                  renderer='pyramid_fullauth:resources/templates/reset.mako')
     def reset_POST(self):
-        '''
-            Processes POST requests to generate reset password hashes
-        '''
+        """View processing requests to reset password."""
         csrf_token = self.request.session.get_csrf_token()
 
         try:
@@ -157,9 +151,7 @@ class ProfileViews(BaseView):
                  request_method='POST', check_csrf=True,
                  renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
     def reset_continue(self):
-        '''
-            Method that serves password reset page
-        '''
+        """Final step in changing password."""
         user = self.request.matchdict.get('user')
 
         csrf_token = self.request.session.get_csrf_token()
@@ -178,11 +170,15 @@ class ProfileViews(BaseView):
                     try:
                         Session.query(AuthenticationProvider).filter(
                             AuthenticationProvider.user_id == user.id,
-                            AuthenticationProvider.provider == u'email').one()
+                            AuthenticationProvider.provider == u'email'
+                        ).one()
                     except NoResultFound:
                         user.providers.append(
-                            AuthenticationProvider(provider=u'email',
-                                                   provider_id=user.id))
+                            AuthenticationProvider(
+                                provider=u'email',
+                                provider_id=user.id
+                            )
+                        )
 
                     Session.flush()
                 except (ValidateError, AttributeError) as e:
@@ -194,9 +190,10 @@ class ProfileViews(BaseView):
                     return redirect
             else:
                 return {'status': False,
-                        'msg': self.request._('password-mismatch',
-                                              default='Password doesn\'t match',
-                                              domain='pyramid_fullauth'),
+                        'msg': self.request._(
+                            'password-mismatch',
+                            default='Password doesn\'t match',
+                            domain='pyramid_fullauth'),
                         'csrf_token': csrf_token}
 
         return {'status': True, 'csrf_token': csrf_token}
