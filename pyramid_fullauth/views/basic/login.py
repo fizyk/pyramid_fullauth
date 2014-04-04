@@ -13,8 +13,7 @@ from pyramid.security import forget
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
-
-from pyramid_basemodel import Session
+import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
 from pyramid_fullauth.models import User
@@ -55,7 +54,7 @@ class LoginViews(BaseView):
         email = self.request.POST.get('email', '')
         password = self.request.POST.get('password', '')
         try:
-            user = Session.query(User).filter(User.email == email).one()
+            user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
             try:
                 self.request.registry.notify(BeforeLogIn(self.request, user))
             except AttributeError as e:

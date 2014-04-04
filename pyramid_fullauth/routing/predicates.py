@@ -7,10 +7,11 @@
 
 
 from sqlalchemy.orm.exc import NoResultFound
-from pyramid_basemodel import Session
-from pyramid_fullauth.models import User
 from pyramid.config.predicates import CheckCSRFTokenPredicate
 from pyramid.httpexceptions import HTTPUnauthorized
+import pyramid_basemodel
+
+from pyramid_fullauth.models import User
 
 
 def reset_hash(info, request):
@@ -24,7 +25,7 @@ def reset_hash(info, request):
     reset_hash = info['match'].get('hash', None)
     if reset_hash:
         try:
-            info['match']['user'] = Session.query(User).filter(User.reset_key == reset_hash).one()
+            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(User.reset_key == reset_hash).one()
             return True
         except NoResultFound:
             pass
@@ -42,7 +43,7 @@ def change_email_hash(info, request):
     change_email_hash = info['match'].get('hash', None)
     if change_email_hash:
         try:
-            info['match']['user'] = Session.query(User).filter(User.email_change_key == change_email_hash).one()
+            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(User.email_change_key == change_email_hash).one()
             return True
         except NoResultFound:
             pass

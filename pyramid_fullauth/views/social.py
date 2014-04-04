@@ -11,8 +11,8 @@ from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
+import pyramid_basemodel
 
-from pyramid_basemodel import Session
 from pyramid_fullauth.views import BaseView
 from pyramid_fullauth.models import User
 from pyramid_fullauth.models import AuthenticationProvider
@@ -38,7 +38,7 @@ class SocialLoginViews(BaseView):
         '''
         if user.id:
             try:
-                provider_auth = Session.query(
+                provider_auth = pyramid_basemodel.Session.query(
                     AuthenticationProvider
                 ).filter(
                     AuthenticationProvider.user_id == user.id,
@@ -55,7 +55,7 @@ class SocialLoginViews(BaseView):
             provider_id=user_provider_id
         )
         user.providers.append(provider_auth)
-        Session.flush()
+        pyramid_basemodel.Session.flush()
         return True
 
     def __call__(self):
@@ -79,9 +79,10 @@ class SocialLoginViews(BaseView):
             response = self._connect_user(response_values)
             if response:
                 return response
+
         else:
             try:
-                user = Session.query(
+                user = pyramid_basemodel.Session.query(
                     User
                 ).join(AuthenticationProvider).filter(
                     AuthenticationProvider.provider == context.provider_name,
@@ -153,11 +154,11 @@ class SocialLoginViews(BaseView):
         email = self._email_from_context()
 
         try:
-            user = Session.query(User).filter(User.email == email).one()
+            user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
             # If we are here that means that in the DB exists user with the same email but without the provider
             # then we connect social account to this user
             self.set_provider(user, context.provider_name, context.profile['accounts'][0]['userid'])
-            Session.flush()
+            pyramid_basemodel.Session.flush()
         except NoResultFound:
             length_min = self.config.register.password.length_min
             user = User(
@@ -167,8 +168,8 @@ class SocialLoginViews(BaseView):
             )
             self.request.registry.notify(BeforeSocialRegister(self.request, user, context.profile))
             self.set_provider(user, context.provider_name, context.profile['accounts'][0]['userid'])
-            Session.add(user)
-            Session.flush()
+            pyramid_basemodel.Session.add(user)
+            pyramid_basemodel.Session.flush()
             user.is_active = True
         return user
 

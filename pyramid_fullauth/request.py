@@ -11,12 +11,10 @@
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, unauthenticated_userid
-
 from sqlalchemy.sql.expression import func
-
 from sqlalchemy.orm.exc import NoResultFound
+import pyramid_basemodel
 
-from pyramid_basemodel import Session
 from pyramid_fullauth.models import User
 
 
@@ -57,7 +55,7 @@ def user(request):
     userid = unauthenticated_userid(request)
     if userid:
         try:
-            user = Session.query(User).filter(User.id == userid).one()
+            user = pyramid_basemodel.Session.query(User).filter(User.id == userid).one()
             return user
         except NoResultFound:  # pragma: no cover
             pass

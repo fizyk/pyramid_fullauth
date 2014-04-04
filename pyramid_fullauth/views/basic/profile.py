@@ -10,8 +10,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
-
-from pyramid_basemodel import Session
+import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
 from pyramid_fullauth.auth import force_logout
@@ -49,7 +48,7 @@ class ProfileViews(BaseView):
         '''
         csrf_token = self.request.session.get_csrf_token()
         try:
-            Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
+            pyramid_basemodel.Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
             return {'status': False,
                     'msg': self.request._('User with this email exists',
                                           domain='pyramid_fullauth'),
@@ -133,7 +132,7 @@ class ProfileViews(BaseView):
         csrf_token = self.request.session.get_csrf_token()
 
         try:
-            user = Session.query(User).filter(
+            user = pyramid_basemodel.Session.query(User).filter(
                 User.email == self.request.POST.get('email', '')).one()
         except NoResultFound:
             return {'status': False,
@@ -176,7 +175,7 @@ class ProfileViews(BaseView):
 
                     user.reset_key = None
                     try:
-                        Session.query(AuthenticationProvider).filter(
+                        pyramid_basemodel.Session.query(AuthenticationProvider).filter(
                             AuthenticationProvider.user_id == user.id,
                             AuthenticationProvider.provider == u'email').one()
                     except NoResultFound:
@@ -184,7 +183,7 @@ class ProfileViews(BaseView):
                             AuthenticationProvider(provider=u'email',
                                                    provider_id=user.id))
 
-                    Session.flush()
+                    pyramid_basemodel.Session.flush()
                 except (ValidateError, AttributeError) as e:
                     return {'status': False, 'msg': str(e), 'csrf_token': csrf_token}
 
