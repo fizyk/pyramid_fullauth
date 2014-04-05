@@ -1,6 +1,7 @@
+"""Test admin related behaviour on user model."""
 import pytest
-from pyramid.compat import text_type
 import transaction
+from pyramid.compat import text_type
 
 from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import DeleteException
@@ -15,8 +16,11 @@ def test_regular_user_not_admin(db_session, user):
 
 
 def test_remove_last_admin(db_session, user):
-    """Admin user is_admin flag test"""
+    """
+    Admin user is_admin flag test.
 
+    At least one admin needed.
+    """
     user = db_session.merge(user)
     user.is_admin = True
     transaction.commit()
@@ -27,13 +31,14 @@ def test_remove_last_admin(db_session, user):
 
 
 def test_delete_admin(db_session, user):
-    """Admin user soft delete"""
-
+    """Admin user soft delete behaviour - more than one admins present."""
     user = db_session.merge(user)
-    user2 = User(email=text_type('test2@example.com'),
-                 address_ip='127.0.0.1',
-                 password='pass',
-                 is_admin=True)
+    user2 = User(
+        email=text_type('test2@example.com'),
+        address_ip='127.0.0.1',
+        password='pass',
+        is_admin=True
+    )
     db_session.add(user2)
     user.is_admin = True
     transaction.commit()
@@ -45,7 +50,7 @@ def test_delete_admin(db_session, user):
 
 
 def test_delete_last_admin(db_session, user):
-    """Admin user soft delete"""
+    """Admin user soft delete - only one admin, no deleting possible."""
     user = db_session.merge(user)
 
     user.is_admin = True
