@@ -1,4 +1,4 @@
-
+"""Most of the fixtures needed."""
 from mock import Mock
 import pytest
 
@@ -12,6 +12,7 @@ from pyramid_basemodel import bind_engine, Session
 
 @pytest.fixture
 def web_request():
+    """Mocked web request for views testing."""
     request = Mock()
     config = Mock()
     config.configure_mock(
@@ -33,6 +34,7 @@ def web_request():
 
 @pytest.fixture(scope='function')
 def db_session(request):
+    """SQLAlchemy session."""
     from pyramid_fullauth.models import Base
 
     connection = 'sqlite:///fullauth.sqlite'
@@ -51,7 +53,7 @@ def db_session(request):
 
 @pytest.fixture
 def user(db_session):
-
+    """Default user."""
     from pyramid_fullauth.models import User
     from tests.tools import DEFAULT_USER
     user = User(**DEFAULT_USER)
@@ -62,6 +64,7 @@ def user(db_session):
 
 @pytest.fixture
 def active_user(user, db_session):
+    """Active user."""
     user = db_session.merge(user)
     user.is_active = True
     transaction.commit()
@@ -88,6 +91,7 @@ def active_user(user, db_session):
     text_type('bad-mail'),
 ])
 def invalid_email(request):
+    """Parametrized fixture with all the incorrect emails."""
     return request.param
 
 
