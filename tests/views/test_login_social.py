@@ -1,3 +1,4 @@
+"""Social network login test."""
 import transaction
 from pyramid import testing
 from velruse import AuthenticationComplete
@@ -8,21 +9,20 @@ from pyramid_fullauth.models import User
 
 
 def test_social_login_link(social_app):
-    '''Login:Form displayed social form'''
+    """Login:Form displayed social form."""
     res = social_app.get('/login')
     assert ('Connect with facebook</a>' in res.body)
 
 
 def test_social_click_link(social_app):
-    '''Login:Social form'''
+    """Click social login link."""
     res = social_app.get('/login/facebook?scope=email%2Coffline_access', status=302)
     assert (res.headers['Location'].startswith(
         'https://www.facebook.com/dialog/oauth/?scope=email%2Coffline_access&state='))
 
 
 def test_social_login_register(social_config, db_session):
-    '''Registers fresh user and logs him in'''
-
+    """Register fresh user and logs him in."""
     profile = {
         'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
         'displayName': u'teddy',
@@ -54,7 +54,7 @@ def test_social_login_register(social_config, db_session):
 
 
 def test_login_social_connect(social_config, active_user, db_session):
-    '''Connects and logs user in'''
+    """Connect and logs user in."""
     user = db_session.merge(active_user)
 
     profile = {
@@ -85,7 +85,7 @@ def test_login_social_connect(social_config, active_user, db_session):
 
 
 def test_logged_social_connect_account(social_config, active_user, db_session):
-    '''Connect facebook account to logged in user'''
+    """Connect facebook account to logged in user."""
     user = db_session.merge(active_user)
 
     profile = {

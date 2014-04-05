@@ -1,3 +1,4 @@
+"""Log in related test."""
 import time
 
 import pytest
@@ -5,8 +6,7 @@ from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
 
 def test_login_view(default_app):
-    '''Login:Form displayed'''
-
+    """Login view."""
     res = default_app.get('/login')
     assert res.form
     assert 'email' in res.form.fields
@@ -15,7 +15,7 @@ def test_login_view(default_app):
 
 
 def test_login_view_secret(extended_app):
-    '''Login:Form displayed after redirect'''
+    """Login:Form displayed after redirect from protected view."""
     res = extended_app.get('/secret', status=302)
     # check if redirect is correct
     assert res.headers['Location'] == 'http://localhost/login?after=%2Fsecret'
@@ -26,8 +26,7 @@ def test_login_view_secret(extended_app):
 
 
 def test_login(active_user, extended_app):
-    '''Login:Action test with clicks'''
-
+    """Actually log in test."""
     res = extended_app.get('/secret', status=302)
     assert res
     res = extended_app.get('/login?after=%2Fsecret')
@@ -41,8 +40,7 @@ def test_login(active_user, extended_app):
 
 
 def test_login_remember(active_user, extended_app):
-    '''Login:Action test with clicks'''
-
+    """Login user and mark remember me field."""
     res = extended_app.get('/login')
     assert is_user_logged(extended_app) is False
 
@@ -53,8 +51,7 @@ def test_login_remember(active_user, extended_app):
 
 
 def test_login_inactive(user, extended_app):
-    """Login:Action test with clicks if user is inactive"""
-
+    """Log in inactive user."""
     assert is_user_logged(extended_app) is False
 
     authenticate(extended_app)
@@ -63,8 +60,7 @@ def test_login_inactive(user, extended_app):
 
 
 def test_login_redirects(active_user, extended_app):
-    '''Login:Action test send post simply'''
-
+    """Login with redirects."""
     res = extended_app.get('/secret', status=302)
     assert res.status_code == 302
     res = res.follow()
@@ -77,7 +73,7 @@ def test_login_redirects(active_user, extended_app):
 
 
 def test_login_wrong(active_user, extended_app):
-    """Login:Action test: wrong password"""
+    """Use wrong password during authentication."""
     res = authenticate(
         extended_app, password="wrong password", response_code=200)
 
@@ -97,8 +93,7 @@ def test_login_wrong(active_user, extended_app):
 
 ))
 def test_login_csrf_error(active_user, extended_app, post_data):
-    """Login:Action test: no csrf token"""
-
+    """Try to log in with erroneus csrf token."""
     res = extended_app.get('/login', status=200)
     assert res
     res = extended_app.post('/login', post_data, status=401)
@@ -107,8 +102,7 @@ def test_login_csrf_error(active_user, extended_app, post_data):
 
 
 def test_logout(active_user, extended_app):
-    '''Logout:Action test'''
-
+    """Check logout action."""
     authenticate(extended_app)
     assert is_user_logged(extended_app) is True
 
@@ -119,10 +113,7 @@ def test_logout(active_user, extended_app):
 
 
 def test_automatic_logout(active_user, short_config, short_app):
-    ''' Test user logged out after
-        defined period of inactivity
-    '''
-
+    """Test automatic logout."""
     timeout = short_config.registry['config']['fullauth']['AuthTkt']['timeout'] + 1
 
     authenticate(short_app)
@@ -135,7 +126,7 @@ def test_automatic_logout(active_user, short_config, short_app):
 
 
 def test_login_success_xhr(active_user, extended_app):
-
+    """Test xhr authentication."""
     res = extended_app.get('/login')
     post_data = {
         'email': DEFAULT_USER['email'],
@@ -154,18 +145,12 @@ def test_login_success_xhr(active_user, extended_app):
 
 
 def test_default_login_forbidden(active_user, authable_app):
-    """
-    After successful login, user should get 403 on secret page.
-    """
-
+    """After successful login, user should get 403 on secret page."""
     authenticate(authable_app)
     authable_app.get('/secret', status=403)
 
 
 def test_default_login_redirectaway(active_user, authable_app):
-    """
-    After successful login, access to login page should result in redirect.
-    """
-
+    """After successful login, access to login page should result in redirect."""
     authenticate(authable_app)
     authable_app.get('/login', status=302)
