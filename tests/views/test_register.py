@@ -1,3 +1,4 @@
+"""Registration related tests."""
 from HTMLParser import HTMLParser
 
 import pytest
@@ -9,7 +10,7 @@ from tests.tools import DEFAULT_USER
 
 
 def test_register_view(default_app):
-    '''Register:Form displayed'''
+    """Display register form."""
     res = default_app.get('/register')
     assert res.form
 
@@ -21,9 +22,7 @@ def test_register_view(default_app):
     (DEFAULT_USER['email'], DEFAULT_USER['password'] * 10000),
 ))
 def test_register_success(db_session, default_app, email, password):
-    '''
-        Register:Register user
-    '''
+    """Register user successfully."""
     assert db_session.query(User).count() == 0
 
     res = default_app.get('/register')
@@ -41,10 +40,7 @@ def test_register_success(db_session, default_app, email, password):
 
 
 def test_register_user_exists(db_session, user, default_app):
-    '''
-        Register:Register user Second try
-    '''
-
+    """Trying to register existing user."""
     res = default_app.get('/register')
     res.form['email'] = DEFAULT_USER['email']
     res.form['password'] = DEFAULT_USER['password']
@@ -75,9 +71,7 @@ def test_register_user_exists(db_session, user, default_app):
     (DEFAULT_USER['email'], '', '', 'Please enter your password'),
 ))
 def test_register_error(db_session, default_app, email, password, confirm_password, error):
-    '''
-        Register:Register user with errors
-    '''
+    """Error in registration process."""
     assert db_session.query(User).count() == 0
 
     res = default_app.get('/register')
@@ -93,9 +87,7 @@ def test_register_error(db_session, default_app, email, password, confirm_passwo
 
 
 def test_register_wrong_csrf(db_session, default_app):
-    '''
-        Register:Register user: Wrong csrf
-    '''
+    """CSRF error during registration."""
     assert db_session.query(User).count() == 0
 
     res = default_app.get('/register')
@@ -111,12 +103,7 @@ def test_register_wrong_csrf(db_session, default_app):
 
 
 def test_no_pass_confirm(db_session, nopassconfirm_app):
-    '''
-        Register: Register without password confirm option
-    '''
-    '''
-        Register:Register user
-    '''
+    """Register without password confirm option."""
     assert db_session.query(User).count() == 0
 
     res = nopassconfirm_app.get('/register')
@@ -135,10 +122,7 @@ def test_no_pass_confirm(db_session, nopassconfirm_app):
 
 
 def test_register_action_no_password_required(db_session, nopassregister_app):
-    '''
-        Register:Register without password required
-    '''
-
+    """Register without password required."""
     with pytest.raises(NoResultFound):
         db_session.query(User).filter(User.email == DEFAULT_USER['email']).one()
 

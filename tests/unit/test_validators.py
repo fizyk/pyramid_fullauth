@@ -1,6 +1,8 @@
+"""Test various validators present on User class."""
 import pytest
 import transaction
 from pyramid.compat import text_type
+
 from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
 
@@ -16,8 +18,7 @@ from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
     text_type('"()<>[]:,;@\\\"!#$%&\'*+-/=?^_`{}| ~  ? ^_`{}|~.a"@example.org'),
 ])
 def test_email_valid_formats(db_session, user, email):
-    """Check all valid formats of Email (RFC 5321) can be set by user"""
-
+    """Check all valid formats of Email (RFC 5321) can be set by user."""
     user = db_session.merge(user)
 
     user.email = email
@@ -29,17 +30,13 @@ def test_email_valid_formats(db_session, user, email):
 
 
 def test_email_empty(user):
-    '''Test reaction of email validator for empty email'''
-
+    """Test reaction of email validator for empty email."""
     with pytest.raises(EmptyError):
         user.email = text_type('')
 
 
 def test_email_invalid_formats(db_session, user, invalid_email):
-    '''
-    Check all invalid formats of Email (RFC 5321) can not be set by user
-    '''
-
+    """Check all invalid formats of Email (RFC 5321) can not be set by user."""
     user = db_session.merge(user)
 
     with pytest.raises(EmailValidationError):

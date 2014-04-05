@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Authorisation related views."""
 
 from pyramid.view import view_config
 from pyramid.view import view_defaults
@@ -24,6 +23,8 @@ from pyramid_fullauth.events import AlreadyLoggedIn
 
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
 class LoginViews(BaseView):
+
+    """Login view collection."""
 
     @view_config(route_name='login', request_method='GET',
                  renderer='pyramid_fullauth:resources/templates/login.mako')
@@ -109,7 +110,6 @@ class LoginViews(BaseView):
 
         :returns: default login response
         :rtype: dict
-
         """
         return {
             'status': False,
@@ -124,7 +124,6 @@ class LoginViews(BaseView):
         Redirect already logged in user away from login page.
 
         :param dict response: response dictionary
-
         """
         redirect = HTTPFound(location=response['after'])
         try:
@@ -142,9 +141,7 @@ class LoginViews(BaseView):
 
     @view_config(route_name='logout')
     def logout(self):
-        '''
-            Logout method
-        '''
+        """Logout action."""
         location = '/'
         if self.config.redirects.logout:
             location = self.request.route_path(self.config.redirects.logout)

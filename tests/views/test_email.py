@@ -1,3 +1,4 @@
+"""Email change views."""
 import pytest
 import transaction
 
@@ -8,7 +9,7 @@ from tests.tools import authenticate, DEFAULT_USER
 
 
 def test_email_view_not_logged(default_app):
-    '''Change Email:view user not logged in'''
+    """Try to access email change view anonymously."""
     app = default_app
     res = app.get('/email/change')
     assert res.status_code == 302
@@ -16,7 +17,7 @@ def test_email_view_not_logged(default_app):
 
 
 def test_email_view_logged(db_session, active_user, default_app):
-    '''Change Email:view user logged in'''
+    """Simple get for change email view."""
     app = default_app
     db_session.close()
     # Session are de-syncronised
@@ -26,11 +27,12 @@ def test_email_view_logged(db_session, active_user, default_app):
 
     res = app.get('/email/change')
     assert res.status_code == 200
-    assert '<input type="email" placeholder="username@hostname.com" name="email" id="change[email]"/>' in res
+    assert res.form
+    assert res.form['email']
 
 
 def test_email_valid_view(db_session, active_user, default_app):
-    '''Change Email:view Valid data'''
+    """Change email with valid data."""
     app = default_app
 
     authenticate(app)
@@ -55,7 +57,7 @@ def test_email_valid_view(db_session, active_user, default_app):
 
 def test_email_wrong_email_view(
         db_session, active_user, default_app, invalid_email):
-    '''Change Email:view Wrong email'''
+    """Change email with incorrect email."""
     app = default_app
     # login user
     authenticate(app)
@@ -71,7 +73,7 @@ def test_email_wrong_email_view(
 
 
 def test_email_proceed(db_session, active_user, default_app):
-    '''Change Email:changing email'''
+    """Confirm email change view."""
     app = default_app
     # login user
     authenticate(app)

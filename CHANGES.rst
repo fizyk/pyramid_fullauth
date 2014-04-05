@@ -22,6 +22,7 @@ tests
 - parametrize tests against two most recent pyramid versions and sqlalchemy
 - turned on pylama to check code with linters:
     - pep8
+    - pep257
     - pyflakes
     - mccabe
 - add pytest-dbfixtures, and run tests against postgresql and mysql as well

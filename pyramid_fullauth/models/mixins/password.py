@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Password mixin related module."""
 
 import os
 import hashlib
@@ -26,9 +25,7 @@ except AttributeError:  # pragma: no cover
 
 class UserPasswordMixin(object):
 
-    '''
-        Authentication field definition along with appropriate methods
-    '''
+    """Authentication field definition along with appropriate methods."""
 
     #: password field
     password = Column(Unicode(40), nullable=False)
@@ -45,38 +42,37 @@ class UserPasswordMixin(object):
     reset_key = Column(String(255), unique=True)
 
     def check_password(self, password):
-        '''
-            Checks to see whether passwords are the same
+        """
+        Check if password correspond to the saved one.
 
-            :param str password: password to compare
-            :returns: True, if password is same, False if not
-            :rtype: bool
-        '''
+        :param str password: password to compare
+
+        :returns: True, if password is same, False if not
+        :rtype: bool
+        """
         if password and self.hash_password(password, self._salt, self._hash_algorithm) == self.password:
                 return True
 
         return False
 
     def set_reset(self):
-        '''
-            Generates password reset key
-        '''
+        """Generate password reset key."""
         self.reset_key = str(uuid.uuid4())
 
     @classmethod
     def hash_password(cls, password, salt, hash_method):
-        '''
-            Produces hash out of a password
+        """
+        Produce hash out of a password.
 
-            :param str password: password string, not hashed
-            :param str salt: salt
-            :param callable hash_method: a hash method which will be used to generate hash
-            :returns: hashed password
-            :rtype: str
-        '''
+        :param str password: password string, not hashed
+        :param str salt: salt
+        :param callable hash_method: a hash method which will be used to generate hash
 
+        :returns: hashed password
+        :rtype: str
+
+        """
         # let's allow passing just method name
-
         if not callable(hash_method):
             hash_method = getattr(hashlib, hash_method)
 
@@ -94,36 +90,37 @@ class UserPasswordMixin(object):
 
     @validates('password')
     def password_validator(self, key, password):
-        '''
-            Password validator keeps new password hashed.
-            Rises Value error on empty password
+        """
+        Validate password.
 
-            :param User user: object instance that triggered event
-            :param str password: new password
-            :param str oldvalue: old password value
-            :param initiatior: the attribute implementation object which initiated this event.
-            :returns: hashed and salted password
-            :rtype: str
-            :raises: pyramid_fullauth.exceptions.EmptyError
+        Password validator keeps new password hashed.
+        Rises Value error on empty password
 
-            .. note::
+        :param str key: field key
+        :param str password: new password
 
-                If you using this Mixin on your own User object, don't forget to add a listener as well, like that:
+        :returns: hashed and salted password
+        :rtype: str
+        :raises: pyramid_fullauth.exceptions.EmptyError
 
-                .. code-block:: python
+        .. note::
 
-                    from sqlalchemy.event import listen
+            If you're using this Mixin on your own User object,
+            don't forget to add a listener as well, like that:
 
-                    listen(User.password, 'set', User.password_listener, retval=True)
+            .. code-block:: python
 
-            .. note::
+                from sqlalchemy.event import listen
 
-                For more information on Attribute Events in sqlalchemy see:
+                listen(User.password, 'set', User.password_listener, retval=True)
 
-                :meth:`sqlalchemy.orm.events.AttributeEvents.set`
+        .. note::
 
-        '''
+            For more information on Attribute Events in sqlalchemy see:
 
+            :meth:`sqlalchemy.orm.events.AttributeEvents.set`
+
+        """
         if not password:
             raise EmptyError('password-empty')
 

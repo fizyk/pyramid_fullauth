@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Social login/registration view."""
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
@@ -28,14 +27,22 @@ from pyramid_fullauth import tools
              renderer="pyramid_fullauth:resources/templates/register.mako")
 class SocialLoginViews(BaseView):
 
-    '''
-        Social login views definition
-    '''
+    """Social login views definition."""
 
     def set_provider(self, user, provider_name, user_provider_id):
-        '''
-            Method sets the provider authentication method for user.
-        '''
+        """
+        Set authentication provider on user.
+
+        This method will connect given provider with given user,
+        unless provider_id has already been used on another user.
+
+        :param pyramid_fullauth.user.User user: user object
+        :param str provider_name: provider name
+        :param str user_provider_id: user id delivered by given provider
+
+        :returns: whether user got/was connected or the connection was made with another user.
+        :rtype: bool
+        """
         if user.id:
             try:
                 provider_auth = pyramid_basemodel.Session.query(
@@ -66,7 +73,6 @@ class SocialLoginViews(BaseView):
         action tries to find existing user in database,
         if it exists - login this user, otherwise creates new user.
         """
-
         context = self.request.context
         response_values = {
             'status': False,
@@ -119,7 +125,6 @@ class SocialLoginViews(BaseView):
 
         :returns: either response values if any error occured,
             or HTTPFound if raised in SocialAccountAlreadyConnected
-
         """
         context = self.request.context
         user = self.request.user

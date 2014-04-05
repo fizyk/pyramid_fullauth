@@ -1,10 +1,11 @@
+"""Test user representation."""
 from pyramid.compat import text_type
 
 from pyramid_fullauth.models import User
 
 
 def test_introduce_email():
-    '''user gets introduced by e-mail only'''
+    """user gets introduced by e-mail only."""
     user = User()
     user.email = text_type('test@test.pl')
     # To string should return concatenated email
@@ -12,7 +13,7 @@ def test_introduce_email():
 
 
 def test_introduce_username():
-    '''user gets introduced by username'''
+    """user gets introduced by username."""
     user = User()
     # 'User not saved should be represented by \'None\'')
     assert str(user) == 'None'

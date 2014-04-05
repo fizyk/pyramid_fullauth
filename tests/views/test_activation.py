@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Account activation related tests."""
 from urllib import quote
 
 import pytest
@@ -9,9 +10,7 @@ from tests.tools import authenticate, is_user_logged
 
 
 def test_account_activation(user, db_session, default_app):
-    '''
-        Register:Activate user
-    '''
+    """Activate user."""
     user = db_session.merge(user)
 
     default_app.get('/register/activate/' + user.activate_key)
@@ -27,9 +26,7 @@ def test_account_activation(user, db_session, default_app):
 
 
 def test_account_activation_wrong_key(user, db_session, default_app):
-    '''
-        Register:Activate user
-    '''
+    """Activate user with wrong key."""
     user = db_session.merge(user)
     activate_key = user.activate_key
     res = default_app.get('/register/activate/' + activate_key[:-5], status=200)
@@ -46,9 +43,7 @@ def test_account_activation_wrong_key(user, db_session, default_app):
 
 
 def test_account_activation_key_with_trash_chars(user, db_session, default_app):
-    '''
-        Register:Activate user
-    '''
+    """Strange characters in activation key."""
     if db_session.connection().dialect.name == 'mysql':
         pytest.xfail("failing due mysql default character set being latin1 and collation latin1_swedish_ci")
 
@@ -72,9 +67,7 @@ def test_account_activation_key_with_trash_chars(user, db_session, default_app):
 
 
 def test_account_activation_twice(user, db_session, default_app):
-    '''
-        Register:Activate user
-    '''
+    """Click activation link twice."""
     user = db_session.merge(user)
 
     activate_key = user.activate_key

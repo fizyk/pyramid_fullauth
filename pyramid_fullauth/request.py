@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
-
-'''
-    These method gets added to each ``pyramid.request.Request`` object
-'''
+"""These method gets added to each ``pyramid.request.Request`` object."""
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, unauthenticated_userid
@@ -19,17 +14,17 @@ from pyramid_fullauth.models import User
 
 
 def login_perform(request, user, location=None, remember_me=False):
-    '''
-        Performs login action
+    """
+    Perform login action.
 
-        :param pyramid.request.Request request: a request object
-        :param pyramid_fullauth.models.User user: a user object
-        :param str location: where user should be redirected after login
-        :param bool remember_me: if True set cookie max_age to one month (60 * 60 * 24 * 30 seconds)
+    :param pyramid.request.Request request: a request object
+    :param pyramid_fullauth.models.User user: a user object
+    :param str location: where user should be redirected after login
+    :param bool remember_me: if True set cookie max_age to one month (60 * 60 * 24 * 30 seconds)
 
-        :returns: redirect exception
-        :rtype: pyramid.httpexceptions.HTTPFound
-    '''
+    :returns: redirect exception
+    :rtype: pyramid.httpexceptions.HTTPFound
+    """
     user.logged_at = func.now()
     if remember_me:  # if remember in POST set cookie timeout to one from configure
         headers = remember(request, user.id,
@@ -45,13 +40,15 @@ def login_perform(request, user, location=None, remember_me=False):
 
 
 def user(request):
-    '''
-        When called for the first time, it queries for user, which is later available as a pure property
-        overriding this method
+    """
+    Return user object.
 
-        :returns: logged in user object, or None
-        :rtype: pyramid_fullauth.models.User
-    '''
+    When called for the first time, it queries for user, which is later available as a pure property
+    overriding this method. See :meth:`pyramid_fullauth.includeme` for logic behind property.
+
+    :returns: logged in user object, or None
+    :rtype: pyramid_fullauth.models.User
+    """
     userid = unauthenticated_userid(request)
     if userid:
         try:

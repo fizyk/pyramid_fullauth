@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""pyramid_fullauth's installation file."""
 
 import os
 import re
@@ -12,6 +12,14 @@ with open(os.path.join(here, 'pyramid_fullauth', '__init__.py')) as v_file:
 
 
 def read(fname):
+    """
+    Read file's content.
+
+    :param str fname: name of file to read
+
+    :returns: file content
+    :rtype: str
+    """
     return open(os.path.join(here, fname)).read()
 
 requirements = [

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Fullauth's configuration module."""
 
 import logging
 
@@ -26,13 +25,11 @@ logger = logging.getLogger(__name__)
 
 
 def includeme(configurator):
-    '''
-    pyramid_fullauth includeme method
+    """
+    Configure pyramid_fullauth on application.
 
-    :param pyramid.configurator.Configurator configurator:
-        pyramid's configurator object
-    '''
-
+    :param pyramid.configurator.Configurator configurator: pyramid's configurator object
+    """
     config_defaults(configurator, 'pyramid_fullauth:config/default.yaml')
     configurator.include('pyramid_localize')
     configurator.include('pyramid_mako')

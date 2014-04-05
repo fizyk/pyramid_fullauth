@@ -1,8 +1,12 @@
+"""
+Test for recognizing default settings.
+
+Also helps to keeping them in line.
+"""
 
 
 def test_defaults(default_config):
-    '''Load defaults config for fullauth'''
-
+    """Load defaults config for fullauth."""
     # Config should get created based on fullauth defaults
     assert 'fullauth' in default_config.registry['config']
     # csrf should be turned on by default

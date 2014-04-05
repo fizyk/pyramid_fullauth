@@ -1,3 +1,4 @@
+"""Reset password views."""
 from HTMLParser import HTMLParser
 import transaction
 
@@ -7,13 +8,13 @@ NEW_PASSWORD = 'YouShallPass'
 
 
 def test_reset_view(default_app):
-    '''Reset:view'''
+    """Simple get test."""
     res = default_app.get('/password/reset')
     assert res.form
 
 
 def test_reset_action(user, db_session, default_app):
-    '''Reset:Request Action get reset code'''
+    """Successful password reset request."""
     user = db_session.merge(user)
     assert user.reset_key is None
 
@@ -28,7 +29,7 @@ def test_reset_action(user, db_session, default_app):
 
 
 def test_reset_email_not_exists(user, db_session, default_app):
-    '''Reset:Request Action with wrong email'''
+    """Reset password request with wrong email (not in database)."""
     user = db_session.merge(user)
 
     res = default_app.get('/password/reset')
@@ -38,7 +39,7 @@ def test_reset_email_not_exists(user, db_session, default_app):
 
 
 def test_reset_proceed(user, db_session, default_app):
-    '''Reset test for reseting pasword'''
+    """Actually change password."""
     user = db_session.merge(user)
     user.set_reset()
     transaction.commit()
@@ -57,7 +58,7 @@ def test_reset_proceed(user, db_session, default_app):
 
 
 def test_reset_proceed_wrong_confirm(user, db_session, default_app):
-    '''Reset test for reseting pasword with notmatched passwords'''
+    """Reset test for reseting pasword with notmatched passwords."""
     user = db_session.merge(user)
     user.set_reset()
     transaction.commit()
@@ -73,7 +74,7 @@ def test_reset_proceed_wrong_confirm(user, db_session, default_app):
 
 
 def test_reset_proceed_wrong_csrf(user, db_session, default_app):
-    '''Reset test for reseting pasword with notmatched csrf'''
+    """Reset test for reseting pasword with notmatched csrf."""
     user = db_session.merge(user)
     user.set_reset()
     transaction.commit()

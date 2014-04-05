@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
+"""Registration related views."""
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
@@ -25,13 +24,12 @@ from pyramid_fullauth.exceptions import ValidateError
 @view_defaults(permission=NO_PERMISSION_REQUIRED)
 class RegisterViews(BaseView):
 
+    """Registration views."""
+
     @view_config(route_name='register:activate',
                  renderer="pyramid_fullauth:resources/templates/activate.mako")
     def activate(self):
-        '''
-            Process account activation
-        '''
-
+        """Process account activation."""
         activate_hash = self.request.matchdict.get('hash')
         user = None
         response = {}
@@ -54,10 +52,7 @@ class RegisterViews(BaseView):
     @view_config(route_name='register',
                  renderer="pyramid_fullauth:resources/templates/register.mako")
     def register(self):
-        '''
-            Processes register
-        '''
-
+        """Display registration form."""
         csrf_token = self.request.session.get_csrf_token()
         return {'status': True, 'msg': None, 'csrf_token': csrf_token, 'errors': {}}
 
@@ -67,10 +62,7 @@ class RegisterViews(BaseView):
     @view_config(route_name='register', request_method='POST', xhr=True,
                  check_csrf=True, renderer="json")
     def register_POST(self):
-        '''
-            Process POST register request
-        '''
-
+        """Process registration request."""
         response = {
             'status': False,
             'msg': self.request._('You have an error in your registration form',
@@ -105,9 +97,7 @@ class RegisterViews(BaseView):
 
         :returns: response
         :rtype: dict
-
         """
-
         email = self.request.POST.get('email', u'')
         # here if e-mail is already in database
 

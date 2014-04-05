@@ -1,30 +1,27 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 by pyramid_fullauth authors and contributors <see AUTHORS file>
+# Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
-
+"""Auth related methods and classes."""
 from pyramid.security import Allow, Everyone, forget, ALL_PERMISSIONS
 
 
 def groupfinder(userid, request):
-    '''
-        Reads all users groups,
+    """
+    Read all user's groups.
 
-        .. note::
+    .. note::
 
-            Adds **s:inactive** group to users who has not activated their account, and **s:user** group to those, who did.
-            If user has is_admin flag, he gets **s:superadmin** group set
+        Adds **s:inactive** group to users who has not activated their account, and **s:user** group to those, who did.
+        If user has is_admin flag, he gets **s:superadmin** group set
 
-            Might be useful, when you want restrict access to some parts of your application, but still allow log in, and access to some other parts.
+        Might be useful, when you want restrict access to some parts of your application, but still allow log in, and access to some other parts.
 
-        :param int userid: user identity
-        :param pyramid.request.Request request: request object
-        :returns: list of groups
-        :rtype: list
-    '''
-
+    :param int userid: user identity
+    :param pyramid.request.Request request: request object
+    :returns: list of groups
+    :rtype: list
+    """
     user = request.user
     groups = []
     if user and user.id == userid:
@@ -45,17 +42,18 @@ def groupfinder(userid, request):
 
 class BaseACLRootFactoryMixin(object):
 
-    '''
-        ACL list factory Mixin,
-        __acl__ is the attribute which stores the list.
+    """
+    ACL list factory Mixin.
 
-        :return: tuple (Allow|Deny, Group name, Permission)
-        :rtype: list
+    __acl__ is the attribute which stores the list.
 
-        .. note::
+    :return: tuple (Allow|Deny, Group name, Permission)
+    :rtype: list
 
-            Can be converted later to database stored (sqlalchemy session is accessible through request.db)
-    '''
+    .. note::
+
+        Can be converted later to database stored (sqlalchemy session is accessible through request.db)
+    """
 
     __acl__ = [(Allow, Everyone, 'view'),
                (Allow, 's:superadmin', ALL_PERMISSIONS),
@@ -63,17 +61,16 @@ class BaseACLRootFactoryMixin(object):
                ]
 
     def __init__(self, request):
+        """Assing request as instance attribute."""
         self.request = request
 
 
 class force_logout(object):
 
-    '''
-        Logs out user.
-    '''
+    """Log out user decorator after executing view."""
 
     def __call__(self, wrapped_view):
-
+        """Apply decorator."""
         def decorator(*args, **kwargs):
             if not args:
                 return wrapped_view(*args, **kwargs)
