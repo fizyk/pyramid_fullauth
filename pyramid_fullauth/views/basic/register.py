@@ -8,60 +8,30 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import NO_PERMISSION_REQUIRED
 
-from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
-from pyramid_fullauth.models import User
-from pyramid_fullauth.models import AuthenticationProvider
-from pyramid_fullauth.events import BeforeRegister
-from pyramid_fullauth.events import AfterRegister
-from pyramid_fullauth.events import AfterActivate
+from pyramid_fullauth.models import User, AuthenticationProvider
+from pyramid_fullauth.events import BeforeRegister, AfterRegister
 from pyramid_fullauth import tools
 from pyramid_fullauth.exceptions import ValidateError
 
 
-@view_defaults(permission=NO_PERMISSION_REQUIRED)
-class RegisterViews(BaseView):
+@view_defaults(route_name='register', permission=NO_PERMISSION_REQUIRED,
+               renderer="pyramid_fullauth:resources/templates/register.mako")
+class RegisterView(BaseView):
 
     """Registration views."""
 
-    @view_config(route_name='register:activate',
-                 renderer="pyramid_fullauth:resources/templates/activate.mako")
-    def activate(self):
-        """Process account activation."""
-        activate_hash = self.request.matchdict.get('hash')
-        user = None
-        response = {}
-        response['status'] = True
-        if activate_hash:
-            try:
-                user = pyramid_basemodel.Session.query(User).filter(User.activate_key == activate_hash).one()
-                if not user.is_active:
-                    user.is_active = True
-            except NoResultFound:
-                response['status'] = False
-        try:
-            self.request.registry.notify(AfterActivate(self.request, user))
-        except HTTPFound as e:
-            # it's a redirect, let's follow it!
-            return e
-
-        return response
-
-    @view_config(route_name='register',
-                 renderer="pyramid_fullauth:resources/templates/register.mako")
-    def register(self):
+    @view_config(request_method='GET')
+    def get(self):
         """Display registration form."""
         csrf_token = self.request.session.get_csrf_token()
         return {'status': True, 'msg': None, 'csrf_token': csrf_token, 'errors': {}}
 
-    @view_config(route_name='register', request_method='POST',
-                 renderer="pyramid_fullauth:resources/templates/register.mako",
-                 check_csrf=True)
-    @view_config(route_name='register', request_method='POST', xhr=True,
-                 check_csrf=True, renderer="json")
-    def register_POST(self):
+    @view_config(request_method='POST', check_csrf=True)
+    @view_config(request_method='POST', check_csrf=True, xhr=True, renderer="json")
+    def post(self):
         """Process registration request."""
         response = {
             'status': False,
