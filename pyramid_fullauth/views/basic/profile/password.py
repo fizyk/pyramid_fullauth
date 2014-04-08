@@ -61,12 +61,14 @@ class PasswordResetView(BaseView):
 
 @view_defaults(route_name='password:reset:continue', permission=NO_PERMISSION_REQUIRED,
                renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
-def PasswordResetContinueView(BaseView):
+class PasswordResetContinueView(BaseView):
+
     """
     Password reset views.
 
     These views display actual reset password views.
     """
+
     @force_logout()
     @view_config(request_method='GET')
     def get(self):
@@ -76,6 +78,7 @@ def PasswordResetContinueView(BaseView):
             'csrf_token': self.request.session.get_csrf_token()
         }
 
+    @force_logout()
     @view_config(request_method='POST', check_csrf=True)
     def post(self):
         """Validate and possibly accept new email."""
