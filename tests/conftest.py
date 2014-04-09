@@ -5,6 +5,7 @@ import pytest
 import transaction
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.pool import NullPool
 from zope.sqlalchemy import ZopeTransactionExtension
 
 from pyramid.compat import text_type
@@ -34,7 +35,7 @@ def web_request():
     return request
 
 
-@pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
+@pytest.fixture(scope='function', params=['postgresql'])
 def db_session(request):
     """SQLAlchemy session."""
     from pyramid_fullauth.models import Base
@@ -48,14 +49,13 @@ def db_session(request):
         request.getfuncargvalue('postgresql')  # takes care of creating database
         connection = 'postgresql+psycopg2://postgres:@127.0.0.1:5433/tests'
 
-    engine = create_engine(connection, echo=False)
+    engine = create_engine(connection, echo=False, poolclass=NullPool)
     pyramid_basemodel.Session = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
     pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_drop=True)
 
     def destroy():
         transaction.commit()
         Base.metadata.drop_all(engine)
-        engine.dispose()
 
     request.addfinalizer(destroy)
 
