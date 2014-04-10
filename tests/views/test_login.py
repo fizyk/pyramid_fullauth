@@ -143,8 +143,17 @@ def test_login_success_xhr(active_user, extended_app):
                             expect_errors=True)
 
     assert res.content_type == 'application/json'
+    assert res.json['status'] is True
+    assert 'after' in res.json
     assert is_user_logged(extended_app) is True
-    assert res.json['status']
+
+    # second call
+    res = extended_app.post('/login?after=%2Fsecret',
+                            post_data,
+                            xhr=True,
+                            expect_errors=True)
+    assert res.json['status'] is True
+    assert res.json['msg'] == 'Already logged in!'
 
 
 def test_default_login_forbidden(active_user, authable_app):
