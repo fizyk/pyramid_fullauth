@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyramid_fullauth 0.2.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-03 22:06+0200\n"
+"POT-Creation-Date: 2014-04-10 22:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: pyramid_fullauth/tools.py:48
+#: pyramid_fullauth/tools.py:47
 msgid "Please enter your password"
 msgstr ""
 
-#: pyramid_fullauth/tools.py:54
+#: pyramid_fullauth/tools.py:53
 msgid "Password is too short"
 msgstr ""
 
-#: pyramid_fullauth/tools.py:62 pyramid_fullauth/views/basic/profile.py:197
+#: pyramid_fullauth/tools.py:61
+#: pyramid_fullauth/views/basic/profile/password.py:124
 msgid "password-mismatch"
 msgstr ""
 
@@ -148,60 +149,60 @@ msgstr ""
 msgid "Recover your password - choose new password"
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:129
+#: pyramid_fullauth/views/social.py:135
 msgid "Your account is already connected to other ${provider} account."
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:136
+#: pyramid_fullauth/views/social.py:142
 msgid "This ${provider} account is already connected with other account."
 msgstr ""
 
-#: pyramid_fullauth/views/basic/forbidden.py:43
+#: pyramid_fullauth/views/basic/forbidden.py:39
 msgid "forbidden-notallowed"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/forbidden.py:48
+#: pyramid_fullauth/views/basic/forbidden.py:44
 msgid "forbidden-login"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/login.py:93
-#: pyramid_fullauth/views/basic/login.py:99
-msgid "Wrong e-mail or password."
-msgstr ""
-
-#: pyramid_fullauth/views/basic/login.py:117
+#: pyramid_fullauth/views/basic/login.py:35
 msgid "Login error"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:54
-msgid "User with this email exists"
+#: pyramid_fullauth/views/basic/login.py:124
+#: pyramid_fullauth/views/basic/login.py:130
+msgid "Wrong e-mail or password."
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile.py:70
-msgid "E-mail is empty"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:76
-msgid "Incorrect e-mail format"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:83
-msgid "We sent you email to activate your new email address"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/profile.py:140
-msgid "user-not-exists"
-msgstr ""
-
-#: pyramid_fullauth/views/basic/register.py:76
+#: pyramid_fullauth/views/basic/register.py:38
 msgid "You have an error in your registration form"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:89
+#: pyramid_fullauth/views/basic/register.py:51
 msgid "You have successfully registered"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:115
+#: pyramid_fullauth/views/basic/register.py:75
 msgid "User with given e-mail already exists!"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile/email.py:42
+msgid "User with this email exists"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile/email.py:58
+msgid "E-mail is empty"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile/email.py:64
+msgid "Incorrect e-mail format"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile/email.py:71
+msgid "We sent you email to activate your new email address"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/profile/password.py:48
+msgid "user-not-exists"
 msgstr ""
 

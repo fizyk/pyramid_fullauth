@@ -1,11 +1,12 @@
 """Tools used for fullauth tests."""
 from pyramid.view import view_config
+from pyramid.compat import text_type
 
 DEFAULT_USER = {
-    'username': 'u1',
-    'password': 'password1',
-    'email': 'email@example.com',
-    'address_ip': '127.0.0.1'
+    'username': text_type('u1'),
+    'password': text_type('password1'),
+    'email': text_type('email@example.com'),
+    'address_ip': text_type('127.0.0.1')
 }
 
 
