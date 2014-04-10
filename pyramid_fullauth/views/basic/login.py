@@ -89,43 +89,6 @@ class LoginViewPost(BaseLoginView):
         password = self.request.POST.get('password', '')
         try:
             user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
-            try:
-                self.request.registry.notify(BeforeLogIn(self.request, user))
-            except AttributeError as e:
-                self.response['msg'] = str(e)
-                return self.response
-
-            if user.check_password(password):
-                try:
-                    # if remember in POST set cookie timeout to one month
-                    remember_me = self.request.POST.get('remember')
-                    self.request.registry.notify(AfterLogIn(self.request, user))
-                except HTTPFound as redirect:
-                    redirect_return = self.request.login_perform(
-                        user, location=redirect.location, remember_me=remember_me)
-                    if self.request.is_xhr:
-                        self.response['status'] = True
-                        del self.response['msg']
-                        self.response['after'] = redirect_return.location
-                        return self.response
-                    else:
-                        return redirect_return
-                except AttributeError as e:
-                    self.response['msg'] = str(e)
-                    return self.response
-                else:
-                    redirect = self.request.login_perform(user, remember_me=remember_me)
-                    if self.request.is_xhr:
-                        self.response['status'] = True
-                        del self.response['msg']
-                        self.response['after'] = redirect.location
-                        return self.response
-                    else:
-                        return redirect
-            else:
-                self.response['msg'] = self.request._('Wrong e-mail or password.',
-                                                      domain='pyramid_fullauth')
-                return self.response
         except NoResultFound:
             self.request.registry.notify(BeforeLogIn(self.request, None))
 
@@ -133,6 +96,40 @@ class LoginViewPost(BaseLoginView):
                                                   domain='pyramid_fullauth')
             return self.response
 
-        self.response['status'] = True
-        del self.response['msg']
-        return self.response
+        try:
+            self.request.registry.notify(BeforeLogIn(self.request, user))
+        except AttributeError as e:
+            self.response['msg'] = str(e)
+            return self.response
+
+        if user.check_password(password):
+            try:
+                # if remember in POST set cookie timeout to one month
+                remember_me = self.request.POST.get('remember')
+                self.request.registry.notify(AfterLogIn(self.request, user))
+            except HTTPFound as redirect:
+                redirect_return = self.request.login_perform(
+                    user, location=redirect.location, remember_me=remember_me)
+                if self.request.is_xhr:
+                    self.response['status'] = True
+                    del self.response['msg']
+                    self.response['after'] = redirect_return.location
+                    return self.response
+                else:
+                    return redirect_return
+            except AttributeError as e:
+                self.response['msg'] = str(e)
+                return self.response
+            else:
+                redirect = self.request.login_perform(user, remember_me=remember_me)
+                if self.request.is_xhr:
+                    self.response['status'] = True
+                    del self.response['msg']
+                    self.response['after'] = redirect.location
+                    return self.response
+                else:
+                    return redirect
+        else:
+            self.response['msg'] = self.request._('Wrong e-mail or password.',
+                                                  domain='pyramid_fullauth')
+            return self.response
