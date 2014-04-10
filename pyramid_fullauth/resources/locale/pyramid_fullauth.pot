@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyramid_fullauth 0.2.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-10 22:16+0200\n"
+"POT-Creation-Date: 2014-04-10 22:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,8 +169,12 @@ msgstr ""
 msgid "Login error"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/login.py:124
-#: pyramid_fullauth/views/basic/login.py:130
+#: pyramid_fullauth/views/basic/login.py:51
+msgid "Already logged in!"
+msgstr ""
+
+#: pyramid_fullauth/views/basic/login.py:126
+#: pyramid_fullauth/views/basic/login.py:132
 msgid "Wrong e-mail or password."
 msgstr ""
 

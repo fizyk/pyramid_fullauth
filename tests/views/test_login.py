@@ -39,34 +39,6 @@ def test_login(active_user, extended_app):
     assert is_user_logged(extended_app) is True
 
 
-def test_login_xhr(active_user, extended_app):
-    """Test login in throu xhr request."""
-    forbidden = extended_app.get('/secret', xhr=True, status=403)
-    assert forbidden.json['status'] is False
-    # get login page (csrf_token there)
-    res = extended_app.get(forbidden.json['login_url'])
-
-    # construct post data
-    auth_data = {
-        'csrf_token': res.form['csrf_token'].value,
-        'email': DEFAULT_USER['email'],
-        'password': DEFAULT_USER['password']
-    }
-
-    # send xhr request
-    res = extended_app.post(forbidden.json['login_url'], auth_data, xhr=True)
-    # make sure user is logged!
-    assert is_user_logged(extended_app) is True
-    assert res.json['status'] is True
-    assert res.json['after'] == '/'
-
-    # go back to secret page
-    forbidden = extended_app.get('/secret', xhr=True, status=403)
-    # no permission, but logged.
-    assert forbidden.json['status'] is False
-    assert 'login_url' not in forbidden.json
-
-
 def test_login_remember(active_user, extended_app):
     """Login user and mark remember me field."""
     res = extended_app.get('/login')
@@ -177,8 +149,16 @@ def test_login_success_xhr(active_user, extended_app):
 
 def test_default_login_forbidden(active_user, authable_app):
     """After successful login, user should get 403 on secret page."""
+    authable_app.get('/secret', status=302)
+    forbidden = authable_app.get('/secret', xhr=True, status=403)
+    assert forbidden.json['status'] is False
     authenticate(authable_app)
     authable_app.get('/secret', status=403)
+    # go back to secret page
+    forbidden = authable_app.get('/secret', xhr=True, status=403)
+    # no permission, but logged.
+    assert forbidden.json['status'] is False
+    assert 'login_url' not in forbidden.json
 
 
 def test_default_login_redirectaway(active_user, authable_app):

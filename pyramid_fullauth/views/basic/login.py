@@ -48,7 +48,9 @@ class BaseLoginView(BaseView):
 
         if self.request.is_xhr:
             self.response['status'] = True
-            del self.response['msg']
+            self.response['msg'] = self.request._(
+                'Already logged in!',
+                domain='pyramid_fullauth')
             self.response['after'] = redirect.location
             return self.response
         else:
