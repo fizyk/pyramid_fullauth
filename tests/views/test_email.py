@@ -32,7 +32,7 @@ def test_email_view_logged(db_session, active_user, default_app):
     assert res.form['email']
 
 
-def test_email_valid_view(db_session, active_user, default_app):
+def test_email_valid(db_session, active_user, default_app):
     """Change email with valid data."""
     app = default_app
 
@@ -47,6 +47,33 @@ def test_email_valid_view(db_session, active_user, default_app):
     form['email'] = new_email
     res = form.submit()
     assert res
+
+    transaction.commit()
+
+    user = db_session.query(User).filter(User.email == email).one()
+    assert user.new_email == new_email
+    assert user.email == email
+    assert user.email_change_key is not None
+
+
+def test_email_valid_xhr(db_session, active_user, default_app):
+    """Change email with valid data."""
+    app = default_app
+
+    authenticate(app)
+    email = DEFAULT_USER['email']
+    new_email = 'email@email.com'
+
+    user = db_session.query(User).filter(User.email == email).one()
+
+    res = app.get('/email/change')
+    res = app.post(
+        '/email/change',
+        {
+            'csrf_token': res.form['csrf_token'].value,
+            'email': new_email},
+        xhr=True)
+    assert res.json['status'] is True
 
     transaction.commit()
 
