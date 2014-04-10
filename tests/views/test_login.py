@@ -92,10 +92,13 @@ def test_login_redirects(active_user, extended_app):
     assert res.status_code == 302
 
 
-def test_login_wrong(active_user, extended_app):
+@pytest.mark.parametrize('user_kwargs', (
+    {'password': 'wrong password'},
+    {'email': 'not@registered.py'}
+))
+def test_login_wrong(active_user, user_kwargs, extended_app):
     """Use wrong password during authentication."""
-    res = authenticate(
-        extended_app, password="wrong password", response_code=200)
+    res = authenticate(extended_app, response_code=200, **user_kwargs)
 
     assert 'Error! Wrong e-mail or password.' in res
     assert res
