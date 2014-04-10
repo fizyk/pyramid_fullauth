@@ -56,8 +56,7 @@ def test_email_valid_view(db_session, active_user, default_app):
     assert user.email_change_key is not None
 
 
-def test_email_wrong_email_view(
-        db_session, active_user, default_app, invalid_email):
+def test_wrong_email(db_session, active_user, default_app, invalid_email):
     """Change email with incorrect email."""
     app = default_app
     # login user
@@ -70,7 +69,20 @@ def test_email_wrong_email_view(
     assert 'Error! Incorrect e-mail format' in res
 
 
-def test_email_existing_email_view(db_session, active_user, default_app):
+def test_empty_email(db_session, active_user, default_app):
+    """Try to change email with empty value."""
+    app = default_app
+    # login user
+    authenticate(app)
+
+    res = app.get('/email/change')
+    form = res.form
+    form['email'] = ''
+    res = form.submit()
+    assert 'Error! E-mail is empty' in res
+
+
+def test_existing_email(db_session, active_user, default_app):
     """Try to change email to existing one email."""
     # add other user
     existing_email = text_type("existing@email.eg")
