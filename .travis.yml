@@ -5,8 +5,8 @@ python:
     # - "3.3"
 env:
     - PYRAMID_VER="1.4.5" SQLALCHEMY_VER="0.9.4"
-    - PYRAMID_VER="1.5b1" SQLALCHEMY_VER="0.8.6"
-    - PYRAMID_VER="1.5b1" SQLALCHEMY_VER="0.9.4"
+    - PYRAMID_VER="1.5" SQLALCHEMY_VER="0.8.6"
+    - PYRAMID_VER="1.5" SQLALCHEMY_VER="0.9.4"
 install:
     - "python setup.py develop"
     - "pip install pyramid_fullauth[tests] coveralls pylama pyramid==$PYRAMID_VER sqlalchemy==$SQLALCHEMY_VER --use-mirrors"
