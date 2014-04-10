@@ -37,7 +37,9 @@ class EmailChangeViews(BaseView):
         """Process email change request."""
         csrf_token = self.request.session.get_csrf_token()
         try:
-            pyramid_basemodel.Session.query(User).filter(User.email == self.request.POST.get('email', '')).one()
+            pyramid_basemodel.Session.query(User).filter(
+                User.email == self.request.POST.get('email', '')
+            ).one()
             return {'status': False,
                     'msg': self.request._('User with this email exists',
                                           domain='pyramid_fullauth'),

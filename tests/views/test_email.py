@@ -3,6 +3,7 @@ import pytest
 import transaction
 
 from sqlalchemy.orm.exc import NoResultFound
+from pyramid.compat import text_type
 from pyramid_fullauth.models import User
 
 from tests.tools import authenticate, DEFAULT_USER
@@ -62,14 +63,31 @@ def test_email_wrong_email_view(
     # login user
     authenticate(app)
 
-    email = DEFAULT_USER['email']
-    db_session.query(User).filter(User.email == email).one()
-
     res = app.get('/email/change')
     form = res.form
     form['email'] = invalid_email
     res = form.submit()
     assert 'Error! Incorrect e-mail format' in res
+
+
+def test_email_existing_email_view(db_session, active_user, default_app):
+    """Change email with incorrect email."""
+    existing_email = text_type("existing@email.eg")
+    db_session.add(
+        User(
+            email=existing_email,
+            password=text_type("somepassword"),
+            address_ip=DEFAULT_USER['address_ip']
+        ))
+    transaction.commit()
+    # login user
+    authenticate(default_app)
+
+    res = default_app.get('/email/change')
+    form = res.form
+    form['email'] = existing_email
+    res = form.submit()
+    assert 'Error! User with this email exists' in res
 
 
 def test_email_proceed(db_session, active_user, default_app):
