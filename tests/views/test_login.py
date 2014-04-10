@@ -39,6 +39,26 @@ def test_login(active_user, extended_app):
     assert is_user_logged(extended_app) is True
 
 
+def test_login_xhr(active_user, default_app):
+    """Test login in throu xhr request."""
+    # get login page (csrf_token there)
+    res = default_app.get('/login')
+
+    # construct post data
+    auth_data = {
+        'csrf_token': res.form['csrf_token'].value,
+        'email': DEFAULT_USER['email'],
+        'password': DEFAULT_USER['password']
+    }
+
+    # send xhr request
+    res = default_app.post('/login', auth_data, xhr=True)
+    # make sure user is logged!
+    assert is_user_logged(default_app) is True
+    assert res.json['status'] is True
+    assert res.json['after'] == '/'
+
+
 def test_login_remember(active_user, extended_app):
     """Login user and mark remember me field."""
     res = extended_app.get('/login')
