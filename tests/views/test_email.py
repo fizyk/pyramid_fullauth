@@ -71,7 +71,8 @@ def test_email_wrong_email_view(
 
 
 def test_email_existing_email_view(db_session, active_user, default_app):
-    """Change email with incorrect email."""
+    """Try to change email to existing one email."""
+    # add other user
     existing_email = text_type("existing@email.eg")
     db_session.add(
         User(
@@ -83,6 +84,7 @@ def test_email_existing_email_view(db_session, active_user, default_app):
     # login user
     authenticate(default_app)
 
+    # submit request!
     res = default_app.get('/email/change')
     form = res.form
     form['email'] = existing_email
