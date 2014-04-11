@@ -82,9 +82,7 @@ class SocialLoginViews(BaseView):
 
         if user:
             # Lets try to connect our user
-            response = self._connect_user(response_values)
-            if response:
-                return response
+            return self._connect_user(response_values)
 
         else:
             try:
@@ -108,7 +106,7 @@ class SocialLoginViews(BaseView):
                     # it's a redirect, let's follow it!
                     return redirect
 
-        # if we're here, user exists
+        # if we're here, user exists,
         try:
             self.request.registry.notify(AfterSocialLogIn(self.request, user, context.profile))
         except HTTPFound as redirect:
@@ -123,8 +121,9 @@ class SocialLoginViews(BaseView):
 
         :param dict response_values:
 
-        :returns: either response values if any error occured,
+        :returns: response values with any message,
             or HTTPFound if raised in SocialAccountAlreadyConnected
+        :rtype: dict
         """
         context = self.request.context
         user = self.request.user
@@ -137,7 +136,13 @@ class SocialLoginViews(BaseView):
                     domain='pyramid_fullauth',
                     mapping={'provider': context.provider_name}
                 )
-                return response_values
+            else:
+                response_values['status'] = True
+                response_values['msg'] = self.request._(
+                    'Your account has been connected to ${provider} account.',
+                    domain='pyramid_fullauth',
+                    mapping={'provider': context.provider_name}
+                )
         except IntegrityError:
             response_values['msg'] = self.request._(
                 'This ${provider} account is already connected with other account.',
@@ -151,7 +156,7 @@ class SocialLoginViews(BaseView):
             except HTTPFound as redirect:
                 # it's a redirect, let's follow it!
                 return redirect
-            return response_values
+        return response_values
 
     def _register_user(self):
         """Actually register new user in the system based on context values."""

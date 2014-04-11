@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyramid_fullauth 0.2.3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-10 22:27+0200\n"
+"POT-Creation-Date: 2014-04-11 23:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,11 +149,15 @@ msgstr ""
 msgid "Recover your password - choose new password"
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:135
+#: pyramid_fullauth/views/social.py:134
 msgid "Your account is already connected to other ${provider} account."
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:142
+#: pyramid_fullauth/views/social.py:141
+msgid "Your account has been connected to ${provider} account."
+msgstr ""
+
+#: pyramid_fullauth/views/social.py:147
 msgid "This ${provider} account is already connected with other account."
 msgstr ""
 
@@ -173,8 +177,8 @@ msgstr ""
 msgid "Already logged in!"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/login.py:126
-#: pyramid_fullauth/views/basic/login.py:132
+#: pyramid_fullauth/views/basic/login.py:95
+#: pyramid_fullauth/views/basic/login.py:133
 msgid "Wrong e-mail or password."
 msgstr ""
 
@@ -190,19 +194,19 @@ msgstr ""
 msgid "User with given e-mail already exists!"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:42
+#: pyramid_fullauth/views/basic/profile/email.py:44
 msgid "User with this email exists"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:58
+#: pyramid_fullauth/views/basic/profile/email.py:60
 msgid "E-mail is empty"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:64
+#: pyramid_fullauth/views/basic/profile/email.py:66
 msgid "Incorrect e-mail format"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:71
+#: pyramid_fullauth/views/basic/profile/email.py:73
 msgid "We sent you email to activate your new email address"
 msgstr ""
 

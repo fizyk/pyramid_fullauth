@@ -103,12 +103,13 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
     request.registry = social_config.registry
     request.remote_addr = u'127.0.0.123'
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
+    request._ = lambda msg, *args, **kwargs: msg
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
     view = SocialLoginViews(request)
     out = view()
-    assert out == {'status': True}
+    assert out['status'] is True
 
     transaction.commit()
     user = db_session.merge(user)
