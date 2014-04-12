@@ -165,7 +165,7 @@ class SocialLoginViews(BaseView):
     def _register_user(self):
         """Actually register new user in the system based on context values."""
         context = self.request.context
-        email = self._email_from_context()
+        email = self._email_from_context(context)
 
         try:
             user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
@@ -198,9 +198,12 @@ class SocialLoginViews(BaseView):
             user.is_active = True
         return user
 
-    def _email_from_context(self):
-        """Extract or generate email from context values."""
-        context = self.request.context
+    def _email_from_context(self, context):
+        """
+        Extract or generate email from context values.
+
+        :param velruse.AuthenticationComplete context: velruse context
+        """
         # getting verified email from provider
         if 'verifiedEmail' in context.profile:
             return context.profile['verifiedEmail']
