@@ -3,6 +3,7 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Social login/registration view."""
+import logging
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
@@ -20,6 +21,8 @@ from pyramid_fullauth.events import AfterSocialRegister
 from pyramid_fullauth.events import AfterSocialLogIn
 from pyramid_fullauth.events import SocialAccountAlreadyConnected
 from pyramid_fullauth import tools
+
+logger = logging.getLogger(__name__)
 
 
 @view_config(context='velruse.AuthenticationComplete',
@@ -95,7 +98,8 @@ class SocialLoginViews(BaseView):
             except NoResultFound:
                 user = None
 
-            # If the user for the provider was not found then check if in the DB exists user with the same email
+            # If the user for the provider was not found then check
+            # if in the DB exists user with the same email
             if not user:
                 user = self._register_user()
                 try:
@@ -167,7 +171,18 @@ class SocialLoginViews(BaseView):
             user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
             # If we are here that means that in the DB exists user with the same email but without the provider
             # then we connect social account to this user
-            self.set_provider(user, context.provider_name, context.profile['accounts'][0]['userid'])
+            if not self.set_provider(
+                user, context.provider_name, context.profile['accounts'][0]['userid']
+            ):
+                # authenticating user with different social account than assigned,
+                # recogniced by same email address used
+                logger.debug('''Authenticated {user.id} connected to
+                             {context.provider_name} id {connected_id},
+                             with {userid}'''.format(
+                    user=user,
+                    context=context,
+                    connected_id=user.provider_id(context.provider_name),
+                    userid=context.profile['accounts'][0]['userid']))
             pyramid_basemodel.Session.flush()
         except NoResultFound:
             length_min = self.config.register.password.length_min

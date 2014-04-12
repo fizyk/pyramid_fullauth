@@ -1,11 +1,22 @@
 """Social network login test."""
+import pytest
 import transaction
 from pyramid import testing
 from velruse import AuthenticationComplete
 from mock import MagicMock
 
 from pyramid_fullauth.views.social import SocialLoginViews
-from pyramid_fullauth.models import User
+from pyramid_fullauth.models import User, AuthenticationProvider
+
+
+@pytest.fixture
+def facebook_user(active_user, db_session):
+    """Facebook user."""
+    active_user = db_session.merge(active_user)
+    active_user.providers.append(
+        AuthenticationProvider(provider='facebook', provider_id='1234'))
+    transaction.commit()
+    return db_session.merge(active_user)
 
 
 def test_social_login_link(social_app):
@@ -51,6 +62,42 @@ def test_social_login_register(social_config, db_session):
     user = db_session.query(User).one()
     assert user.is_active
     assert user.provider_id('facebook') == profile['accounts'][0]['userid']
+
+
+def test_login_different_social_account(social_config, db_session, facebook_user):
+    """
+    Login with different social account than connected from same provider.
+
+    System should let user in, but not change connection.
+    """
+    # profile mock response
+    userid = u'2343'
+    profile = {
+        # facebook user id is different than user's
+        'accounts': [{'domain': u'facebook.com', 'userid': userid}],
+        'displayName': u'teddy',
+        'verifiedEmail': facebook_user.email,
+        'preferredUsername': u'teddy',
+        'emails': [{'value': u'aasd@bwwqwe.pl'}],
+        'name': u'ted'
+    }
+    request = testing.DummyRequest()
+    request.user = None
+    request.registry = social_config.registry
+    request.remote_addr = u'127.0.0.123'
+    request.context = AuthenticationComplete(
+        profile,
+        {'oauthAccessToken': '7897048593434'},
+        u'facebook',
+        u'facebook')
+
+    request.login_perform = MagicMock(name='login_perform')
+    request.login_perform.return_value = {'status': True}
+    view = SocialLoginViews(request)
+    out = view()
+    # user should be authenticated recognized by email!
+    assert out['status'] is True
+    assert facebook_user.provider_id('facebook') is not userid
 
 
 def test_login_social_connect(social_config, active_user, db_session):
