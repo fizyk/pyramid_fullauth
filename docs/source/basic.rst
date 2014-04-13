@@ -71,8 +71,9 @@ Request object additional methods
 
 Request object gets these methods:
 
-- :meth:`pyramid_fullauth.request.login_perform` - performs login action
-- :meth:`pyramid_fullauth.request.user` - returns logged in user or None
+- :meth:`~pyramid_fullauth.request.login_perform` - performs login action
+- :meth:`~pyramid_fullauth.request.user` - returns logged in user or None
+- :meth:`~pyramid_fullauth.request.logout` - logs user out
 
 CSRF Check
 ----------
