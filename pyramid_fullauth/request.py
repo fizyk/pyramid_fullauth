@@ -5,7 +5,7 @@
 """These method gets added to each ``pyramid.request.Request`` object."""
 
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import remember, unauthenticated_userid
+from pyramid.security import remember, unauthenticated_userid, forget
 from sqlalchemy.sql.expression import func
 from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
@@ -56,3 +56,14 @@ def user(request):
             return user
         except NoResultFound:  # pragma: no cover
             pass
+
+
+def logout(request):
+    """
+    Log user out.
+
+    :param pyramid.request.Request request: a request object
+    """
+    if request.user:
+        request.response.headerlist.extend(forget(request))
+        request.user = None

@@ -12,7 +12,6 @@ from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
-from pyramid_fullauth.auth import force_logout
 from pyramid_fullauth.models import User, AuthenticationProvider
 
 from pyramid_fullauth.events import BeforeReset
@@ -69,16 +68,15 @@ class PasswordResetContinueView(BaseView):
     These views display actual reset password views.
     """
 
-    @force_logout()
     @view_config(request_method='GET')
     def get(self):
         """Display actual password reset form."""
+        self.request.logout()
         return {
             'status': True,
             'csrf_token': self.request.session.get_csrf_token()
         }
 
-    @force_logout()
     @view_config(request_method='POST', check_csrf=True)
     def post(self):
         """Validate and possibly accept new email."""

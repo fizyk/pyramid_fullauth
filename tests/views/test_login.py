@@ -1,6 +1,4 @@
 """Log in related test."""
-import time
-
 import pytest
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
@@ -102,30 +100,6 @@ def test_login_csrf_error(active_user, extended_app, post_data):
     res = extended_app.post('/login', post_data, status=401)
 
     assert is_user_logged(extended_app) is False
-
-
-def test_logout(active_user, extended_app):
-    """Check logout action."""
-    authenticate(extended_app)
-    assert is_user_logged(extended_app) is True
-
-    extended_app.get('/logout', status=302)
-    assert is_user_logged(extended_app) is False
-    res = extended_app.get('/secret', status=302)
-    assert res.status_code == 302
-
-
-def test_automatic_logout(active_user, short_config, short_app):
-    """Test automatic logout."""
-    timeout = short_config.registry['config']['fullauth']['AuthTkt']['timeout'] + 1
-
-    authenticate(short_app)
-    # Simulating inactivity
-    time.sleep(timeout)
-    res = short_app.get('/email/change')
-    assert res.headers['Location'] == 'http://localhost/login?after=%2Femail%2Fchange'
-    res = res.follow()
-    assert res.form
 
 
 def test_login_success_xhr(active_user, extended_app):

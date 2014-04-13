@@ -14,6 +14,7 @@ Features
 - configure authentication policy only if it hasn't been configured before
 - logged in user will be redirected always away from login page
 - views reorganisation - grouping by their function
+- replaced force_logout decorator with logout request method
 
 tests
 +++++

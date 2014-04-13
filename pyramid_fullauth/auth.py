@@ -3,7 +3,8 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Auth related methods and classes."""
-from pyramid.security import Allow, Everyone, forget, ALL_PERMISSIONS
+
+from pyramid.security import Allow, Everyone, ALL_PERMISSIONS
 
 
 def groupfinder(userid, request):
@@ -63,24 +64,3 @@ class BaseACLRootFactoryMixin(object):
     def __init__(self, request):
         """Assing request as instance attribute."""
         self.request = request
-
-
-class force_logout(object):
-
-    """Log out user decorator after executing view."""
-
-    def __call__(self, wrapped_view):
-        """Apply decorator."""
-        def decorator(*args, **kwargs):
-            if not args:
-                return wrapped_view(*args, **kwargs)
-
-            for arg in args:
-                if 'request' in dir(arg):
-                    if arg.request.user:
-                        arg.request.response.headerlist.extend(forget(arg.request))
-                        arg.request.user = None
-            data = wrapped_view(*args, **kwargs)
-            return data
-
-        return decorator
