@@ -6,7 +6,6 @@
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import forget
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from pyramid_fullauth.views import BaseView
@@ -22,5 +21,8 @@ class LogoutView(BaseView):
         location = '/'
         if self.config.redirects.logout:
             location = self.request.route_path(self.config.redirects.logout)
+        # forget headers
+        self.request.logout()
 
-        return HTTPFound(location=location, headers=forget(self.request))
+        return HTTPFound(location=location,
+                         headers=self.request.response.headers)
