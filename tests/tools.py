@@ -45,7 +45,6 @@ def is_user_logged(app):
 def include_views(config):
     """Dummy pyramid 'plugin' adding dummy secret view."""
     config.add_route('secret', '/secret')
-    config.add_route('visit_logout', '/visit_logout')
     config.scan('tests.tools')
 
 
