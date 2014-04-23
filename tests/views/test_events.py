@@ -29,7 +29,7 @@ from pyramid.httpexceptions import HTTPFound
 def include_views(config):
     """Dummy pyramid plugin including events."""
     config.add_route('event', '/event')
-    config.scan('tests.event_listeners')
+    config.scan('tests.views.test_events')
     # config.add_subscriber(raise_attribute_error, BeforeLogIn)
 
 
