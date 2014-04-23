@@ -157,6 +157,18 @@ authable_config = factories.pyramid_config({
 })
 
 
+evented_config = factories.pyramid_config({
+    'yml.location': 'tests:config',
+    'env': 'login',
+    'pyramid.includes': [
+        'pyramid_tm',
+        'pyramid_fullauth',
+        'tests.tools.include_views',
+        'tests.event_listeners.include_events'
+    ]
+})
+
+
 nopassconfirm_config = factories.pyramid_config({
     'yml.location': 'tests:config/no_password_confirm.yaml',
     'env': 'login',
@@ -186,5 +198,6 @@ extended_app = factories.pyramid_app('extended_config')
 short_app = factories.pyramid_app('short_config')
 social_app = factories.pyramid_app('social_config')
 authable_app = factories.pyramid_app('authable_config')
+evented_app = factories.pyramid_app('evented_config')
 nopassconfirm_app = factories.pyramid_app('nopassconfirm_config')
 nopassregister_app = factories.pyramid_app('nopassregister_config')
