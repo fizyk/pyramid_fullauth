@@ -145,8 +145,8 @@ def test_email_proceed(db_session, active_user, default_app):
     transaction.commit()
 
     user = db_session.merge(user)
-    res = app.get(str('/email/change/' + user.email_change_key))
-    assert res.status == '302 Found'
+    res = app.get('/email/change/' + user.email_change_key)
+    assert res.status_code == 302
 
     with pytest.raises(NoResultFound):
         # there is no user with old email
@@ -154,3 +154,22 @@ def test_email_proceed(db_session, active_user, default_app):
 
     user = db_session.query(User).filter(User.email == new_email).one()
     assert not user.email_change_key
+
+
+def test_email_proceed_wrong_key(db_session, active_user, default_app):
+    """Try to confirm email change view with wrong key."""
+    app = default_app
+    # login user
+    authenticate(app)
+
+    email = DEFAULT_USER['email']
+    user = db_session.query(User).filter(User.email == email).one()
+
+    new_email = u'email2@email.com'
+    user.set_new_email(new_email)
+    transaction.commit()
+
+    user = db_session.merge(user)
+    res = app.get(
+        '/email/change/' + user.email_change_key + 'randomchars', status=404)
+    assert res.status_code == 404

@@ -45,7 +45,7 @@ def test_reset_proceed(user, db_session, default_app):
     transaction.commit()
 
     user = db_session.merge(user)
-    res = default_app.get(str('/password/reset/' + user.reset_key))
+    res = default_app.get('/password/reset/' + user.reset_key)
     assert 'Recover your password - choose new password' in res
 
     res.form['password'] = NEW_PASSWORD
@@ -57,6 +57,18 @@ def test_reset_proceed(user, db_session, default_app):
     assert user.check_password(NEW_PASSWORD) is True
 
 
+def test_reset_proceed_wrong_reset_key(user, db_session, default_app):
+    """Try changing password with wrong reset_key."""
+    user = db_session.merge(user)
+    user.set_reset()
+    transaction.commit()
+
+    user = db_session.merge(user)
+    res = default_app.get(
+        '/password/reset/' + user.reset_key + 'randomchars', status=404)
+    assert res.status_code == 404
+
+
 def test_reset_proceed_wrong_confirm(user, db_session, default_app):
     """Reset test for reseting pasword with notmatched passwords."""
     user = db_session.merge(user)
@@ -64,7 +76,7 @@ def test_reset_proceed_wrong_confirm(user, db_session, default_app):
     transaction.commit()
 
     user = db_session.merge(user)
-    res = default_app.get(str('/password/reset/' + user.reset_key))
+    res = default_app.get('/password/reset/' + user.reset_key)
 
     res.form['password'] = NEW_PASSWORD
     res.form['confirm_password'] = NEW_PASSWORD + 'Typo'
@@ -80,7 +92,7 @@ def test_reset_proceed_wrong_csrf(user, db_session, default_app):
     transaction.commit()
 
     user = db_session.merge(user)
-    res = default_app.get(str('/password/reset/' + user.reset_key))
+    res = default_app.get('/password/reset/' + user.reset_key)
 
     res.form['password'] = NEW_PASSWORD
     res.form['confirm_password'] = NEW_PASSWORD
