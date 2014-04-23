@@ -149,10 +149,3 @@ def test_default_login_redirectaway(active_user, authable_app):
     authenticate(authable_app)
     res = authable_app.get('/login', status=302)
     assert res.location == 'http://localhost/'
-
-
-def test_default_login_redirect_from_event(active_user, evented_app):
-    """After successful login, access to login page should result in redirect."""
-    authenticate(evented_app)
-    res = evented_app.get('/login', status=302)
-    assert res.location == 'http://localhost/event?event=AlreadyLoggedIn'
