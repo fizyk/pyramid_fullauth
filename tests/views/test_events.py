@@ -17,7 +17,8 @@ from pyramid_fullauth.events import (
     BeforeEmailChange, AfterEmailChange, AfterEmailChangeActivation,
     BeforeReset, AfterResetRequest, AfterReset,
     AfterSocialRegister, AfterSocialLogIn, SocialAccountAlreadyConnected,
-    AfterActivate
+    AfterActivate,
+    BeforeRegister, AfterRegister
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
@@ -486,3 +487,60 @@ def test_afteractivate(user, db_session, afteractivate_app):
 
     authenticate(afteractivate_app)
     assert is_user_logged(afteractivate_app) is True
+
+
+@pytest.fixture
+def beforeregister_config(evented_config):
+    """Add BeforeRegister event subscriber that raises AttributeError."""
+    evented_config.add_subscriber(raise_attribute_error, BeforeRegister)
+    return evented_config
+
+beforeregister_app = factories.pyramid_app('beforeregister_config')
+
+
+def test_beforeregister(db_session, beforeregister_app):
+    """Register user check eror catching from BeforeRegister event."""
+    assert db_session.query(User).count() == 0
+
+    res = beforeregister_app.get('/register')
+    res = beforeregister_app.post(
+        '/register',
+        {
+            'csrf_token': res.form['csrf_token'].value,
+            'email': 'test@test.co.uk',
+            'password': 'passmeplease',
+            'confirm_password': 'passmeplease'
+        },
+        extra_environ={'REMOTE_ADDR': '0.0.0.0'},
+        xhr=True)
+    assert res.json['errors']['msg'] == 'BeforeRegister'
+
+
+@pytest.fixture
+def afterregister_config(evented_config):
+    """Add AfterRegister event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, AfterRegister)
+    return evented_config
+
+afteraregister_app = factories.pyramid_app('afterregister_config')
+
+
+def test_afterregister(db_session, afteraregister_app):
+    """Register user check eror catching from BeforeRegister event."""
+    assert db_session.query(User).count() == 0
+    email = 'test@test.co.uk'
+    password = 'passmeplease'
+
+    res = afteraregister_app.get('/register')
+    res.form['email'] = email
+    res.form['password'] = password
+    res.form['confirm_password'] = password
+    res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
+    assert res.location == EVENT_URL.format(AfterRegister)
+    transaction.commit()
+
+    user = db_session.query(User).filter(User.email == email).one()
+
+    # User should not have active account at this moment
+    assert user.is_active is not None
+    assert user.check_password(password)
