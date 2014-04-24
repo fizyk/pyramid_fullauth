@@ -16,7 +16,8 @@ from pyramid_fullauth.events import (
     BeforeLogIn, AfterLogIn, AlreadyLoggedIn,
     BeforeEmailChange, AfterEmailChange, AfterEmailChangeActivation,
     BeforeReset, AfterResetRequest, AfterReset,
-    AfterSocialRegister, AfterSocialLogIn, SocialAccountAlreadyConnected
+    AfterSocialRegister, AfterSocialLogIn, SocialAccountAlreadyConnected,
+    AfterActivate
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
@@ -459,3 +460,29 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
     transaction.begin()
     fresh_user = db_session.merge(fresh_user)
     assert fresh_user.provider_id('facebook') is None
+
+
+@pytest.fixture
+def afteractivate_config(evented_config):
+    """Add AfterActivate event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, AfterActivate)
+    return evented_config
+
+afteractivate_app = factories.pyramid_app('afteractivate_config')
+
+
+def test_afteractivate(user, db_session, afteractivate_app):
+    """Activate user adn check redirect through AfterActivate."""
+    user = db_session.merge(user)
+
+    res = afteractivate_app.get('/register/activate/' + user.activate_key)
+    assert res.location == EVENT_URL.format(AfterActivate)
+    transaction.commit()
+    user = db_session.query(User).filter(User.email == user.email).one()
+
+    assert not user.activate_key
+    assert user.is_active
+    assert user.activated_at
+
+    authenticate(afteractivate_app)
+    assert is_user_logged(afteractivate_app) is True
