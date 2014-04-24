@@ -127,40 +127,6 @@ def test_login_social_connect(social_config, active_user, db_session):
     assert out == {'status': True}
 
 
-def test_login_social_connected(social_config, active_user, db_session):
-    """Log connected user in."""
-    user = db_session.merge(active_user)
-    user.providers.append(AuthenticationProvider(provider=u'facebook', provider_id=u'1234'))
-    transaction.commit()
-    user = db_session.merge(user)
-
-    profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': user.provider_id('facebook')}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': user.email}],
-        'name': u'ted'
-    }
-    credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
-    user = None
-    request = testing.DummyRequest()
-    request.user = user
-    request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
-    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
-
-    request.login_perform = MagicMock(name='login_perform')
-    request.login_perform.return_value = {'status': True}
-    view = SocialLoginViews(request)
-    out = view()
-    assert out == {'status': True}
-
-    user = db_session.merge(active_user)
-    assert user.provider_id('facebook') == profile['accounts'][0]['userid']
-
-
 def test_logged_social_connect_account(social_config, active_user, db_session):
     """Connect facebook account to logged in user."""
     user = db_session.merge(active_user)
@@ -190,6 +156,37 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
 
     transaction.commit()
     user = db_session.merge(user)
+    assert user.provider_id('facebook') == profile['accounts'][0]['userid']
+
+
+def test_logged_social_connect_self(social_config, facebook_user, db_session):
+    """Connect self."""
+    user = db_session.merge(facebook_user)
+
+    profile = {
+        'accounts': [{'domain': u'facebook.com', 'userid': user.provider_id('facebook')}],
+        'displayName': u'teddy',
+        'preferredUsername': u'teddy',
+        'emails': [{'value': user.email}],
+        'name': u'ted'
+    }
+    credentials = {'oauthAccessToken': '7897048593434'}
+    provider_name = u'facebook'
+    provider_type = u'facebook'
+    request = testing.DummyRequest()
+    request.user = user
+    request.registry = social_config.registry
+    request.remote_addr = u'127.0.0.123'
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
+    request._ = lambda msg, *args, **kwargs: msg
+
+    request.login_perform = MagicMock(name='login_perform')
+    request.login_perform.return_value = {'status': True}
+    view = SocialLoginViews(request)
+    out = view()
+    assert out['status'] is True
+
+    user = db_session.merge(facebook_user)
     assert user.provider_id('facebook') == profile['accounts'][0]['userid']
 
 
