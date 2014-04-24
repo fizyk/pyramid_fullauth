@@ -10,7 +10,8 @@ from pytest_pyramid import factories
 from pyramid_fullauth.models import User
 from pyramid_fullauth.events import (
     BeforeLogIn, AfterLogIn, AlreadyLoggedIn,
-    BeforeEmailChange, AfterEmailChange, AfterEmailChangeActivation
+    BeforeEmailChange, AfterEmailChange, AfterEmailChangeActivation,
+    BeforeReset, AfterResetRequest, AfterReset
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
@@ -251,3 +252,72 @@ def test_afteremailchangeactivation(db_session, active_user, afteremailchange_ap
 
     user = db_session.query(User).filter(User.email == new_email).one()
     assert not user.email_change_key
+
+
+@pytest.fixture
+def afterreset_config(evented_config):
+    """Add AfterReset, AfterResetRequest event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, AfterResetRequest)
+    evented_config.add_subscriber(redirect_to_secret, AfterReset)
+    return evented_config
+
+afterreset_app = factories.pyramid_app('afterreset_config')
+
+
+def test_afterresetrequest(user, db_session, afterreset_app):
+    """Successful password reset request with redirect from AfterResetRequest."""
+    user = db_session.merge(user)
+    assert user.reset_key is None
+
+    res = afterreset_app.get('/password/reset')
+    res.form['email'] = user.email
+    res = res.form.submit()
+    assert res.location == EVENT_URL.format(AfterResetRequest)
+
+    transaction.commit()
+
+    user = db_session.query(User).filter(User.email == user.email).one()
+    assert user.reset_key is not None
+
+
+def test_afterreset(user, db_session, afterreset_app):
+    """Actually change password with redirect from AfterReset."""
+    user = db_session.merge(user)
+    user.set_reset()
+    transaction.commit()
+
+    user = db_session.merge(user)
+    res = afterreset_app.get('/password/reset/' + user.reset_key)
+
+    res.form['password'] = 'YouShallPass'
+    res.form['confirm_password'] = 'YouShallPass'
+    res = res.form.submit()
+    assert res.location == EVENT_URL.format(AfterReset)
+
+    user = db_session.query(User).filter(User.email == user.email).one()
+    assert user.reset_key is None
+    assert user.check_password('YouShallPass') is True
+
+
+@pytest.fixture
+def beforereset_config(evented_config):
+    """Add BeforeReset event subscriber that raises AttributeError."""
+    evented_config.add_subscriber(raise_attribute_error, BeforeReset)
+    return evented_config
+
+beforereset_app = factories.pyramid_app('beforereset_config')
+
+
+def test_beforereset(user, db_session, beforereset_app):
+    """Error thrown from BeforeReset event."""
+    user = db_session.merge(user)
+    user.set_reset()
+    transaction.commit()
+
+    user = db_session.merge(user)
+    res = beforereset_app.get('/password/reset/' + user.reset_key)
+
+    res.form['password'] = 'YouShallPass'
+    res.form['confirm_password'] = 'YouShallPass'
+    res = res.form.submit()
+    assert 'Error! BeforeReset' in res.body
