@@ -103,32 +103,25 @@ class LoginViewPost(BaseLoginView):
             return self.response
 
         if user.check_password(password):
+
+            login_kwargs = {'remember_me': self.request.POST.get('remember')}
             try:
                 # if remember in POST set cookie timeout to one month
-                remember_me = self.request.POST.get('remember')
                 self.request.registry.notify(AfterLogIn(self.request, user))
-            except HTTPFound as redirect:
-                redirect_return = self.request.login_perform(
-                    user, location=redirect.location, remember_me=remember_me)
-                if self.request.is_xhr:
-                    self.response['status'] = True
-                    del self.response['msg']
-                    self.response['after'] = redirect_return.location
-                    return self.response
-                else:
-                    return redirect_return
             except AttributeError as e:
                 self.response['msg'] = str(e)
                 return self.response
+            except HTTPFound as redirect:
+                login_kwargs['location'] = redirect.location
+
+            redirect = self.request.login_perform(user, **login_kwargs)
+            if self.request.is_xhr:
+                self.response['status'] = True
+                del self.response['msg']
+                self.response['after'] = redirect.location
+                return self.response
             else:
-                redirect = self.request.login_perform(user, remember_me=remember_me)
-                if self.request.is_xhr:
-                    self.response['status'] = True
-                    del self.response['msg']
-                    self.response['after'] = redirect.location
-                    return self.response
-                else:
-                    return redirect
+                return redirect
         else:
             self.response['msg'] = self.request._('Wrong e-mail or password.',
                                                   domain='pyramid_fullauth')
