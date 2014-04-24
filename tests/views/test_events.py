@@ -1,17 +1,22 @@
 """All events related tests."""
 import pytest
 import transaction
+from mock import MagicMock
+from pyramid import testing
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
+from velruse import AuthenticationComplete
 from sqlalchemy.orm.exc import NoResultFound
 from pytest_pyramid import factories
 
 
 from pyramid_fullauth.models import User
+from pyramid_fullauth.views.social import SocialLoginViews
 from pyramid_fullauth.events import (
     BeforeLogIn, AfterLogIn, AlreadyLoggedIn,
     BeforeEmailChange, AfterEmailChange, AfterEmailChangeActivation,
-    BeforeReset, AfterResetRequest, AfterReset
+    BeforeReset, AfterResetRequest, AfterReset,
+    AfterSocialRegister, AfterSocialLogIn, SocialAccountAlreadyConnected
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
@@ -321,3 +326,136 @@ def test_beforereset(user, db_session, beforereset_app):
     res.form['confirm_password'] = 'YouShallPass'
     res = res.form.submit()
     assert 'Error! BeforeReset' in res.body
+
+
+@pytest.fixture
+def aftersocialregister_config(evented_config):
+    """Add AfterSocialRegister event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, AfterSocialRegister)
+    return evented_config
+
+aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
+
+
+def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app, db_session):
+    """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
+    profile = {
+        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
+        'displayName': u'teddy',
+        'verifiedEmail': u'we@po.pl',
+        'preferredUsername': u'teddy',
+        'emails': [{'value': u'aasd@bwwqwe.pl'}],
+        'name': u'ted'
+    }
+    credentials = {'oauthAccessToken': '7897048593434'}
+    provider_name = u'facebook'
+    provider_type = u'facebook'
+    request = testing.DummyRequest()
+    request.user = None
+    request.registry = aftersocialregister_config.registry
+    request.remote_addr = u'127.0.0.123'
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
+
+    request.login_perform = MagicMock(name='login_perform')
+    request.login_perform.return_value = {'status': True}
+    view = SocialLoginViews(request)
+    out = view()
+    assert out.location == EVENT_PATH.format(AfterSocialRegister)
+    transaction.commit()
+
+    # read first new account
+    user = db_session.query(User).one()
+    assert user.is_active
+    assert user.provider_id('facebook') == profile['accounts'][0]['userid']
+
+
+@pytest.fixture
+def aftersociallogin_config(evented_config):
+    """Add AfterSocialLogIn event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, AfterSocialLogIn)
+    return evented_config
+
+aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')
+
+
+def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_session):
+    """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
+    profile = {
+        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
+        'displayName': u'teddy',
+        'verifiedEmail': u'we@po.pl',
+        'preferredUsername': u'teddy',
+        'emails': [{'value': u'aasd@bwwqwe.pl'}],
+        'name': u'ted'
+    }
+    credentials = {'oauthAccessToken': '7897048593434'}
+    provider_name = u'facebook'
+    provider_type = u'facebook'
+    request = testing.DummyRequest()
+    request.user = None
+    request.registry = aftersociallogin_config.registry
+    request.remote_addr = u'127.0.0.123'
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
+
+    def login_perform(*args, **kwargs):
+        return HTTPFound(location=kwargs['location'])
+    request.login_perform = login_perform
+    view = SocialLoginViews(request)
+    out = view()
+    assert out.location == EVENT_PATH.format(AfterSocialLogIn)
+    transaction.commit()
+
+    # read first new account
+    user = db_session.query(User).one()
+    assert user.is_active
+    assert user.provider_id('facebook') == profile['accounts'][0]['userid']
+
+
+@pytest.fixture
+def alreadyconnected_config(evented_config):
+    """Add SocialAccountAlreadyConnected event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, SocialAccountAlreadyConnected)
+    return evented_config
+
+alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')
+
+
+def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, facebook_user, db_session):
+    """Try to connect facebook account to logged in user used by other user check redirect from SocialAccountAlreadyConnected."""
+    # this user will be logged and trying to connect facebook's user account.
+    fresh_user = User(
+        email='new@user.pl',
+        password='somepassword',
+        address_ip='127.0.0.1')
+    db_session.add(fresh_user)
+    transaction.commit()
+    user = db_session.merge(facebook_user)
+    fresh_user = db_session.merge(fresh_user)
+
+    # mock request
+    profile = {
+        'accounts': [{'domain': u'facebook.com', 'userid': user.provider_id('facebook')}],
+        'displayName': u'teddy',
+        'preferredUsername': u'teddy',
+        'emails': [{'value': u'aasd@basd.pl'}],
+        'name': u'ted'
+    }
+    credentials = {'oauthAccessToken': '7897048593434'}
+    provider_name = u'facebook'
+    provider_type = u'facebook'
+    request = testing.DummyRequest()
+    request.user = fresh_user
+    request.registry = alreadyconnected_config.registry
+    request.remote_addr = u'127.0.0.123'
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
+    request._ = lambda msg, *args, **kwargs: msg
+
+    request.login_perform = MagicMock(name='login_perform')
+    request.login_perform.return_value = {'status': True}
+    # call!
+    view = SocialLoginViews(request)
+    out = view()
+    assert out.location == EVENT_PATH.format(SocialAccountAlreadyConnected)
+    transaction.begin()
+    fresh_user = db_session.merge(fresh_user)
+    assert fresh_user.provider_id('facebook') is None

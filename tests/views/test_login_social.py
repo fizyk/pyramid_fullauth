@@ -1,22 +1,11 @@
 """Social network login test."""
-import pytest
 import transaction
 from pyramid import testing
 from velruse import AuthenticationComplete
 from mock import MagicMock
 
 from pyramid_fullauth.views.social import SocialLoginViews
-from pyramid_fullauth.models import User, AuthenticationProvider
-
-
-@pytest.fixture
-def facebook_user(active_user, db_session):
-    """Facebook user."""
-    active_user = db_session.merge(active_user)
-    active_user.providers.append(
-        AuthenticationProvider(provider='facebook', provider_id='1234'))
-    transaction.commit()
-    return db_session.merge(active_user)
+from pyramid_fullauth.models import User
 
 
 def test_social_login_link(social_app):
