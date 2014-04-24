@@ -1,15 +1,21 @@
 """All events related tests."""
 import pytest
-
+import transaction
+from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
+from sqlalchemy.orm.exc import NoResultFound
 from pytest_pyramid import factories
 
 
+from pyramid_fullauth.models import User
 from pyramid_fullauth.events import (
-    BeforeLogIn, AfterLogIn, AlreadyLoggedIn
+    BeforeLogIn, AfterLogIn, AlreadyLoggedIn,
+    BeforeEmailChange, AfterEmailChange, AfterEmailChangeActivation
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
-EVENT_URL = 'http://localhost/event?event={0.__name__}'
+EVENT_PATH = '/event?event={0.__name__}'
+EVENT_URL = 'http://localhost' + EVENT_PATH
 
 
 evented_config = factories.pyramid_config({
@@ -22,10 +28,6 @@ evented_config = factories.pyramid_config({
         'tests.views.test_events.include_views'
     ]
 })
-
-
-from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
 
 
 def include_views(config):
@@ -134,3 +136,118 @@ def test_error_afterlogin(active_user, afterloginerror_app):
     assert res.json['msg'] == 'AfterLogIn'
 
     assert is_user_logged(afterloginerror_app) is False
+
+
+@pytest.fixture
+def beforeemailchange_config(evented_config):
+    """Add BeforeEmailChange event subscriber that raises AttributeError."""
+    evented_config.add_subscriber(raise_attribute_error, BeforeEmailChange)
+    return evented_config
+
+beforeemailchange_app = factories.pyramid_app('beforeemailchange_config')
+
+
+def test_beforeemailchange_error(active_user, beforeemailchange_app):
+    """Raise AttributeError from BeforeEmailChange event."""
+    app = beforeemailchange_app
+
+    authenticate(app)
+    new_email = 'email@email.com'
+
+    res = app.get('/email/change')
+    res = app.post(
+        '/email/change',
+        {
+            'csrf_token': res.form['csrf_token'].value,
+            'email': new_email},
+        xhr=True)
+    assert res.json['status'] is False
+    assert res.json['msg'] == 'BeforeEmailChange'
+
+
+@pytest.fixture
+def afteremailchange_config(evented_config):
+    """Add AfterEmailChange, AfterEmailChangeActivation event subscriber that redirects to event page."""
+    evented_config.add_subscriber(redirect_to_secret, AfterEmailChange)
+    evented_config.add_subscriber(redirect_to_secret, AfterEmailChangeActivation)
+    return evented_config
+
+afteremailchange_app = factories.pyramid_app('afteremailchange_config')
+
+
+def test_afteremailchange(db_session, active_user, afteremailchange_app):
+    """Redirect after successful email change request."""
+    app = afteremailchange_app
+
+    authenticate(app)
+    email = DEFAULT_USER['email']
+    new_email = 'email@email.com'
+
+    user = db_session.query(User).filter(User.email == email).one()
+
+    res = app.get('/email/change')
+    form = res.form
+    form['email'] = new_email
+    res = form.submit()
+    assert res.location == EVENT_URL.format(AfterEmailChange)
+
+    transaction.commit()
+
+    user = db_session.query(User).filter(User.email == email).one()
+    assert user.new_email == new_email
+    assert user.email == email
+    assert user.email_change_key is not None
+
+
+def test_afteremailchange_xhr(db_session, active_user, afteremailchange_app):
+    """Change email with valid data."""
+    app = afteremailchange_app
+
+    authenticate(app)
+    email = DEFAULT_USER['email']
+    new_email = 'email@email.com'
+
+    user = db_session.query(User).filter(User.email == email).one()
+
+    res = app.get('/email/change')
+    res = app.post(
+        '/email/change',
+        {
+            'csrf_token': res.form['csrf_token'].value,
+            'email': new_email},
+        xhr=True)
+    assert res.json['status'] is True
+    assert res.json['url'] == EVENT_PATH.format(AfterEmailChange)
+
+    transaction.commit()
+
+    user = db_session.query(User).filter(User.email == email).one()
+    assert user.new_email == new_email
+    assert user.email == email
+    assert user.email_change_key is not None
+
+
+def test_afteremailchangeactivation(db_session, active_user, afteremailchange_app):
+    """Confirm email change view with redirect from AfterEmailChangeActivation."""
+    app = afteremailchange_app
+    # login user
+    authenticate(app)
+
+    email = DEFAULT_USER['email']
+    user = db_session.query(User).filter(User.email == email).one()
+
+    new_email = u'email2@email.com'
+    user.set_new_email(new_email)
+    transaction.commit()
+
+    user = db_session.merge(user)
+    res = app.get('/email/change/' + user.email_change_key)
+    assert res.status_code == 302
+    assert res.location == EVENT_URL.format(AfterEmailChangeActivation)
+
+    with pytest.raises(NoResultFound):
+        # there is no user with old email
+        db_session.query(User).filter(User.email == email).one()
+
+    user = db_session.query(User).filter(User.email == new_email).one()
+    assert not user.email_change_key
