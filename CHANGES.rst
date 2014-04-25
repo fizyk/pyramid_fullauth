@@ -1,9 +1,8 @@
 CHANGELOG
 =========
 
-current
--------
-
+0.3.0
+-----
 
 Features
 ++++++++
@@ -15,6 +14,7 @@ Features
 - logged in user will be redirected always away from login page
 - views reorganisation - grouping by their function
 - replaced force_logout decorator with logout request method
+- small login view simplification
 
 tests
 +++++
@@ -29,6 +29,7 @@ tests
     - mccabe
 - add pytest-dbfixtures, and run tests against postgresql and mysql as well
 - drop python 2.6 from tests
+- 100% test coverage
 
 
 0.2.3
