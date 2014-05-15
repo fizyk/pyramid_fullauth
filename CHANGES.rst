@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.3.1
+-----
+
+- fixes MANIFEST.in to include yaml files - fixes `#33 <https://github.com/fizyk/pyramid_fullauth/issues/33>`_.
+
 0.3.0
 -----
 
@@ -34,7 +39,7 @@ tests
 
 0.2.3
 -----
-- weaker pyramid_yml requirements. Use ``registry['config']`` instead of ``request.config`` which gets added only whet explicitly including tzf.pyramid_yml package.
+- weaker pyramid_yml requirements. Use ``registry['config']`` instead of ``request.config`` which gets added only when explicitly including tzf.pyramid_yml package.
 - remove default_config with permission set for forbidden views. Throwning errors in pyramid 1.5a3
 - remove lazy='load' for relationship between AuthenticationProvider and User models as it was incorrect. Fixes error while using with sqlalchemy 0.9
 
@@ -72,20 +77,3 @@ Backwards Incompatibilities
 - add localize to requirements. Ability to translate registerlogin communicates
 - ability to set custom session factory [with Veronica Zgirvaci help]
 - moved password validation to one place
-
-0.0.4
------
-- remove basemodel restrictions from setup.py
-
-0.0.3
------
-- fixed issue, where reset password would check for csrf on GET request [Veronica Zgirvaci]
-
-0.0.2
------
-- fixed MANIFEST.in, to include .yml, and .mako files
-
-0.0.1
------
-- initial package creation
-- prepared for CI on travis-ci, and coverage reports on coveralls.io
