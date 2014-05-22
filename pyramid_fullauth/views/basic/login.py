@@ -6,7 +6,7 @@
 
 from pyramid.view import view_config
 from pyramid.view import view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPSeeOther, HTTPRedirection
 from pyramid.security import authenticated_userid
 from pyramid.security import NO_PERMISSION_REQUIRED
 
@@ -40,10 +40,10 @@ class BaseLoginView(BaseView):
 
     def _redirect_authenticated_user(self):
         """Redirect already logged in user away from login page."""
-        redirect = HTTPFound(location=self.response['after'])
+        redirect = HTTPSeeOther(location=self.response['after'])
         try:
             self.request.registry.notify(AlreadyLoggedIn(self.request))
-        except HTTPFound as redirect:
+        except HTTPRedirection as redirect:
             pass
 
         if self.request.is_xhr:
@@ -111,7 +111,7 @@ class LoginViewPost(BaseLoginView):
             except AttributeError as e:
                 self.response['msg'] = str(e)
                 return self.response
-            except HTTPFound as redirect:
+            except HTTPRedirection as redirect:
                 login_kwargs['location'] = redirect.location
 
             redirect = self.request.login_perform(user, **login_kwargs)

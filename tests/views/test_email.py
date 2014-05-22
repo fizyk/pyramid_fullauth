@@ -146,7 +146,7 @@ def test_email_proceed(db_session, active_user, default_app):
 
     user = db_session.merge(user)
     res = app.get('/email/change/' + user.email_change_key)
-    assert res.status_code == 302
+    assert res.status_code == 303
 
     with pytest.raises(NoResultFound):
         # there is no user with old email

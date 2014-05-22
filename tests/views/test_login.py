@@ -67,7 +67,7 @@ def test_login_redirects(active_user, extended_app):
     res = res.form.submit()
 
     assert is_user_logged(extended_app) is True
-    assert res.status_code == 302
+    assert res.status_code == 303
 
 
 @pytest.mark.parametrize('user_kwargs', (
@@ -147,5 +147,5 @@ def test_default_login_forbidden(active_user, authable_app):
 def test_default_login_redirectaway(active_user, authable_app):
     """After successful login, access to login page should result in redirect."""
     authenticate(authable_app)
-    res = authable_app.get('/login', status=302)
+    res = authable_app.get('/login', status=303)
     assert res.location == 'http://localhost/'

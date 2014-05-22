@@ -4,7 +4,7 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """These method gets added to each ``pyramid.request.Request`` object."""
 
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.security import remember, unauthenticated_userid, forget
 from sqlalchemy.sql.expression import func
 from sqlalchemy.orm.exc import NoResultFound
@@ -23,7 +23,7 @@ def login_perform(request, user, location=None, remember_me=False):
     :param bool remember_me: if True set cookie max_age to one month (60 * 60 * 24 * 30 seconds)
 
     :returns: redirect exception
-    :rtype: pyramid.httpexceptions.HTTPFound
+    :rtype: pyramid.httpexceptions.HTTPSeeOther
     """
     user.logged_at = func.now()
     if remember_me:  # if remember in POST set cookie timeout to one from configure
@@ -36,7 +36,7 @@ def login_perform(request, user, location=None, remember_me=False):
 
     # this remembers user immediately, without the need to redirect (see below)
     request.response.headers.extend(headers)
-    return HTTPFound(location=location, headers=request.response.headers)
+    return HTTPSeeOther(location=location, headers=request.response.headers)
 
 
 def user(request):
