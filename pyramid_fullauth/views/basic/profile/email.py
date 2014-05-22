@@ -5,7 +5,7 @@
 """Email related views."""
 
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -76,7 +76,7 @@ class EmailChangeViews(BaseView):
 
         try:
             self.request.registry.notify(AfterEmailChange(self.request, user))
-        except HTTPFound as redirect:
+        except HTTPRedirection as redirect:
             if self.request.is_xhr:
                 response_values['url'] = redirect.location
                 return response_values
@@ -86,7 +86,7 @@ class EmailChangeViews(BaseView):
             if self.request.is_xhr:
                 return response_values
             else:
-                return HTTPFound(location='/')
+                return HTTPSeeOther(location='/')
 
 
 @view_config(route_name='email:change:continue', permission=NO_PERMISSION_REQUIRED,
@@ -102,6 +102,6 @@ class EmailChangeAccept(BaseView):
 
         try:
             self.request.registry.notify(AfterEmailChangeActivation(self.request, user))
-        except HTTPFound as redirect:
+        except HTTPRedirection as redirect:
             return redirect
-        return HTTPFound(location='/')
+        return HTTPSeeOther(location='/')

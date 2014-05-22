@@ -5,7 +5,7 @@
 """De-authentication related view."""
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from pyramid_fullauth.views import BaseView
@@ -24,5 +24,5 @@ class LogoutView(BaseView):
         # forget headers
         self.request.logout()
 
-        return HTTPFound(location=location,
-                         headers=self.request.response.headers)
+        return HTTPSeeOther(location=location,
+                            headers=self.request.response.headers)

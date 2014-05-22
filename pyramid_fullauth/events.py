@@ -60,10 +60,12 @@ class AfterRegister(_BaseRegisterEvent):
         User object is already in a session.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
 
     .. warning::
-        If HTTPFound is risen from event listener, then response_values will not be used!
+        If HTTPRedirection is risen from event listener, then response_values
+        will not be used!
 
     """
 
@@ -85,7 +87,8 @@ class AfterActivate(_BaseRegisterEvent):
     Add custom post-processing logic after user gets activated.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
     """
 
     pass
@@ -97,7 +100,8 @@ class AfterResetRequest(_BaseRegisterEvent):
     Add custom post-processing after user sends request to reset password.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
     """
 
     pass
@@ -116,7 +120,8 @@ class AfterReset(_BaseRegisterEvent):
     Add custom post-processing after the actual reset-password process.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
     """
 
     pass
@@ -128,7 +133,8 @@ class AlreadyLoggedIn(object):
     Allow execute custom logic, when logged in user tries to log in again.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
 
     """
 
@@ -147,7 +153,8 @@ class BeforeLogIn(_BaseRegisterEvent):
     Add custom logic before user gets logged in.
 
     .. note::
-        Action emitting this event, should catch all AttributeError that might be risen in event listener.
+        Action emitting this event, should catch all AttributeError that might
+        be risen in event listener.
         User param set to None when user is not found or request method is GET.
     """
 
@@ -194,7 +201,8 @@ class AfterSocialRegister(_BaseSocialRegister):
     Add custom logic after user registers through social network.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
     """
 
     def __init__(self, request, user, profile, response_values):
@@ -216,7 +224,8 @@ class AfterSocialLogIn(_BaseSocialRegister):
     Custom logic after user logs in through social network.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
     """
 
     pass
@@ -225,10 +234,15 @@ class AfterSocialLogIn(_BaseSocialRegister):
 class SocialAccountAlreadyConnected(_BaseSocialRegister):
 
     """
-    Allow to add custom logic, when someone tries to connect social account to second user in application.
+    Event raised when social account is already connected to some other user.
+
+
+    Allow to add custom logic, when someone tries to connect social account to
+    second user in application.
 
     .. note::
-        Action emitting this event, should catch all HTTPFound that might be risen in event listener.
+        Action emitting this event, should catch all HTTPRedirection that might
+        be risen in event listener.
     """
 
     def __init__(self, request, user, profile, response_values):

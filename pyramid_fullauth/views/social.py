@@ -6,7 +6,7 @@
 import logging
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -106,14 +106,14 @@ class SocialLoginViews(BaseView):
                     self.request.registry.notify(
                         AfterSocialRegister(
                             self.request, user, context.profile, response_values))
-                except HTTPFound as redirect:
+                except HTTPRedirection as redirect:
                     # it's a redirect, let's follow it!
                     return redirect
 
         # if we're here, user exists,
         try:
             self.request.registry.notify(AfterSocialLogIn(self.request, user, context.profile))
-        except HTTPFound as redirect:
+        except HTTPRedirection as redirect:
             # it's a redirect, let's follow it!
             return self.request.login_perform(user, location=redirect.location)
         else:
@@ -126,7 +126,7 @@ class SocialLoginViews(BaseView):
         :param dict response_values:
 
         :returns: response values with any message,
-            or HTTPFound if raised in SocialAccountAlreadyConnected
+            or HTTPRedirection if raised in SocialAccountAlreadyConnected
         :rtype: dict
         """
         context = self.request.context
@@ -157,7 +157,7 @@ class SocialLoginViews(BaseView):
                 self.request.registry.notify(
                     SocialAccountAlreadyConnected(
                         self.request, user, context.profile, response_values))
-            except HTTPFound as redirect:
+            except HTTPRedirection as redirect:
                 # it's a redirect, let's follow it!
                 return redirect
         return response_values

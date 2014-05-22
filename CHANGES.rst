@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+current
+-------
+
+- catch all HTTPRedirect instead of just HTTPFound.
+- redirect with HTTPSeeOther instead of HTTPFound where applicable.
+
+
 0.3.1
 -----
 

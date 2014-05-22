@@ -13,7 +13,7 @@ DEFAULT_USER = {
 def authenticate(app, email=DEFAULT_USER['email'],
                  password=DEFAULT_USER['password'],
                  remember=False,
-                 response_code=302):
+                 response_code=303):
     """Authenticate user."""
     res = app.get('/login')
     form = res.form

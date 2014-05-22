@@ -5,7 +5,7 @@
 """Registration related views."""
 
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 import pyramid_basemodel
@@ -53,7 +53,7 @@ class RegisterView(BaseView):
 
         try:
             self.request.registry.notify(AfterRegister(self.request, user, response))
-        except HTTPFound as redirect:
+        except HTTPRedirection as redirect:
             return redirect
 
         return response

@@ -5,7 +5,7 @@
 """Registration related views."""
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -37,7 +37,7 @@ class ActivateView(BaseView):
                 response['status'] = False
         try:
             self.request.registry.notify(AfterActivate(self.request, user))
-        except HTTPFound as e:
+        except HTTPRedirection as e:
             # it's a redirect, let's follow it!
             return e
 

@@ -5,7 +5,7 @@
 """Profile related views."""
 
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -52,10 +52,10 @@ class PasswordResetView(BaseView):
         user.set_reset()
         try:
             self.request.registry.notify(AfterResetRequest(self.request, user))
-        except HTTPFound as redirect:
+        except HTTPRedirection as redirect:
             return redirect
 
-        return HTTPFound(location='/')
+        return HTTPSeeOther(location='/')
 
 
 @view_defaults(route_name='password:reset:continue', permission=NO_PERMISSION_REQUIRED,
@@ -114,7 +114,7 @@ class PasswordResetContinueView(BaseView):
 
             try:
                 self.request.registry.notify(AfterReset(self.request, user))
-            except HTTPFound as redirect:
+            except HTTPRedirection as redirect:
                 return redirect
         else:
             return {
