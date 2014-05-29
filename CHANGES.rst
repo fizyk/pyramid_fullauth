@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-current
--------
+0.3.2
+-----
 
 - catch all HTTPRedirect instead of just HTTPFound.
 - redirect with HTTPSeeOther instead of HTTPFound where applicable.
