@@ -11,6 +11,7 @@ from pyramid.security import authenticated_userid
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
+from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -99,7 +100,7 @@ class LoginViewPost(BaseLoginView):
         try:
             self.request.registry.notify(BeforeLogIn(self.request, user))
         except AttributeError as e:
-            self.response['msg'] = str(e)
+            self.response['msg'] = text_type(e)
             return self.response
 
         if user.check_password(password):
@@ -109,7 +110,7 @@ class LoginViewPost(BaseLoginView):
                 # if remember in POST set cookie timeout to one month
                 self.request.registry.notify(AfterLogIn(self.request, user))
             except AttributeError as e:
-                self.response['msg'] = str(e)
+                self.response['msg'] = text_type(e)
                 return self.response
             except HTTPRedirection as redirect:
                 login_kwargs['location'] = redirect.location

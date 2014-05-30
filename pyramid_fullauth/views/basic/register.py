@@ -8,6 +8,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
 
+from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -68,7 +69,7 @@ class RegisterView(BaseView):
         :returns: response
         :rtype: dict
         """
-        email = self.request.POST.get('email', u'')
+        email = self.request.POST.get('email', text_type(''))
         # here if e-mail is already in database
 
         if pyramid_basemodel.Session.query(User).filter(User.email == email).count() != 0:
@@ -81,15 +82,15 @@ class RegisterView(BaseView):
             except ValidateError as e:
                 # do not overwrite existing error
                 if 'email' not in response['errors']:
-                    response['errors']['email'] = str(e)
+                    response['errors']['email'] = text_type(e)
 
             if self.config.register.password.require:
                 try:
                     tools.validate_passsword(self.request,
-                                             self.request.POST.get('password', u''),
+                                             self.request.POST.get('password', text_type('')),
                                              user)
                 except ValidateError as e:
-                    response['errors']['password'] = str(e)
+                    response['errors']['password'] = text_type(e)
             else:
                 user.password = tools.password_generator(
                     self.config.register.password.length_min)
@@ -101,10 +102,10 @@ class RegisterView(BaseView):
 
                 # lets add AuthenticationProvider as email!
                 user.providers.append(
-                    AuthenticationProvider(provider=u'email', provider_id=user.id))
+                    AuthenticationProvider(provider=text_type('email'), provider_id=user.id))
             else:
                 return response
         except AttributeError as e:
-            response['errors']['msg'] = str(e)
+            response['errors']['msg'] = text_type(e)
 
         return response
