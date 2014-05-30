@@ -1,5 +1,9 @@
 """Reset password views."""
-from HTMLParser import HTMLParser
+try:
+    from HTMLParser import HTMLParser
+except ImportError:
+    from html.parser import HTMLParser
+
 import transaction
 
 from pyramid_fullauth.models import User
@@ -82,7 +86,7 @@ def test_reset_proceed_wrong_confirm(user, db_session, default_app):
     res.form['confirm_password'] = NEW_PASSWORD + 'Typo'
     res = res.form.submit()
 
-    assert 'Error! Password doesn\'t match' in HTMLParser().unescape(res.body)
+    assert 'Error! Password doesn\'t match' in HTMLParser().unescape(res.body.decode('unicode_escape'))
 
 
 def test_reset_proceed_wrong_csrf(user, db_session, default_app):

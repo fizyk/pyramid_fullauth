@@ -5,7 +5,6 @@ from mock import MagicMock
 from pyramid import testing
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
-from velruse import AuthenticationComplete
 from sqlalchemy.orm.exc import NoResultFound
 from pytest_pyramid import factories
 
@@ -21,6 +20,7 @@ from pyramid_fullauth.events import (
     BeforeRegister, AfterRegister
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
+from tests.conftest import py2only
 
 EVENT_PATH = '/event?event={0.__name__}'
 EVENT_URL = 'http://localhost' + EVENT_PATH
@@ -327,7 +327,7 @@ def test_beforereset(user, db_session, beforereset_app):
     res.form['password'] = 'YouShallPass'
     res.form['confirm_password'] = 'YouShallPass'
     res = res.form.submit()
-    assert 'Error! BeforeReset' in res.body
+    assert 'Error! BeforeReset' in res.body.decode('unicode_escape')
 
 
 @pytest.fixture
@@ -339,8 +339,10 @@ def aftersocialregister_config(evented_config):
 aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
 
 
+@py2only
 def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
+    from velruse import AuthenticationComplete
     profile = {
         'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
         'displayName': u'teddy',
@@ -380,6 +382,7 @@ def aftersociallogin_config(evented_config):
 aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')
 
 
+@py2only
 def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
     profile = {
@@ -422,6 +425,7 @@ def alreadyconnected_config(evented_config):
 alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')
 
 
+@py2only
 def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, facebook_user, db_session):
     """Try to connect facebook account to logged in user used by other user check redirect from SocialAccountAlreadyConnected."""
     # this user will be logged and trying to connect facebook's user account.

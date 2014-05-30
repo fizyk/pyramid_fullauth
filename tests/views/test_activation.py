@@ -1,6 +1,9 @@
-# -*- coding: utf-8 -*-
 """Account activation related tests."""
-from urllib import quote
+try:
+    from urllib import quote
+    # python3
+except ImportError:
+    from urllib.parse import quote
 
 import transaction
 
@@ -31,7 +34,7 @@ def test_account_activation_wrong_key(user, db_session, default_app):
     res = default_app.get('/register/activate/' + activate_key[:-5], status=200)
     transaction.commit()
 
-    assert 'Invalid activation code' in res.body
+    assert 'Invalid activation code' in res.body.decode('unicode_escape')
 
     user = db_session.query(User).filter(User.email == user.email).one()
     assert user.activate_key == activate_key
@@ -52,7 +55,7 @@ def test_account_activation_key_with_trash_chars(user, db_session, default_app):
     )
     transaction.commit()
 
-    assert 'Invalid activation code' in res.body
+    assert 'Invalid activation code' in res.body.decode('unicode_escape')
     user = db_session.query(User).filter(User.email == user.email).one()
 
     assert user.activate_key == activate_key
@@ -76,4 +79,4 @@ def test_account_activation_twice(user, db_session, default_app):
     assert user.activated_at
 
     res = default_app.get('/register/activate/' + activate_key, status=200)
-    assert 'Invalid activation code' in res.body
+    assert 'Invalid activation code' in res.body.decode('unicode_escape')

@@ -1,19 +1,28 @@
 """Social network login test."""
 import transaction
 from pyramid import testing
-from velruse import AuthenticationComplete
 from mock import MagicMock
 
-from pyramid_fullauth.views.social import SocialLoginViews
+try:
+    from velruse import AuthenticationComplete
+    from pyramid_fullauth.views.social import SocialLoginViews
+except ImportError:
+    # tests will be skipped anyway
+    pass
+
 from pyramid_fullauth.models import User
 
+from tests.conftest import py2only
 
+
+@py2only
 def test_social_login_link(social_app):
     """Login:Form displayed social form."""
     res = social_app.get('/login')
-    assert ('Connect with facebook</a>' in res.body)
+    assert ('Connect with facebook</a>' in res.body.decode('unicode_escape'))
 
 
+@py2only
 def test_social_click_link(social_app):
     """Click social login link."""
     res = social_app.get('/login/facebook?scope=email%2Coffline_access', status=302)
@@ -21,6 +30,7 @@ def test_social_click_link(social_app):
         'https://www.facebook.com/dialog/oauth/?scope=email%2Coffline_access&state='))
 
 
+@py2only
 def test_social_login_register(social_config, db_session):
     """Register fresh user and logs him in."""
     profile = {
@@ -53,6 +63,7 @@ def test_social_login_register(social_config, db_session):
     assert user.provider_id('facebook') == profile['accounts'][0]['userid']
 
 
+@py2only
 def test_login_different_social_account(social_config, db_session, facebook_user):
     """
     Login with different social account than connected from same provider.
@@ -88,6 +99,7 @@ def test_login_different_social_account(social_config, db_session, facebook_user
     assert facebook_user.provider_id('facebook') is not profile['accounts'][0]['userid']
 
 
+@py2only
 def test_login_social_connect(social_config, active_user, db_session):
     """Connect and logs user in."""
     user = db_session.merge(active_user)
@@ -116,6 +128,7 @@ def test_login_social_connect(social_config, active_user, db_session):
     assert out == {'status': True}
 
 
+@py2only
 def test_logged_social_connect_account(social_config, active_user, db_session):
     """Connect facebook account to logged in user."""
     user = db_session.merge(active_user)
@@ -148,6 +161,7 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
     assert user.provider_id('facebook') == profile['accounts'][0]['userid']
 
 
+@py2only
 def test_logged_social_connect_self(social_config, facebook_user, db_session):
     """Connect self."""
     user = db_session.merge(facebook_user)
@@ -179,6 +193,7 @@ def test_logged_social_connect_self(social_config, facebook_user, db_session):
     assert user.provider_id('facebook') == profile['accounts'][0]['userid']
 
 
+@py2only
 def test_logged_social_connect_second_account(social_config, facebook_user, db_session):
     """Connect second facebook account to logged in user."""
     user = db_session.merge(facebook_user)
@@ -211,6 +226,7 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
     assert user.provider_id('facebook') is not profile['accounts'][0]['userid']
 
 
+@py2only
 def test_logged_social_connect_used_account(social_config, facebook_user, db_session):
     """Try to connect facebook account to logged in user used by other user."""
     # this user will be logged and trying to connect facebook's user account.
