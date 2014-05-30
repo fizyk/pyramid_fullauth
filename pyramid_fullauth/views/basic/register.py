@@ -89,7 +89,7 @@ class RegisterView(BaseView):
                                              self.request.POST.get('password', u''),
                                              user)
                 except ValidateError as e:
-                    response['errors']['password'] = e.message
+                    response['errors']['password'] = str(e)
             else:
                 user.password = tools.password_generator(
                     self.config.register.password.length_min)

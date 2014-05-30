@@ -11,7 +11,7 @@ from pyramid_fullauth.exceptions import (
 )
 
 
-def password_generator(length, chars=(string.letters + string.digits + string.punctuation)):
+def password_generator(length, chars=(string.ascii_letters + string.digits + string.punctuation)):
     """
     Generate random password.
 

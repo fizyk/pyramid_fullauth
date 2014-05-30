@@ -51,7 +51,7 @@ class EmailChangeViews(BaseView):
         try:
             self.request.registry.notify(BeforeEmailChange(self.request, user))
         except AttributeError as e:
-            return {'status': False, 'msg': e.message, 'csrf_token': csrf_token}
+            return {'status': False, 'msg': str(e), 'csrf_token': csrf_token}
 
         try:
             user.set_new_email(self.request.POST.get('email', ''))

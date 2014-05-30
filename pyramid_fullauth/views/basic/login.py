@@ -43,8 +43,8 @@ class BaseLoginView(BaseView):
         redirect = HTTPSeeOther(location=self.response['after'])
         try:
             self.request.registry.notify(AlreadyLoggedIn(self.request))
-        except HTTPRedirection as redirect:
-            pass
+        except HTTPRedirection as e_redirect:
+            redirect = e_redirect
 
         if self.request.is_xhr:
             self.response['status'] = True
