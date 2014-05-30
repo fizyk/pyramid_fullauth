@@ -3,7 +3,7 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Fullauth's configuration module."""
-
+import sys
 import logging
 
 from tzf.pyramid_yml import config_defaults
@@ -82,8 +82,9 @@ def includeme(configurator):
     # scan base views
     configurator.scan('pyramid_fullauth.views.basic')
 
-    # check for the social. If social is not available, we will not turn it on!
-    if 'social' in fullauth_config:
+    # check for the social. (And python 2)
+    # If social is not available, we will not turn it on!
+    if 'social' in fullauth_config and sys.version_info == 2:
         # Velruse init (for social auth)
 
         # scan social views
