@@ -212,7 +212,9 @@ class SocialLoginViews(BaseView):
             return context.profile['emails'][0]['value']
         # generating some random email address based on social userid and provider domain
         else:
-            return u'{0}@{1}'.format(
-                context.profile['accounts'][0]['userid'],
-                context.profile['accounts'][0]['domain']
+            return text_type(
+                '{0}@{1}'.format(
+                    context.profile['accounts'][0]['userid'],
+                    context.profile['accounts'][0]['domain']
+                )
             )

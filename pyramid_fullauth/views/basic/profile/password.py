@@ -95,12 +95,12 @@ class PasswordResetContinueView(BaseView):
                 try:
                     pyramid_basemodel.Session.query(AuthenticationProvider).filter(
                         AuthenticationProvider.user_id == user.id,
-                        AuthenticationProvider.provider == u'email'
+                        AuthenticationProvider.provider == text_type('email')
                     ).one()
                 except NoResultFound:
                     user.providers.append(
                         AuthenticationProvider(
-                            provider=u'email',
+                            provider=text_type('email'),
                             provider_id=user.id
                         )
                     )

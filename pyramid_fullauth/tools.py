@@ -6,6 +6,9 @@
 
 import string
 from random import choice
+
+from pyramid.compat import text_type
+
 from pyramid_fullauth.exceptions import (
     EmptyError, ShortPasswordError, PasswordConfirmMismatchError
 )
@@ -24,7 +27,7 @@ def password_generator(length, chars=(string.ascii_letters + string.digits + str
     :returns: password
     :rtype: str
     """
-    return u''.join([choice(chars) for i in range(length)])
+    return text_type(''.join([choice(chars) for i in range(length)]))
 
 
 def validate_passsword(request, password, user=None):
@@ -55,7 +58,7 @@ def validate_passsword(request, password, user=None):
 
     # here if password doesn't match
     if password_config['confirm']:
-        confirm_password = request.POST.get('confirm_password', u'')
+        confirm_password = request.POST.get('confirm_password', text_type(''))
         if password != confirm_password:
             raise PasswordConfirmMismatchError(
                 request._('password-mismatch',
