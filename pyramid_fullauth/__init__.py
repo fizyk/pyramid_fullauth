@@ -84,7 +84,7 @@ def includeme(configurator):
 
     # check for the social. (And python 2)
     # If social is not available, we will not turn it on!
-    if 'social' in fullauth_config and sys.version_info == 2:
+    if 'social' in fullauth_config and sys.version_info.major == 2:
         # Velruse init (for social auth)
 
         # scan social views

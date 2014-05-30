@@ -40,7 +40,7 @@ test_requires = [
 # extend python2 dependency
 if sys.version_info.major == 2:
     requirements.append('velruse')
-    tests_requires.extend([
+    test_requires.extend([
         'mysql-python',
         'pytest-dbfixtures',
         'psycopg2'

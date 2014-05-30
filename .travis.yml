@@ -3,6 +3,7 @@ python:
     - "2.7"
     # - "3.2"
     # - "3.3"
+    - "3.4"
 env:
     - PYRAMID_VER="1.4.5" SQLALCHEMY_VER="0.9.4"
     - PYRAMID_VER="1.5" SQLALCHEMY_VER="0.8.6"

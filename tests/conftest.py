@@ -15,7 +15,7 @@ from pytest_pyramid import factories
 import pyramid_basemodel
 
 py2only = pytest.mark.skipif(
-    sys.version_info > (2,),
+    sys.version_info.major > 2,
     reason='oauth2-python and velruse does not support python3')
 
 

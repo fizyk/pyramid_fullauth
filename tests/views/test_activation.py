@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Account activation related tests."""
 try:
     from urllib import quote

@@ -8,6 +8,12 @@ from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.orm.exc import NoResultFound
 from pytest_pyramid import factories
 
+try:
+    from velruse import AuthenticationComplete
+except ImportError:
+    # py3 version doesn't have social auth
+    pass
+
 
 from pyramid_fullauth.models import User
 from pyramid_fullauth.views.social import SocialLoginViews
@@ -342,7 +348,6 @@ aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
 @py2only
 def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
-    from velruse import AuthenticationComplete
     profile = {
         'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
         'displayName': u'teddy',
