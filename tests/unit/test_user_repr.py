@@ -25,5 +25,5 @@ def test_introduce_username():
     user.username = text_type('testowy')
     # To string should return username
     assert str(user) == 'testowy'
-    # User should be represented by "<User (\'1\', \'testowy\')>"
-    assert user.__repr__() == "<User ('1', 'testowy')>"
+    # User should be represented by "<User (\'1\')>"
+    assert user.__repr__() == "<User ('1')>"
