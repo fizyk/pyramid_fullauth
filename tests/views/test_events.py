@@ -3,6 +3,7 @@ import pytest
 import transaction
 from mock import MagicMock
 from pyramid import testing
+from pyramid.compat import text_type
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.orm.exc import NoResultFound
@@ -250,7 +251,7 @@ def test_afteremailchangeactivation(db_session, active_user, afteremailchange_ap
     email = DEFAULT_USER['email']
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = u'email2@email.com'
+    new_email = text_type('email2@email.com')
     user.set_new_email(new_email)
     transaction.commit()
 
@@ -349,20 +350,20 @@ aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
 def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
-        'verifiedEmail': u'we@po.pl',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@bwwqwe.pl'}],
-        'name': u'ted'
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName': text_type('teddy'),
+        'verifiedEmail': text_type('we@po.pl'),
+        'preferredUsername': text_type('teddy'),
+        'emails': [{'value': text_type('aasd@bwwqwe.pl')}],
+        'name': text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = None
     request.registry = aftersocialregister_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name='login_perform')
@@ -391,20 +392,20 @@ aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')
 def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
-        'verifiedEmail': u'we@po.pl',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@bwwqwe.pl'}],
-        'name': u'ted'
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName': text_type('teddy'),
+        'verifiedEmail': text_type('we@po.pl'),
+        'preferredUsername': text_type('teddy'),
+        'emails': [{'value': text_type('aasd@bwwqwe.pl')}],
+        'name': text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = None
     request.registry = aftersociallogin_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     def login_perform(*args, **kwargs):
@@ -435,9 +436,10 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
     """Try to connect facebook account to logged in user used by other user check redirect from SocialAccountAlreadyConnected."""
     # this user will be logged and trying to connect facebook's user account.
     fresh_user = User(
-        email='new@user.pl',
-        password='somepassword',
-        address_ip='127.0.0.1')
+        email=text_type('new@user.pl'),
+        password=text_type('somepassword'),
+        address_ip=text_type('127.0.0.1')
+    )
     db_session.add(fresh_user)
     transaction.commit()
     user = db_session.merge(facebook_user)
@@ -445,19 +447,19 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
 
     # mock request
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': user.provider_id('facebook')}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@basd.pl'}],
-        'name': u'ted'
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': user.provider_id('facebook')}],
+        'displayName': text_type('teddy'),
+        'preferredUsername': text_type('teddy'),
+        'emails': [{'value': text_type('aasd@basd.pl')}],
+        'name': text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = fresh_user
     request.registry = alreadyconnected_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = lambda msg, *args, **kwargs: msg
 

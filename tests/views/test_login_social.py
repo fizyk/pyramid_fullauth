@@ -1,6 +1,7 @@
 """Social network login test."""
 import transaction
 from pyramid import testing
+from pyramid.compat import text_type
 from mock import MagicMock
 
 try:
@@ -34,20 +35,20 @@ def test_social_click_link(social_app):
 def test_social_login_register(social_config, db_session):
     """Register fresh user and logs him in."""
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
-        'verifiedEmail': u'we@po.pl',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@bwwqwe.pl'}],
-        'name': u'ted'
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName': text_type('teddy'),
+        'verifiedEmail': text_type('we@po.pl'),
+        'preferredUsername': text_type('teddy'),
+        'emails': [{'value': text_type('aasd@bwwqwe.pl')}],
+        'name': text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = None
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name='login_perform')
@@ -73,22 +74,22 @@ def test_login_different_social_account(social_config, db_session, facebook_user
     # profile mock response
     profile = {
         # facebook user id is different than user's
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName': text_type('teddy'),
         'verifiedEmail': facebook_user.email,
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@bwwqwe.pl'}],
-        'name': u'ted'
+        'preferredUsername': text_type('teddy'),
+        'emails': [{'value': text_type('aasd@bwwqwe.pl')}],
+        'name': text_type('ted')
     }
     request = testing.DummyRequest()
     request.user = None
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(
         profile,
         {'oauthAccessToken': '7897048593434'},
-        u'facebook',
-        u'facebook')
+        text_type('facebook'),
+        text_type('facebook'))
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
@@ -105,20 +106,20 @@ def test_login_social_connect(social_config, active_user, db_session):
     user = db_session.merge(active_user)
 
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName': text_type('teddy'),
+        'preferredUsername': text_type('teddy'),
         'emails': [{'value': user.email}],
-        'name': u'ted'
+        'name': text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     user = None
     request = testing.DummyRequest()
     request.user = user
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name='login_perform')
@@ -134,19 +135,19 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
     user = db_session.merge(active_user)
 
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@basd.pl'}],
-        'name': u'ted'
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName': text_type('teddy'),
+        'preferredUsername': text_type('teddy'),
+        'emails': [{'value': text_type('aasd@basd.pl')}],
+        'name': text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = user
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = lambda msg, *args, **kwargs: msg
 
@@ -167,19 +168,24 @@ def test_logged_social_connect_self(social_config, facebook_user, db_session):
     user = db_session.merge(facebook_user)
 
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': user.provider_id('facebook')}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': user.email}],
-        'name': u'ted'
+        'accounts': [{'domain': text_type('facebook.com'), 'userid': user.provider_id('facebook')}],
+        'displayName':
+        text_type('teddy'),
+        'preferredUsername':
+        text_type('teddy'),
+        'emails':
+        [{'value': user.email}],
+        'name':
+        text_type('ted')
     }
-    credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    credentials = {'oauthAccessToken':
+                   '7897048593434'}
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = user
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = lambda msg, *args, **kwargs: msg
 
@@ -200,19 +206,25 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
 
     # mock request
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': u'2343'}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@basd.pl'}],
-        'name': u'ted'
+        'accounts':
+        [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
+        'displayName':
+        text_type('teddy'),
+        'preferredUsername':
+        text_type('teddy'),
+        'emails':
+        [{'value': text_type('aasd@basd.pl')}],
+        'name':
+        text_type('ted')
     }
-    credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    credentials = {'oauthAccessToken':
+                   '7897048593434'}
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = user
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = lambda msg, *args, **kwargs: msg
 
@@ -231,9 +243,10 @@ def test_logged_social_connect_used_account(social_config, facebook_user, db_ses
     """Try to connect facebook account to logged in user used by other user."""
     # this user will be logged and trying to connect facebook's user account.
     fresh_user = User(
-        email='new@user.pl',
-        password='somepassword',
-        address_ip='127.0.0.1')
+        email=text_type('new@user.pl'),
+        password=text_type('somepassword'),
+        address_ip=text_type('127.0.0.1')
+    )
     db_session.add(fresh_user)
     transaction.commit()
     user = db_session.merge(facebook_user)
@@ -241,19 +254,24 @@ def test_logged_social_connect_used_account(social_config, facebook_user, db_ses
 
     # mock request
     profile = {
-        'accounts': [{'domain': u'facebook.com', 'userid': user.provider_id('facebook')}],
-        'displayName': u'teddy',
-        'preferredUsername': u'teddy',
-        'emails': [{'value': u'aasd@basd.pl'}],
-        'name': u'ted'
+        'accounts':
+        [{'domain': text_type('facebook.com'), 'userid': user.provider_id('facebook')}],
+        'displayName':
+        text_type('teddy'),
+        'preferredUsername':
+        text_type('teddy'),
+        'emails':
+        [{'value': text_type('aasd@basd.pl')}],
+        'name':
+        text_type('ted')
     }
     credentials = {'oauthAccessToken': '7897048593434'}
-    provider_name = u'facebook'
-    provider_type = u'facebook'
+    provider_name = text_type('facebook')
+    provider_type = text_type('facebook')
     request = testing.DummyRequest()
     request.user = fresh_user
     request.registry = social_config.registry
-    request.remote_addr = u'127.0.0.123'
+    request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = lambda msg, *args, **kwargs: msg
 

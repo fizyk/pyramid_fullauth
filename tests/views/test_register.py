@@ -6,6 +6,7 @@ except ImportError:
 
 import pytest
 import transaction
+from pyramid.compat import text_type
 from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.models import User
@@ -65,7 +66,7 @@ def test_register_user_exists(db_session, user, default_app):
     (DEFAULT_USER['email'], DEFAULT_USER['password'], DEFAULT_USER['password'] + 'Typo',
         'Passwords don\'t match'),
     # long, incorect email
-    (u'email' * 100 + '@wap.pl', DEFAULT_USER['password'], DEFAULT_USER['password'],
+    (text_type('email') * 100 + text_type('@wap.pl'), DEFAULT_USER['password'], DEFAULT_USER['password'],
         'Incorrect e-mail format'),
     # too short password
     (DEFAULT_USER['email'], '12', '12',
