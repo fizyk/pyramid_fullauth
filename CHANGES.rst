@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+current
+-------
+
+- python 3 compatibility (without oaut2 though)
+
+
 0.3.2
 -----
 
