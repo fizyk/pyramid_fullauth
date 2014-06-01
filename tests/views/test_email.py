@@ -140,7 +140,7 @@ def test_email_proceed(db_session, active_user, default_app):
     email = DEFAULT_USER['email']
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = u'email2@email.com'
+    new_email = text_type('email2@email.com')
     user.set_new_email(new_email)
     transaction.commit()
 
@@ -165,7 +165,7 @@ def test_email_proceed_wrong_key(db_session, active_user, default_app):
     email = DEFAULT_USER['email']
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = u'email2@email.com'
+    new_email = text_type('email2@email.com')
     user.set_new_email(new_email)
     transaction.commit()
 

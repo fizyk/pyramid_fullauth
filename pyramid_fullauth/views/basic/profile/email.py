@@ -9,6 +9,7 @@ from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
+from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -51,7 +52,7 @@ class EmailChangeViews(BaseView):
         try:
             self.request.registry.notify(BeforeEmailChange(self.request, user))
         except AttributeError as e:
-            return {'status': False, 'msg': e.message, 'csrf_token': csrf_token}
+            return {'status': False, 'msg': text_type(e), 'csrf_token': csrf_token}
 
         try:
             user.set_new_email(self.request.POST.get('email', ''))

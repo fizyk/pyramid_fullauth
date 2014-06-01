@@ -1,4 +1,5 @@
 ## -*- coding: utf-8 -*-
+<% import sys %>
 <%doc>
 Copyright (c) 2013 - 2014 by pyramid_fullauth authors and contributors <see AUTHORS file>
 
@@ -11,4 +12,6 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
     <div class="alert alert-error">${_('Error!', domain='pyramid_fullauth')} ${msg}</div>
 % endif
 <%include file="_form.login.mako"/>
-<%include file="_social.login.mako"/>
+% if sys.version_info.major == 2:
+    <%include file="_social.login.mako"/>
+% endif

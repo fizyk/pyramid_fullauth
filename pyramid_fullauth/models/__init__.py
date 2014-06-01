@@ -16,6 +16,7 @@ from sqlalchemy.orm import validates, relationship
 from sqlalchemy.orm.session import object_session
 from sqlalchemy.orm.util import has_identity
 
+from pyramid.compat import text_type
 from pyramid_basemodel import Base
 from pyramid_fullauth import exceptions
 from pyramid_fullauth.models.mixins import UserPasswordMixin, UserEmailMixin
@@ -93,7 +94,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
     def __repr__(self):
         """Object representation."""
-        return "<User ('{0}', '{1}')>".format(self.id, str(self))
+        return "<User ('{0}')>".format(self.id)
 
     def __unicode__(self):
         """Unicode cast rules."""
@@ -102,7 +103,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         elif self.email:
             return self.email.split('@')[0] + '@...'
         else:
-            return str(self.id)
+            return text_type(self.id)
 
     def __str__(self):  # pragma: no cover
         """String cast rules."""

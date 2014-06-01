@@ -1,6 +1,7 @@
 """pyramid_fullauth's installation file."""
 
 import os
+import sys
 import re
 from setuptools import setup, find_packages
 
@@ -27,18 +28,24 @@ requirements = [
     'pyramid >=1.4',
     'pyramid_mako',
     'tzf.pyramid_yml >=1.0',
-    'pyramid_basemodel',
-    'velruse'  # but on the other hand, neither is velruse
+    'pyramid_basemodel'
 ]
 
 test_requires = [
     'mock',
     'pytest_pyramid',
-    'pytest-dbfixtures',
-    'mysql-python',
-    'psycopg2',
     'pytest-cov'
 ]
+
+# extend python2 dependency
+if sys.version_info.major == 2:
+    requirements.append('velruse')
+    test_requires.extend([
+        'mysql-python',
+        'pytest-dbfixtures',
+        'psycopg2'
+    ])
+
 
 extras_require = {
     'docs': ['sphinx'],
@@ -68,8 +75,9 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(),

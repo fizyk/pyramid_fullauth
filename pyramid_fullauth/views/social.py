@@ -11,6 +11,7 @@ from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
+from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -212,7 +213,9 @@ class SocialLoginViews(BaseView):
             return context.profile['emails'][0]['value']
         # generating some random email address based on social userid and provider domain
         else:
-            return u'{0}@{1}'.format(
-                context.profile['accounts'][0]['userid'],
-                context.profile['accounts'][0]['domain']
+            return text_type(
+                '{0}@{1}'.format(
+                    context.profile['accounts'][0]['userid'],
+                    context.profile['accounts'][0]['domain']
+                )
             )

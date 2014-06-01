@@ -1,8 +1,12 @@
 """Registration related tests."""
-from HTMLParser import HTMLParser
+try:
+    from HTMLParser import HTMLParser
+except ImportError:
+    from html.parser import HTMLParser
 
 import pytest
 import transaction
+from pyramid.compat import text_type
 from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.models import User
@@ -48,7 +52,7 @@ def test_register_user_exists(db_session, user, default_app):
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
     transaction.commit()
 
-    assert 'User with given e-mail already exists' in res.body
+    assert 'User with given e-mail already exists' in res.body.decode('unicode_escape')
 
 
 @pytest.mark.parametrize('email, password, confirm_password, error', (
@@ -62,7 +66,7 @@ def test_register_user_exists(db_session, user, default_app):
     (DEFAULT_USER['email'], DEFAULT_USER['password'], DEFAULT_USER['password'] + 'Typo',
         'Passwords don\'t match'),
     # long, incorect email
-    (u'email' * 100 + '@wap.pl', DEFAULT_USER['password'], DEFAULT_USER['password'],
+    (text_type('email') * 100 + text_type('@wap.pl'), DEFAULT_USER['password'], DEFAULT_USER['password'],
         'Incorrect e-mail format'),
     # too short password
     (DEFAULT_USER['email'], '12', '12',
@@ -82,7 +86,7 @@ def test_register_error(db_session, default_app, email, password, confirm_passwo
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
     transaction.commit()
 
-    assert error in HTMLParser().unescape(res.body)
+    assert error in HTMLParser().unescape(res.body.decode('unicode_escape'))
     assert db_session.query(User).count() == 0
 
 
@@ -111,7 +115,7 @@ def test_no_pass_confirm(db_session, nopassconfirm_app):
     res.form['password'] = DEFAULT_USER['password']
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
 
-    assert 'Passwords don\'t match!' not in HTMLParser().unescape(res.body)
+    assert 'Passwords don\'t match!' not in HTMLParser().unescape(res.body.decode('unicode_escape'))
     transaction.commit()
 
     user = db_session.query(User).filter(User.email == DEFAULT_USER['email']).one()
