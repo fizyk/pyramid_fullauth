@@ -28,6 +28,7 @@ from pyramid_fullauth.events import (
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 from tests.conftest import py2only
+from tests.views.conftest import mock_translate
 
 EVENT_PATH = '/event?event={0.__name__}'
 EVENT_URL = 'http://localhost' + EVENT_PATH
@@ -461,7 +462,7 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
     request.registry = alreadyconnected_config.registry
     request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
-    request._ = lambda msg, *args, **kwargs: msg
+    request._ = mock_translate
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}

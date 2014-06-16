@@ -14,6 +14,7 @@ except ImportError:
 from pyramid_fullauth.models import User
 
 from tests.conftest import py2only
+from tests.views.conftest import mock_translate
 
 
 @py2only
@@ -149,7 +150,7 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
     request.registry = social_config.registry
     request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
-    request._ = lambda msg, *args, **kwargs: msg
+    request._ = mock_translate
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
@@ -187,7 +188,7 @@ def test_logged_social_connect_self(social_config, facebook_user, db_session):
     request.registry = social_config.registry
     request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
-    request._ = lambda msg, *args, **kwargs: msg
+    request._ = mock_translate
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
@@ -226,7 +227,7 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
     request.registry = social_config.registry
     request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
-    request._ = lambda msg, *args, **kwargs: msg
+    request._ = mock_translate
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
@@ -273,7 +274,7 @@ def test_logged_social_connect_used_account(social_config, facebook_user, db_ses
     request.registry = social_config.registry
     request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
-    request._ = lambda msg, *args, **kwargs: msg
+    request._ = mock_translate
 
     request.login_perform = MagicMock(name='login_perform')
     request.login_perform.return_value = {'status': True}
