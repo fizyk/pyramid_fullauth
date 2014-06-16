@@ -5,6 +5,11 @@ import transaction
 from pyramid_fullauth.models import AuthenticationProvider
 
 
+def mock_translate(msg, *args, **kwargs):
+    """Mock translate function (simply returns message)."""
+    return msg
+
+
 @pytest.fixture
 def facebook_user(active_user, db_session):
     """Facebook user."""
