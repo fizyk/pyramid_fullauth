@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-current
+unreleased
 -------
 
 - python 3 compatibility (without oaut2 though)
