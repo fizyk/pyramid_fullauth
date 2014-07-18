@@ -7,7 +7,6 @@
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 from pyramid.httpexceptions import HTTPSeeOther, HTTPRedirection
-from pyramid.security import authenticated_userid
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -65,7 +64,7 @@ class LoginView(BaseLoginView):
 
     def __call__(self):
         """Display login page."""
-        if authenticated_userid(self.request):
+        if self.request.authenticated_userid:
             return self._redirect_authenticated_user()
 
         self.request.registry.notify(BeforeLogIn(self.request, None))
@@ -83,7 +82,7 @@ class LoginViewPost(BaseLoginView):
 
     def __call__(self):
         """Login action."""
-        if authenticated_userid(self.request):
+        if self.request.authenticated_userid:
             return self._redirect_authenticated_user()
 
         email = self.request.POST.get('email', '')
