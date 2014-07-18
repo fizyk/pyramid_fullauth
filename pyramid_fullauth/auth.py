@@ -38,7 +38,8 @@ def groupfinder(userid, request):
         else:
             groups.append('s:inactive')
 
-    return groups
+        return groups
+    return None
 
 
 class BaseACLRootFactoryMixin(object):
