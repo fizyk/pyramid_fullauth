@@ -2,8 +2,8 @@ CHANGELOG
 =========
 
 
-unreleased
------
+0.3.3
+-------
 - Fix issue where groupfined was returning empty list instead of None when user did not existed
 
 0.3.2

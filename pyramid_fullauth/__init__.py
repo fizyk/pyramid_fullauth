@@ -17,7 +17,7 @@ from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform, logout, user
 
-__version__ = '0.3.2'
+__version__ = '0.3.3'
 
 
 logger = logging.getLogger(__name__)
