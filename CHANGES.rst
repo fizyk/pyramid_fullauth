@@ -7,6 +7,10 @@ unreleased
 - python 3 compatibility (without oaut2 though)
 - cleared use of deprecated `pyramid.security.authenticated_userid` in favor of request.authenticated_userid
 
+0.3.3
+-------
+
+- Fix issue where groupfined was returning empty list instead of None when user did not existed
 
 0.3.2
 -----
