@@ -5,6 +5,7 @@ unreleased
 -------
 
 - python 3 compatibility (without oaut2 though)
+- cleared use of deprecated `pyramid.security.authenticated_userid` in favor of request.authenticated_userid
 
 
 0.3.2
