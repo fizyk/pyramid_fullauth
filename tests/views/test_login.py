@@ -1,5 +1,7 @@
 """Log in related test."""
 import pytest
+import transaction
+
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
 
 
@@ -149,3 +151,18 @@ def test_default_login_redirectaway(active_user, authable_app):
     authenticate(authable_app)
     res = authable_app.get('/login', status=303)
     assert res.location == 'http://localhost/'
+
+
+def test_login_invalid_cookie(db_session, active_user, extended_app):
+    """Test access login page by deleted user."""
+    res = authenticate(extended_app)
+    assert 'Max-Age=' not in str(res)
+
+    assert is_user_logged(extended_app) is True
+
+    db_session.delete(active_user)
+    transaction.commit()
+
+    # will rise Attribute error
+    res = extended_app.get('/login')
+    assert res.status_code == 200, "Should stay since user is no longer valid!"
