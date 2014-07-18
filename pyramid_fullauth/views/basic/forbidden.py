@@ -5,7 +5,6 @@
 """Forbidden views."""
 
 from pyramid.view import forbidden_view_config
-from pyramid.security import authenticated_userid
 from pyramid.httpexceptions import HTTPFound
 
 from pyramid_fullauth.views import BaseView
@@ -24,7 +23,7 @@ class ForbiddenViews(BaseView):
     def forbidden(self):
         """Forbidden page view."""
         # do not allow a user to login if they are already logged in
-        if authenticated_userid(self.request):
+        if self.request.authenticated_userid:
             return {}
 
         loc = self.request.route_path('login', _query=(('after', self.request.path),))
@@ -34,7 +33,7 @@ class ForbiddenViews(BaseView):
     def forbidden_json(self):
         """Forbidden xhr response."""
         # do not allow a user to login if they are already logged in
-        if authenticated_userid(self.request):
+        if self.request.authenticated_userid:
             return {'status': False, 'msg':
                     self.request._('forbidden-notallowed',
                                    default='You are not allowed to use this function',

@@ -5,7 +5,7 @@
 """These method gets added to each ``pyramid.request.Request`` object."""
 
 from pyramid.httpexceptions import HTTPSeeOther
-from pyramid.security import remember, unauthenticated_userid, forget
+from pyramid.security import remember, forget
 from sqlalchemy.sql.expression import func
 from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
@@ -49,10 +49,11 @@ def user(request):
     :returns: logged in user object, or None
     :rtype: pyramid_fullauth.models.User
     """
-    userid = unauthenticated_userid(request)
-    if userid:
+    if request.unauthenticated_userid:
         try:
-            user = pyramid_basemodel.Session.query(User).filter(User.id == userid).one()
+            user = pyramid_basemodel.Session.query(User).filter(
+                User.id == request.unauthenticated_userid
+            ).one()
             return user
         except NoResultFound:  # pragma: no cover
             pass
