@@ -45,7 +45,7 @@ Package resources
 * Documentation: http://pyramid-fullauth.readthedocs.org/
 * PyPI: https://pypi.python.org/pypi/pyramid_fullauth
 
-Instalation
+Installation
 -----------
 
 ``pip install pyramid_fullauth``
