@@ -7,13 +7,13 @@
 import re
 import uuid
 
-from sqlalchemy import Column
-from sqlalchemy import Unicode
-from sqlalchemy import String
+from sqlalchemy import Column, Unicode, String
 from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
+from pyramid_fullauth.models.extensions import CaseInsensitive
 
 pattern_mail = re.compile(
     r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]{0,256}(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+){0,256}"  # dot-atom
@@ -29,9 +29,48 @@ class UserEmailMixin(object):
 
     __pattern_mail = pattern_mail
 
-    email = Column(Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)
-    new_email = Column(Unicode(254), unique=True, nullable=True)  # RFC5321 and RFC3696(errata)
+    _email = Column('email', Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)
+    _new_email = Column('new_email', Unicode(254), unique=True, nullable=True)  # RFC5321 and RFC3696(errata)
     email_change_key = Column(String(255), default=None, unique=True)
+
+    def __init__(self, *args, **kwargs):
+        """Switch possible email and new_email kwarg into new column attribute names."""
+        if 'email' in kwargs:
+            kwargs['_email'] = kwargs.pop('email')
+        if 'new_email' in kwargs:
+            kwargs['_new_email'] - kwargs.pop('new_email')
+
+        super(UserEmailMixin, self).__init__(*args, **kwargs)
+
+    @hybrid_property
+    def email(self):
+        """Email field getter."""
+        return self._email.lower()
+
+    @email.setter
+    def email(self, value):
+        """Email field setter."""
+        self._email = value.lower()
+
+    @email.comparator
+    def email(cls):
+        """Email field comparator."""
+        return CaseInsensitive(cls._email)
+
+    @hybrid_property
+    def new_email(self):
+        """New email field getter."""
+        return self._new_email.lower()
+
+    @new_email.setter
+    def new_email(self, value):
+        """New email field setter."""
+        self._new_email = value.lower()
+
+    @new_email.comparator
+    def new_email(cls):
+        """New email field comparator."""
+        return CaseInsensitive(cls._new_email)
 
     @validates('email', 'new_email')
     def validate_email(self, key, address):
