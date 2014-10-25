@@ -6,6 +6,7 @@ unreleased
 
 - python 3 compatibility (without oaut2 though)
 - cleared use of deprecated `pyramid.security.authenticated_userid` in favor of request.authenticated_userid
+- make email fields case insensitive by using hybrid properties and CaseInsensitive comparator
 
 0.3.3
 -------
