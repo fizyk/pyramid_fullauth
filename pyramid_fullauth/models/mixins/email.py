@@ -45,12 +45,16 @@ class UserEmailMixin(object):
     @hybrid_property
     def email(self):
         """Email field getter."""
-        return self._email.lower()
+        if self._email:
+            return self._email.lower()
+        return self._email
 
     @email.setter
     def email(self, value):
         """Email field setter."""
-        self._email = value.lower()
+        if value:
+            value = value.lower()
+        self._email = value
 
     @email.comparator
     def email(cls):
@@ -60,12 +64,16 @@ class UserEmailMixin(object):
     @hybrid_property
     def new_email(self):
         """New email field getter."""
-        return self._new_email.lower()
+        if self._new_email:
+            return self._new_email.lower()
+        return self._new_email
 
     @new_email.setter
     def new_email(self, value):
         """New email field setter."""
-        self._new_email = value.lower()
+        if value:
+            value = value.lower()
+        self._new_email = value
 
     @new_email.comparator
     def new_email(cls):
