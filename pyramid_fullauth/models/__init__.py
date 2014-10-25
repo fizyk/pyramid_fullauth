@@ -6,6 +6,7 @@
 
 import sys
 import uuid
+from datetime import datetime
 
 from sqlalchemy import (
     Column, Unicode, String, Integer, Boolean, Sequence, DateTime,
@@ -15,12 +16,11 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.orm.session import object_session
 from sqlalchemy.orm.util import has_identity
-
 from pyramid.compat import text_type
 from pyramid_basemodel import Base
+
 from pyramid_fullauth import exceptions
 from pyramid_fullauth.models.mixins import UserPasswordMixin, UserEmailMixin
-from datetime import datetime
 
 
 class User(UserPasswordMixin, UserEmailMixin, Base):
