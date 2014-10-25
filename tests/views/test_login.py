@@ -25,7 +25,11 @@ def test_login_view_secret(extended_app):
     assert 'email' in res.form.fields
 
 
-def test_login(active_user, extended_app):
+@pytest.mark.parametrize('email', (
+    DEFAULT_USER['email'].lower(),
+    DEFAULT_USER['email'].upper()
+))
+def test_login_ok(active_user, extended_app, email):
     """Actually log in test."""
     res = extended_app.get('/secret', status=302)
     res = res.follow()
@@ -33,7 +37,7 @@ def test_login(active_user, extended_app):
 
     assert is_user_logged(extended_app) is False
 
-    res = authenticate(extended_app)
+    res = authenticate(extended_app, email=email)
     assert 'Max-Age=' not in str(res)
 
     assert is_user_logged(extended_app) is True
