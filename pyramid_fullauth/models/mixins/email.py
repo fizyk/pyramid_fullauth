@@ -72,7 +72,7 @@ class UserEmailMixin(object):
         """New email field comparator."""
         return CaseInsensitive(cls._new_email)
 
-    @validates('email', 'new_email')
+    @validates('_email', '_new_email')
     def validate_email(self, key, address):
         """
         Validate email addresses.
