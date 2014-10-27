@@ -15,6 +15,12 @@ Contents
    api
    changelog
 
+Python 3
+--------
+
+Python 3 support is limited to python 3.3 and 3.4.
+Unfortunately, python 3.x support does not include social authentication.
+
 
 
 License
