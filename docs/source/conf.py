@@ -306,4 +306,4 @@ autoclass_content = 'both'
 # Intersphinx configuration
 intersphinx_mapping = {'python': ('http://docs.python.org/', None),
                        'pyramid': ('http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/', None),
-                       'sqlalchemy': ('http://docs.sqlalchemy.org/en/rel_0_8/', None)}
+                       'sqlalchemy': ('http://docs.sqlalchemy.org/en/rel_0_9/', None)}
