@@ -7,11 +7,11 @@ env:
     - PYRAMID_VER="==1.5.1" SQLALCHEMY_VER="==0.9.8"
 install:
     # install requests first, since setuptools have problem with it.
-    - "pip install requests --use-mirrors"
+    - "pip install requests"
     - "python setup.py develop"
-    - "pip install pyramid_fullauth[tests] coveralls pylama pyramid$PYRAMID_VER sqlalchemy$SQLALCHEMY_VER --use-mirrors"
+    - "pip install pyramid_fullauth[tests] coveralls pylama pyramid$PYRAMID_VER sqlalchemy$SQLALCHEMY_VER"
     # manually install wheel for deployment
-    - "pip install wheel --use-mirrors"
+    - "pip install wheel"
 script:
     - "py.test -v --cov pyramid_fullauth tests/"
     - "pylama"
@@ -25,6 +25,7 @@ deploy:
         secure: Q6P2MZMJdd+BY8Hlh0AJAq1S5y5EKGWcsxb5CbhVoWeo0UiJ/uIqju6AkCijifm4v0wyZ1hjErV8ENMSiVZ4l9dmZDKDgk9MMxfNzCIVYvM1BIBMa1aQtvqOBcIwQ/wV1Dt4h+XftlJaI3p31IEOqScU/Kb/oqCkI/Gs096P+JU=
     on:
         tags: true
+        all_branches: true
         repo: fizyk/pyramid_fullauth
     distributions: "sdist bdist_egg bdist_wheel"
 
