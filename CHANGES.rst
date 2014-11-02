@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+0.4.0
 -------
 
 - python 3 compatibility (without oauth2 though)
