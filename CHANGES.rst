@@ -4,9 +4,9 @@ CHANGELOG
 unreleased
 -------
 
-- python 3 compatibility (without oaut2 though)
-- cleared use of deprecated `pyramid.security.authenticated_userid` in favor of request.authenticated_userid
-- make email fields case insensitive by using hybrid properties and CaseInsensitive comparator
+- python 3 compatibility (without oauth2 though)
+- cleared use of deprecated :func:`pyramid.security.authenticated_userid` in favour of :attr:`pyramid.request.Request.authenticated_userid`
+- make email fields case insensitive by using hybrid properties and CaseInsensitive comparator for model.
 
 0.3.3
 -------

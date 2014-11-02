@@ -38,3 +38,9 @@ models
             .. autoattribute:: email_change_key
 
 
+    models.extensions
+    -----------------
+
+    .. automodule:: pyramid_fullauth.models.extensions
+
+        .. autoclass:: CaseInsensitive

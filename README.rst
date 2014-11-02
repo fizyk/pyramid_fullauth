@@ -46,7 +46,7 @@ Package resources
 * PyPI: https://pypi.python.org/pypi/pyramid_fullauth
 
 Installation
------------
+------------
 
 ``pip install pyramid_fullauth``
 

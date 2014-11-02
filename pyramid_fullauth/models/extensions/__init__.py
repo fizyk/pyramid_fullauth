@@ -1,8 +1,7 @@
 # Copyright (c) by SQLAlchemy authors and contributors.
 #
 # This module's code is part of SQLAlchemy's documentation
-# http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/hybrid.html\
-# hybrid-value-objects
+# http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/hybrid.html#hybrid-value-objects
 # and released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """CaseInsensitive comparator for sqlalchemy models."""
