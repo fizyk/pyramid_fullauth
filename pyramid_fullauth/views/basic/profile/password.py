@@ -46,7 +46,7 @@ class PasswordResetView(BaseView):
         except NoResultFound:
             return {'status': False,
                     'msg': self.request._('user-not-exists',
-                                          default='User does not exists',
+                                          default='User does not exist',
                                           domain='pyramid_fullauth'),
                     'csrf_token': csrf_token}
 

@@ -40,7 +40,7 @@ def test_reset_email_not_exists(user, db_session, default_app):
     res = default_app.get('/password/reset')
     res.form['email'] = text_type('wrong@example.com')
     res = res.form.submit()
-    assert 'Error! User does not exists' in res
+    assert 'Error! User does not exist' in res
 
 
 def test_reset_proceed(user, db_session, default_app):
