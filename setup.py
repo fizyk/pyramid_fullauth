@@ -28,7 +28,7 @@ requirements = [
     'pyramid >=1.4',
     'pyramid_mako',
     'tzf.pyramid_yml >=1.0',
-    'pyramid_basemodel'
+    'pyramid_basemodel>=0.3',
 ]
 
 test_requires = [
@@ -87,8 +87,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     message_extractors={'pyramid_fullauth': [
-                          ('**.py', 'python', None),
-                          ('resources/templates/**.mako', 'mako', None),
-                          ('resources/static/**', 'ignore', None)]},
+        ('**.py', 'python', None),
+        ('resources/templates/**.mako', 'mako', None),
+        ('resources/static/**', 'ignore', None)]},
     extras_require=extras_require,
 )
