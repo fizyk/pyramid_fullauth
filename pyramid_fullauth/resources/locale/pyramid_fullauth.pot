@@ -1,15 +1,15 @@
 # Translations template for pyramid_fullauth.
-# Copyright (C) 2014 ORGANIZATION
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the pyramid_fullauth
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: pyramid_fullauth 0.2.3\n"
+"Project-Id-Version: pyramid_fullauth 0.4.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-11 23:41+0200\n"
+"POT-Creation-Date: 2015-02-10 00:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,16 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: pyramid_fullauth/tools.py:47
+#: pyramid_fullauth/tools.py:50
 msgid "Please enter your password"
 msgstr ""
 
-#: pyramid_fullauth/tools.py:53
+#: pyramid_fullauth/tools.py:56
 msgid "Password is too short"
 msgstr ""
 
-#: pyramid_fullauth/tools.py:61
-#: pyramid_fullauth/views/basic/profile/password.py:124
+#: pyramid_fullauth/tools.py:64
+#: pyramid_fullauth/views/basic/profile/password.py:123
 msgid "password-mismatch"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgid "Change your email"
 msgstr ""
 
 #: pyramid_fullauth/resources/templates/email_change.mako:15
-#: pyramid_fullauth/resources/templates/login.mako:11
+#: pyramid_fullauth/resources/templates/login.mako:12
 #: pyramid_fullauth/resources/templates/register.mako:13
 #: pyramid_fullauth/resources/templates/reset.mako:15
 #: pyramid_fullauth/resources/templates/reset.proceed.mako:14
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Welcome, to pyramid_fullauth!"
 msgstr ""
 
-#: pyramid_fullauth/resources/templates/login.mako:9
+#: pyramid_fullauth/resources/templates/login.mako:10
 msgid "Please, log in"
 msgstr ""
 
@@ -149,23 +149,23 @@ msgstr ""
 msgid "Recover your password - choose new password"
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:134
+#: pyramid_fullauth/views/social.py:139
 msgid "Your account is already connected to other ${provider} account."
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:141
+#: pyramid_fullauth/views/social.py:146
 msgid "Your account has been connected to ${provider} account."
 msgstr ""
 
-#: pyramid_fullauth/views/social.py:147
+#: pyramid_fullauth/views/social.py:152
 msgid "This ${provider} account is already connected with other account."
 msgstr ""
 
-#: pyramid_fullauth/views/basic/forbidden.py:39
+#: pyramid_fullauth/views/basic/forbidden.py:38
 msgid "forbidden-notallowed"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/forbidden.py:44
+#: pyramid_fullauth/views/basic/forbidden.py:43
 msgid "forbidden-login"
 msgstr ""
 
@@ -178,35 +178,35 @@ msgid "Already logged in!"
 msgstr ""
 
 #: pyramid_fullauth/views/basic/login.py:95
-#: pyramid_fullauth/views/basic/login.py:133
+#: pyramid_fullauth/views/basic/login.py:126
 msgid "Wrong e-mail or password."
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:38
+#: pyramid_fullauth/views/basic/register.py:39
 msgid "You have an error in your registration form"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:51
+#: pyramid_fullauth/views/basic/register.py:52
 msgid "You have successfully registered"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/register.py:75
+#: pyramid_fullauth/views/basic/register.py:76
 msgid "User with given e-mail already exists!"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:44
+#: pyramid_fullauth/views/basic/profile/email.py:45
 msgid "User with this email exists"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:60
+#: pyramid_fullauth/views/basic/profile/email.py:61
 msgid "E-mail is empty"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:66
+#: pyramid_fullauth/views/basic/profile/email.py:67
 msgid "Incorrect e-mail format"
 msgstr ""
 
-#: pyramid_fullauth/views/basic/profile/email.py:73
+#: pyramid_fullauth/views/basic/profile/email.py:74
 msgid "We sent you email to activate your new email address"
 msgstr ""
 
