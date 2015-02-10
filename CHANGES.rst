@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+- require pyramid_basemodel at least version 0.3
+
 0.4.0
 -------
 
