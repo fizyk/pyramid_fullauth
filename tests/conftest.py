@@ -62,7 +62,8 @@ def db_session(request):
 
     engine = create_engine(connection, echo=False, poolclass=NullPool)
     pyramid_basemodel.Session = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
-    pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_drop=True)
+    pyramid_basemodel.bind_engine(
+        engine, pyramid_basemodel.Session, should_create=True, should_drop=True)
 
     def destroy():
         transaction.commit()
