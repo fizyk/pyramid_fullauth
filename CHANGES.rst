@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+0.4.1
+-------
+
 - fixed spelling for error message when user does not exist while trying to reset password.
 - require pyramid_basemodel at least version 0.3
 
