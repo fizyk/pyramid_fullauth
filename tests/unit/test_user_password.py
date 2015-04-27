@@ -45,7 +45,7 @@ def test_password_empty(db_session, user):
 
 
 def test_set_reset(db_session, user):
-    """User.set_reset - generates reset key for those who forgot their password. """
+    """User.set_reset - generates reset key for those who forgot their password."""
     user = db_session.merge(user)
     assert not user.reset_key
     user.set_reset()

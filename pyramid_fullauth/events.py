@@ -236,7 +236,6 @@ class SocialAccountAlreadyConnected(_BaseSocialRegister):
     """
     Event raised when social account is already connected to some other user.
 
-
     Allow to add custom logic, when someone tries to connect social account to
     second user in application.
 
