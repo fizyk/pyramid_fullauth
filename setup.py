@@ -58,9 +58,7 @@ setup(
     description='''This package intends to provide full authentication / authorisation
     implementation for pyramid applications''',
     long_description=(
-        read('README.rst')
-        + '\n\n' +
-        read('CHANGES.rst')
+        read('README.rst') + '\n\n' + read('CHANGES.rst')
     ),
     keywords='python authentication authorisation pyramid',
     author='Grzegorz Sliwinski',
