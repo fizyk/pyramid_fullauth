@@ -6,13 +6,6 @@ Those actions use velruse library for unification of different authentication pr
 Now only facebook and twitter were tested, but this library offers many more.
 
 
-.. warning::
-
-    Since `oath2 <https://pypi.python.org/pypi/oauth2>`_ library
-    used by `velruse <https://pypi.python.org/pypi/velruse/>`_ does not support python3,
-    social authentication works only on python2.
-
-
 Configuration
 -------------
 

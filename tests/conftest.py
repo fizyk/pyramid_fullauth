@@ -1,6 +1,4 @@
 """Most of the fixtures needed."""
-import sys
-
 from mock import Mock
 import pytest
 
@@ -13,10 +11,6 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from pyramid.compat import text_type
 from pytest_pyramid import factories
 import pyramid_basemodel
-
-py2only = pytest.mark.skipif(
-    sys.version_info.major > 2,
-    reason='oauth2-python and velruse does not support python3')
 
 
 @pytest.fixture
@@ -40,13 +34,8 @@ def web_request():
 
     return request
 
-if sys.version_info.major == 2:
-    databases = ['sqlite', 'mysql', 'postgresql']
-else:
-    databases = ['sqlite']
 
-
-@pytest.fixture(scope='function', params=databases)
+@pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
 def db_session(request):
     """SQLAlchemy session."""
     from pyramid_fullauth.models import Base

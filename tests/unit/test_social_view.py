@@ -4,10 +4,8 @@ import mock
 from pyramid.compat import text_type
 
 from pyramid_fullauth.views.social import SocialLoginViews
-from tests.conftest import py2only
 
 
-@py2only
 @pytest.mark.parametrize('profile, email', [
     (
         {

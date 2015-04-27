@@ -8,12 +8,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.orm.exc import NoResultFound
 from pytest_pyramid import factories
-
-try:
-    from velruse import AuthenticationComplete
-except ImportError:
-    # py3 version doesn't have social auth
-    pass
+from velruse import AuthenticationComplete
 
 
 from pyramid_fullauth.models import User
@@ -27,7 +22,6 @@ from pyramid_fullauth.events import (
     BeforeRegister, AfterRegister
 )
 from tests.tools import authenticate, is_user_logged, DEFAULT_USER
-from tests.conftest import py2only
 from tests.views.conftest import mock_translate
 
 EVENT_PATH = '/event?event={0.__name__}'
@@ -347,7 +341,6 @@ def aftersocialregister_config(evented_config):
 aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
 
 
-@py2only
 def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
     profile = {
@@ -389,7 +382,6 @@ def aftersociallogin_config(evented_config):
 aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')
 
 
-@py2only
 def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_session):
     """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
     profile = {
@@ -432,7 +424,6 @@ def alreadyconnected_config(evented_config):
 alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')
 
 
-@py2only
 def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, facebook_user, db_session):
     """Try to connect facebook account to logged in user used by other user check redirect from SocialAccountAlreadyConnected."""
     # this user will be logged and trying to connect facebook's user account.
