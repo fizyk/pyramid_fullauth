@@ -4,7 +4,8 @@ python:
     - "3.3"
     - "3.4"
 env:
-    - PYRAMID_VER="==1.5.1" SQLALCHEMY_VER="==0.9.8"
+    - PYRAMID_VER="==1.5.6" SQLALCHEMY_VER="==0.9.9"
+    - PYRAMID_VER="==1.5.6" SQLALCHEMY_VER="==1.0.2"
 install:
     # install requests first, since setuptools have problem with it.
     - "pip install requests"
