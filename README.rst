@@ -5,6 +5,10 @@ pyramid_fullauth
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Latest PyPI version
 
+.. image:: https://readthedocs.org/projects/pyramid_fullauth/badge/?version=v0.4.1
+    :target: https://readthedocs.org/projects/pyramid_fullauth/?badge=v0.4.1
+    :alt: Documentation Status
+
 .. image:: https://pypip.in/d/pyramid_fullauth/badge.png
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Number of PyPI downloads
@@ -26,17 +30,17 @@ Pyramid fullauth's goal is to provide full plug-in registration functionality fo
 Package status
 --------------
 
-.. image:: https://travis-ci.org/fizyk/pyramid_fullauth.png?branch=master
+.. image:: https://travis-ci.org/fizyk/pyramid_fullauth.png?branch=v0.4.1
     :target: https://travis-ci.org/fizyk/pyramid_fullauth
     :alt: Tests
 
-.. image:: https://coveralls.io/repos/fizyk/pyramid_fullauth/badge.png?branch=master
-    :target: https://coveralls.io/r/fizyk/pyramid_fullauth?branch=master
+.. image:: https://coveralls.io/repos/fizyk/pyramid_fullauth/badge.png?branch=v0.4.1
+    :target: https://coveralls.io/r/fizyk/pyramid_fullauth?branch=v0.4.1
     :alt: Coverage Status
 
-.. image:: https://requires.io/github/fizyk/pyramid_fullauth/requirements.png?branch=master
-   :target: https://requires.io/github/fizyk/pyramid_fullauth/requirements/?branch=master
-   :alt: Requirements Status
+.. image:: https://requires.io/github/fizyk/pyramid_fullauth/requirements.svg?tag=v0.4.1
+     :target: https://requires.io/github/fizyk/pyramid_fullauth/requirements/?tag=v0.4.1
+     :alt: Requirements Status
 
 Package resources
 -----------------
