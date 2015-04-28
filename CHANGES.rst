@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- full python3 compatibility, since velruse migrated to py3 enabled requests-oauth
+- run tests with sqlalchemy 1.0.x
+- small updates to conform with new linters versions embedded in pylama
+
 0.4.1
 -------
 
