@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+0.5.0
 -------
 
 - full python3 compatibility, since velruse migrated to py3 enabled requests-oauth
