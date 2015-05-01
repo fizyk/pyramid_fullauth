@@ -64,7 +64,26 @@ Plugin, by default works on these assumptions:
 .. note::
     For alternative values of the settings above look at config.{env}.yml configurations found in tests.config directory.
 
+Fullauth data models
+--------------------
 
+**pyramid_fullauth** comes with `SQLAlchemy <http://www.sqlalchemy.org/>` models to maintain the user data.
+
+* :class:`pyramid_fullauth.models.User` - is the base model with most relevant user data
+* :class:`pyramid_fullauth.models.Group` - allows grouping user in permission groups
+* :class:`pyramid_fullauth.models.AuthenticationProvider` - is where the 3rd party authentication system identifiers for different providers lives
+
+Fullauth models are based on declarative_base defined in `pyramid_basemodel
+<https://github.com/thruflo/pyramid_basemodel>` and functionality uses Session object provided
+by basemodel.
+
+To connect fullauth's models to your database, it is required to base your own models on the same
+declarative_base. It can be achieved by either using those provided by pyramid_basemodel or patching
+them with your own.
+
+Last thing is updating the database. If you're using alembic for that, remember to import fullauth
+models in alembic's env,py or in common place for your model. If models won't be imported while
+running alembic commands, they won't be seen by alembic.
 
 Request object additional methods
 ---------------------------------
