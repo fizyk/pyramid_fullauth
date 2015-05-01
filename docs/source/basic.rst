@@ -67,14 +67,14 @@ Plugin, by default works on these assumptions:
 Fullauth data models
 --------------------
 
-**pyramid_fullauth** comes with `SQLAlchemy <http://www.sqlalchemy.org/>` models to maintain the user data.
+**pyramid_fullauth** comes with `SQLAlchemy <http://www.sqlalchemy.org/>`_ models to maintain the user data.
 
 * :class:`pyramid_fullauth.models.User` - is the base model with most relevant user data
 * :class:`pyramid_fullauth.models.Group` - allows grouping user in permission groups
 * :class:`pyramid_fullauth.models.AuthenticationProvider` - is where the 3rd party authentication system identifiers for different providers lives
 
 Fullauth models are based on declarative_base defined in `pyramid_basemodel
-<https://github.com/thruflo/pyramid_basemodel>` and functionality uses Session object provided
+<https://github.com/thruflo/pyramid_basemodel>`_ and functionality uses Session object provided
 by basemodel.
 
 To connect fullauth's models to your database, it is required to base your own models on the same
