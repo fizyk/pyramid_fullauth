@@ -28,7 +28,7 @@ requirements = [
     'pyramid_mako',
     'tzf.pyramid_yml >=1.0',
     'pyramid_basemodel>=0.3',
-    'velruse'
+    'velruse >=1.1.1'
 ]
 
 test_requires = [
