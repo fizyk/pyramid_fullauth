@@ -5,7 +5,7 @@ unreleased
 -------
 
 - full python3 compatibility, since velruse migrated to py3 enabled requests-oauth
--- require velruse 1.1.1
+-require velruse 1.1.1
 - run tests with sqlalchemy 1.0.x
 - small updates to conform with new linters versions embedded in pylama
 
@@ -19,7 +19,7 @@ unreleased
 -------
 
 - python 3 compatibility (without oauth2 though)
-- cleared use of deprecated :func:`pyramid.security.authenticated_userid` in favour of :attr:`pyramid.request.Request.authenticated_userid`
+- cleared use of deprecated function `pyramid.security.authenticated_userid` in favour of `pyramid.request.Request.authenticated_userid` attribute.
 - make email fields case insensitive by using hybrid properties and CaseInsensitive comparator for model.
 
 0.3.3
