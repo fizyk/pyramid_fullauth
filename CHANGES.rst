@@ -5,7 +5,7 @@ CHANGELOG
 -------
 
 - full python3 compatibility, since velruse migrated to py3 enabled requests-oauth
--require velruse 1.1.1
+- require velruse 1.1.1
 - run tests with sqlalchemy 1.0.x
 - small updates to conform with new linters versions embedded in pylama
 
