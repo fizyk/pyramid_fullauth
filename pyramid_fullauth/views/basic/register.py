@@ -21,7 +21,6 @@ from pyramid_fullauth.exceptions import ValidateError
 @view_defaults(route_name='register', permission=NO_PERMISSION_REQUIRED,
                renderer="pyramid_fullauth:resources/templates/register.mako")
 class RegisterView(BaseView):
-
     """Registration views."""
 
     @view_config(request_method='GET')

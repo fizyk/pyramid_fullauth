@@ -24,7 +24,6 @@ except AttributeError:  # pragma: no cover
 
 
 class UserPasswordMixin(object):
-
     """Authentication field definition along with appropriate methods."""
 
     #: password field

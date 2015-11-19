@@ -23,7 +23,6 @@ from pyramid_fullauth.events import AlreadyLoggedIn
 @view_defaults(route_name='login', permission=NO_PERMISSION_REQUIRED,
                renderer='pyramid_fullauth:resources/templates/login.mako')
 class BaseLoginView(BaseView):
-
     """Basic logic for login views."""
 
     def __init__(self, request):
@@ -59,7 +58,6 @@ class BaseLoginView(BaseView):
 
 @view_config(request_method='GET')
 class LoginView(BaseLoginView):
-
     """Login view."""
 
     def __call__(self):
@@ -77,7 +75,6 @@ class LoginView(BaseLoginView):
 @view_config(request_method='POST', check_csrf=True)
 @view_config(request_method='POST', check_csrf=True, xhr=True, renderer="json")
 class LoginViewPost(BaseLoginView):
-
     """Login view POST method."""
 
     def __call__(self):

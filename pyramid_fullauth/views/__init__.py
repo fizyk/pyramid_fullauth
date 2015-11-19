@@ -6,8 +6,7 @@
 
 
 class BaseView(object):
-
-    """basic view class."""
+    """Basic view class."""
 
     def __init__(self, request):
         """Common init for views."""

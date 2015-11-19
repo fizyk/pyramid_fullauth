@@ -25,7 +25,6 @@ from pyramid_fullauth.tools import validate_passsword
 @view_defaults(route_name='password:reset', permission=NO_PERMISSION_REQUIRED,
                renderer='pyramid_fullauth:resources/templates/reset.mako')
 class PasswordResetView(BaseView):
-
     """Profile related views."""
 
     @view_config()
@@ -62,7 +61,6 @@ class PasswordResetView(BaseView):
 @view_defaults(route_name='password:reset:continue', permission=NO_PERMISSION_REQUIRED,
                renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
 class PasswordResetContinueView(BaseView):
-
     """
     Password reset views.
 

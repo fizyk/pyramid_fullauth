@@ -11,7 +11,6 @@ from pyramid_fullauth.views import BaseView
 
 
 class ForbiddenViews(BaseView):
-
     """Forbidden related views."""
 
     def __init__(self, request):

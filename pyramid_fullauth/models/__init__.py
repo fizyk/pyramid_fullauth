@@ -24,7 +24,6 @@ from pyramid_fullauth.models.mixins import UserPasswordMixin, UserEmailMixin
 
 
 class User(UserPasswordMixin, UserEmailMixin, Base):
-
     """User object."""
 
     __tablename__ = 'users'
@@ -153,7 +152,6 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
 
 class Group(Base):
-
     """User group object."""
 
     __tablename__ = 'groups'
@@ -166,7 +164,6 @@ class Group(Base):
 
 
 class AuthenticationProvider(Base):
-
     """Model to store authentication methods for different providers."""
 
     __tablename__ = 'user_authentication_provider'

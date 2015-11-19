@@ -24,7 +24,6 @@ from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
 @view_defaults(route_name='email:change', permission='email_change',
                renderer='pyramid_fullauth:resources/templates/email_change.mako')
 class EmailChangeViews(BaseView):
-
     """Email change related views."""
 
     @view_config(request_method='GET')
@@ -93,7 +92,6 @@ class EmailChangeViews(BaseView):
 @view_config(route_name='email:change:continue', permission=NO_PERMISSION_REQUIRED,
              renderer='pyramid_fullauth:resources/templates/email_change.mako')
 class EmailChangeAccept(BaseView):
-
     """Display email change success."""
 
     def __call__(self):
