@@ -13,6 +13,7 @@ Contents
    narrative
    customise
    api
+   contributing
    changelog
 
 Python 3
