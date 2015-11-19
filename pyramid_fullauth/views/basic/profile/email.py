@@ -8,7 +8,6 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
 
-from sqlalchemy.orm.exc import NoResultFound
 from pyramid.compat import text_type
 import pyramid_basemodel
 
@@ -36,7 +35,7 @@ class EmailChangeViews(BaseView):
     def post(self):
         """Process email change request."""
         user = self.request.user
-        response = self.validate_email(self, user)
+        response = self.validate_email(user)
         if response:
             return response
 
@@ -70,15 +69,12 @@ class EmailChangeViews(BaseView):
         """
         csrf_token = self.request.session.get_csrf_token()
         email = self.request.POST.get('email', text_type(''))
-        try:
-            pyramid_basemodel.Session.query(User).filter(User.email == email).one()
+        if pyramid_basemodel.Session.query(User).filter(User.email == email).first():
             return {
                 'status': False,
                 'msg': self.request._('User with this email exists', domain='pyramid_fullauth'),
                 'csrf_token': csrf_token
             }
-        except NoResultFound:
-            pass
 
         try:
             self.request.registry.notify(BeforeEmailChange(self.request, user))
