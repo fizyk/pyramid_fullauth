@@ -425,7 +425,11 @@ alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')
 
 
 def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, facebook_user, db_session):
-    """Try to connect facebook account to logged in user used by other user check redirect from SocialAccountAlreadyConnected."""
+    """
+    Try to connect facebook account to logged in user used by other users facebook account.
+
+    Check redirect from SocialAccountAlreadyConnected.
+    """
     # this user will be logged and trying to connect facebook's user account.
     fresh_user = User(
         email=text_type('new@user.pl'),
