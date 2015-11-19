@@ -69,32 +69,20 @@ class RegisterView(BaseView):
         :rtype: dict
         """
         email = self.request.POST.get('email', text_type(''))
+        password = self.request.POST.get('password', text_type(''))
         # here if e-mail is already in database
 
-        if pyramid_basemodel.Session.query(User).filter(User.email == email).count() != 0:
-            response['errors']['email'] = self.request._(
-                'User with given e-mail already exists!',
-                domain='pyramid_fullauth')
+        email_error = self._set_email(email, user)
+        if email_error:
+            response['errors']['email'] = email_error
+
+        password_error = self._set_password(password, user)
+        if password_error:
+            response['errors']['password'] = password_error
+
         try:
-            try:
-                user.email = email
-            except ValidateError as e:
-                # do not overwrite existing error
-                if 'email' not in response['errors']:
-                    response['errors']['email'] = text_type(e)
-
-            if self.config.register.password.require:
-                try:
-                    tools.validate_passsword(self.request,
-                                             self.request.POST.get('password', text_type('')),
-                                             user)
-                except ValidateError as e:
-                    response['errors']['password'] = text_type(e)
-            else:
-                user.password = tools.password_generator(
-                    self.config.register.password.length_min)
-
             self.request.registry.notify(BeforeRegister(self.request, user, response['errors']))
+
             if not response['errors']:
                 pyramid_basemodel.Session.add(user)
                 pyramid_basemodel.Session.flush()
@@ -108,3 +96,41 @@ class RegisterView(BaseView):
             response['errors']['msg'] = text_type(e)
 
         return response
+
+    def _set_password(self, password, user):
+        """
+        Set password on a User object.
+
+        :param str password: email address
+        :param pyramid_fullauth.models.User user: user object
+
+        :returns: error or None if no error occured.
+        :rtype: str
+        """
+        if self.config.register.password.require:
+            try:
+                tools.validate_passsword(self.request, password, user)
+            except ValidateError as e:
+                return text_type(e)
+        else:
+            user.password = tools.password_generator(
+                self.config.register.password.length_min)
+
+    def _set_email(self, email, user):
+        """
+        Set email on a User object.
+
+        :param str email: email address
+        :param pyramid_fullauth.models.User user: user object
+
+        :returns: error or None if no error occured.
+        :rtype: str
+        """
+        if pyramid_basemodel.Session.query(User).filter(User.email == email).count() != 0:
+            return self.request._('User with given e-mail already exists!', domain='pyramid_fullauth')
+
+        try:
+            user.email = email
+        except ValidateError as e:
+            # do not overwrite existing error
+            return text_type(e)

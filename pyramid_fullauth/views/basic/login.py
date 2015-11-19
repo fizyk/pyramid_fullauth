@@ -86,40 +86,37 @@ class LoginViewPost(BaseLoginView):
         password = self.request.POST.get('password', '')
         try:
             user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
+            self.request.registry.notify(BeforeLogIn(self.request, user))
         except NoResultFound:
             self.request.registry.notify(BeforeLogIn(self.request, None))
 
             self.response['msg'] = self.request._('Wrong e-mail or password.',
                                                   domain='pyramid_fullauth')
             return self.response
-
-        try:
-            self.request.registry.notify(BeforeLogIn(self.request, user))
         except AttributeError as e:
             self.response['msg'] = text_type(e)
             return self.response
 
-        if user.check_password(password):
-
-            login_kwargs = {'remember_me': self.request.POST.get('remember')}
-            try:
-                # if remember in POST set cookie timeout to one month
-                self.request.registry.notify(AfterLogIn(self.request, user))
-            except AttributeError as e:
-                self.response['msg'] = text_type(e)
-                return self.response
-            except HTTPRedirection as redirect:
-                login_kwargs['location'] = redirect.location
-
-            redirect = self.request.login_perform(user, **login_kwargs)
-            if self.request.is_xhr:
-                self.response['status'] = True
-                del self.response['msg']
-                self.response['after'] = redirect.location
-                return self.response
-            else:
-                return redirect
-        else:
+        if not user.check_password(password):
             self.response['msg'] = self.request._('Wrong e-mail or password.',
                                                   domain='pyramid_fullauth')
             return self.response
+
+        login_kwargs = {'remember_me': self.request.POST.get('remember')}
+        try:
+            # if remember in POST set cookie timeout to one month
+            self.request.registry.notify(AfterLogIn(self.request, user))
+        except AttributeError as e:
+            self.response['msg'] = text_type(e)
+            return self.response
+        except HTTPRedirection as redirect:
+            login_kwargs['location'] = redirect.location
+
+        redirect = self.request.login_perform(user, **login_kwargs)
+        if self.request.is_xhr:
+            self.response['status'] = True
+            del self.response['msg']
+            self.response['after'] = redirect.location
+            return self.response
+
+        return redirect
