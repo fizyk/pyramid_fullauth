@@ -12,7 +12,6 @@ from pyramid.compat import string_types
 
 
 class CaseInsensitive(Comparator):
-
     """Hybrid value representing a lower case representation."""
 
     def __init__(self, word):

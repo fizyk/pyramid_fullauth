@@ -13,7 +13,6 @@ from pyramid_fullauth.views import BaseView
 
 @view_config(route_name='logout', permission=NO_PERMISSION_REQUIRED)
 class LogoutView(BaseView):
-
     """Logout view."""
 
     def __call__(self):

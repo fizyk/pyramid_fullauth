@@ -7,7 +7,6 @@
 
 
 class _BaseRegisterEvent(object):
-
     """
     Base fullauth event.
 
@@ -27,7 +26,6 @@ class _BaseRegisterEvent(object):
 
 
 class BeforeRegister(_BaseRegisterEvent):
-
     """
     Execute custom code at the start of registration process.
 
@@ -50,7 +48,6 @@ class BeforeRegister(_BaseRegisterEvent):
 
 
 class AfterRegister(_BaseRegisterEvent):
-
     """
     Add custom post-processing code in registration process.
 
@@ -82,7 +79,6 @@ class AfterRegister(_BaseRegisterEvent):
 
 
 class AfterActivate(_BaseRegisterEvent):
-
     """
     Add custom post-processing logic after user gets activated.
 
@@ -95,7 +91,6 @@ class AfterActivate(_BaseRegisterEvent):
 
 
 class AfterResetRequest(_BaseRegisterEvent):
-
     """
     Add custom post-processing after user sends request to reset password.
 
@@ -108,14 +103,12 @@ class AfterResetRequest(_BaseRegisterEvent):
 
 
 class BeforeReset(_BaseRegisterEvent):
-
     """Add custom pre-processing before the actual reset-password process."""
 
     pass
 
 
 class AfterReset(_BaseRegisterEvent):
-
     """
     Add custom post-processing after the actual reset-password process.
 
@@ -128,7 +121,6 @@ class AfterReset(_BaseRegisterEvent):
 
 
 class AlreadyLoggedIn(object):
-
     """
     Allow execute custom logic, when logged in user tries to log in again.
 
@@ -148,7 +140,6 @@ class AlreadyLoggedIn(object):
 
 
 class BeforeLogIn(_BaseRegisterEvent):
-
     """
     Add custom logic before user gets logged in.
 
@@ -162,7 +153,6 @@ class BeforeLogIn(_BaseRegisterEvent):
 
 
 class AfterLogIn(_BaseRegisterEvent):
-
     """Add custom logic after user logs in."""
 
     pass
@@ -173,7 +163,6 @@ class AfterLogIn(_BaseRegisterEvent):
 
 
 class _BaseSocialRegister(_BaseRegisterEvent):
-
     """Base for all social requests."""
 
     def __init__(self, request, user, profile):
@@ -189,14 +178,12 @@ class _BaseSocialRegister(_BaseRegisterEvent):
 
 
 class BeforeSocialRegister(_BaseSocialRegister):
-
     """Adds custom logic before the social login process start."""
 
     pass
 
 
 class AfterSocialRegister(_BaseSocialRegister):
-
     """
     Add custom logic after user registers through social network.
 
@@ -219,7 +206,6 @@ class AfterSocialRegister(_BaseSocialRegister):
 
 
 class AfterSocialLogIn(_BaseSocialRegister):
-
     """
     Custom logic after user logs in through social network.
 
@@ -232,7 +218,6 @@ class AfterSocialLogIn(_BaseSocialRegister):
 
 
 class SocialAccountAlreadyConnected(_BaseSocialRegister):
-
     """
     Event raised when social account is already connected to some other user.
 
@@ -260,21 +245,18 @@ class SocialAccountAlreadyConnected(_BaseSocialRegister):
 
 
 class BeforeEmailChange(_BaseRegisterEvent):
-
     """Allow to add custom validation (like checking password) before email change process."""
 
     pass
 
 
 class AfterEmailChange(_BaseRegisterEvent):
-
     """Allow to add some custom post-processing, like e-mail sending, after email change process."""
 
     pass
 
 
 class AfterEmailChangeActivation(_BaseRegisterEvent):
-
     """Allow to add custom logic, after changed email had been activated."""
 
     pass

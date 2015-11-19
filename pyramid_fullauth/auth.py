@@ -16,7 +16,8 @@ def groupfinder(userid, request):
         Adds **s:inactive** group to users who has not activated their account, and **s:user** group to those, who did.
         If user has is_admin flag, he gets **s:superadmin** group set
 
-        Might be useful, when you want restrict access to some parts of your application, but still allow log in, and access to some other parts.
+        Might be useful, when you want restrict access to some parts of your application, but still allow log in, and
+        access to some other parts.
 
     :param int userid: user identity
     :param pyramid.request.Request request: request object
@@ -43,7 +44,6 @@ def groupfinder(userid, request):
 
 
 class BaseACLRootFactoryMixin(object):
-
     """
     ACL list factory Mixin.
 

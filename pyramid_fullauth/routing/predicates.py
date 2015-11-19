@@ -47,7 +47,9 @@ def change_email_hash(info, request):
     change_email_hash = info['match'].get('hash', None)
     if change_email_hash:
         try:
-            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(User.email_change_key == change_email_hash).one()
+            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(
+                User.email_change_key == change_email_hash
+            ).one()
             return True
         except NoResultFound:
             pass
@@ -55,7 +57,6 @@ def change_email_hash(info, request):
 
 
 class CSRFCheckPredicate(CheckCSRFTokenPredicate):
-
     """
     Run csrf check dependant on configuration.
 

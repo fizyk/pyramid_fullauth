@@ -19,7 +19,6 @@ from pyramid_fullauth.events import AfterActivate
 @view_config(route_name='register:activate', permission=NO_PERMISSION_REQUIRED,
              renderer="pyramid_fullauth:resources/templates/activate.mako")
 class ActivateView(BaseView):
-
     """Activate account views."""
 
     def __call__(self):

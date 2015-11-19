@@ -30,7 +30,6 @@ logger = logging.getLogger(__name__)
              permission=NO_PERMISSION_REQUIRED,
              renderer="pyramid_fullauth:resources/templates/register.mako")
 class SocialLoginViews(BaseView):
-
     """Social login views definition."""
 
     def set_provider(self, user, provider_name, user_provider_id):
