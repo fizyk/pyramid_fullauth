@@ -25,7 +25,8 @@ pyramid_fullauth
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: License
 
-Pyramid fullauth's goal is to provide full plug-in registration functionality for pyramid, with user managing
+Pyramid fullauth's provides full user registration and management functionality for
+`pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_ based web applications.
 
 Package status
 --------------
