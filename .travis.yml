@@ -11,7 +11,7 @@ install:
     # install requests first, since setuptools have problem with it.
     - "pip install requests"
     - "python setup.py develop"
-    - "pip install pyramid_fullauth[tests] coveralls pylama pyramid$PYRAMID_VER sqlalchemy$SQLALCHEMY_VER"
+    - "pip install pyramid_fullauth[tests] coveralls pyramid$PYRAMID_VER sqlalchemy$SQLALCHEMY_VER"
     # manually install wheel for deployment
     - "pip install wheel"
 script:

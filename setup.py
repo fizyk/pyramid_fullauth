@@ -36,6 +36,11 @@ test_requires = [
     'pytest_pyramid',
     'pytest-cov',
     'pytest-dbfixtures[mysql,postgresql]',
+    'pylama==7.0.6',
+    'pyflakes==1.0.0',
+    'pep8==1.6.2',
+    'pep257==0.7.0',
+    'mccabe==0.3.1',
 ]
 
 extras_require = {
