@@ -34,7 +34,7 @@ requirements = [
 test_requires = [
     'mock==2.0.0',
     'pytest-pyramid==0.2.0',
-    'pytest-cov==2.2.1',
+    'pytest-cov==2.3.0',
     'pytest-dbfixtures[mysql,postgresql]==0.14.3',
     'pylama==7.0.9',
     'pyflakes==1.2.3',
