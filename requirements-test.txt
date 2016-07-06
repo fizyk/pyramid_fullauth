@@ -5,5 +5,5 @@ pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
 pyramid-tm==0.12.1
 requests==2.10.0
-sqlalchemy==1.0.13
+sqlalchemy==1.0.14
 velruse==1.1.1
