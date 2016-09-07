@@ -37,7 +37,7 @@ def web_request():
 
 @pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
 def db_session(request):
-    """SQLAlchemy session."""
+    """Session for SQLAlchemy."""
     from pyramid_fullauth.models import Base
 
     if request.param == 'sqlite':
