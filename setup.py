@@ -24,10 +24,11 @@ def read(fname):
 
 requirements = [
     'pyramid_localize',
-    'pyramid >=1.4',
+    'pyramid>=1.4',
     'pyramid_mako',
-    'tzf.pyramid_yml >=1.0',
+    'tzf.pyramid_yml>=1.0',
     'pyramid_basemodel>=0.3',
+    'SQLAlchemy!=1.1.0,!=1.1.1',
     'velruse >=1.1.1'
 ]
 
