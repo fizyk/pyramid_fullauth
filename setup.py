@@ -36,7 +36,7 @@ test_requires = [
     'mock==2.0.0',
     'pytest-pyramid==0.2.0',
     'pytest-cov==2.4.0',
-    'pytest-dbfixtures[mysql,postgresql]==0.16.0'
+    'pytest-dbfixtures[mysql,postgresql]==0.17.0'
 ]
 
 extras_require = {
