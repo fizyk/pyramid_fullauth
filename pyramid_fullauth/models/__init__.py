@@ -178,6 +178,7 @@ class AuthenticationProvider(Base):
 
     user = relationship(User, backref='providers')
 
+
 #: Association table between User and Group models.
 user_group = Table(
     'users_groups',

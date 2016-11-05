@@ -182,10 +182,10 @@ nopassregister_config = factories.pyramid_config({
 })
 
 
-default_app = factories.pyramid_app('default_config')
 extended_app = factories.pyramid_app('extended_config')
 short_app = factories.pyramid_app('short_config')
 social_app = factories.pyramid_app('social_config')
 authable_app = factories.pyramid_app('authable_config')
 nopassconfirm_app = factories.pyramid_app('nopassconfirm_config')
 nopassregister_app = factories.pyramid_app('nopassregister_config')
+default_app = factories.pyramid_app('default_config')
