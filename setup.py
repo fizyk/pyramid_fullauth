@@ -33,7 +33,7 @@ test_requires = [
     'pytest==3.0.5',
     'pytest-pyramid==0.2.0',
     'pytest-cov==2.4.0',
-    'pytest-dbfixtures[mysql]==0.17.0',
+    'pytest-mysql==1.1.0',
     'pytest-postgresql==1.1.0',
 ]
 

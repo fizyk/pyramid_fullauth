@@ -43,10 +43,10 @@ def db_session(request):
     if request.param == 'sqlite':
         connection = 'sqlite:///fullauth.sqlite'
     elif request.param == 'mysql':
-        request.getfuncargvalue('mysqldb')  # takes care of creating database
+        request.getfixturevalue('mysql')  # takes care of creating database
         connection = 'mysql+mysqldb://root:@127.0.0.1:3307/tests?charset=utf8'
     elif request.param == 'postgresql':
-        request.getfuncargvalue('postgresql')  # takes care of creating database
+        request.getfixturevalue('postgresql')  # takes care of creating database
         connection = 'postgresql+psycopg2://postgres:@127.0.0.1:5433/tests'
 
     engine = create_engine(connection, echo=False, poolclass=NullPool)
