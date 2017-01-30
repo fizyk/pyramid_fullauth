@@ -115,6 +115,9 @@ default_config = factories.pyramid_config({
 })
 
 
+default_app = factories.pyramid_app('default_config')
+
+
 extended_config = factories.pyramid_config({
     'pyramid.includes': [
         'pyramid_tm',
@@ -122,6 +125,9 @@ extended_config = factories.pyramid_config({
         'tests.tools.include_views'
     ]
 })
+
+
+extended_app = factories.pyramid_app('extended_config')
 
 
 short_config = factories.pyramid_config({
@@ -135,6 +141,9 @@ short_config = factories.pyramid_config({
 })
 
 
+short_app = factories.pyramid_app('short_config')
+
+
 social_config = factories.pyramid_config({
     'yml.location': 'tests:config/social.yaml',
     'pyramid.includes': [
@@ -144,6 +153,9 @@ social_config = factories.pyramid_config({
         'tests.tools.include_views'
     ]
 })
+
+
+social_app = factories.pyramid_app('social_config')
 
 
 authable_config = factories.pyramid_config({
@@ -158,6 +170,9 @@ authable_config = factories.pyramid_config({
 })
 
 
+authable_app = factories.pyramid_app('authable_config')
+
+
 nopassconfirm_config = factories.pyramid_config({
     'yml.location': 'tests:config/no_password_confirm.yaml',
     'env': 'login',
@@ -168,6 +183,9 @@ nopassconfirm_config = factories.pyramid_config({
         'tests.tools.include_views'
     ]
 })
+
+
+nopassconfirm_app = factories.pyramid_app('nopassconfirm_config')
 
 
 nopassregister_config = factories.pyramid_config({
@@ -182,10 +200,4 @@ nopassregister_config = factories.pyramid_config({
 })
 
 
-extended_app = factories.pyramid_app('extended_config')
-short_app = factories.pyramid_app('short_config')
-social_app = factories.pyramid_app('social_config')
-authable_app = factories.pyramid_app('authable_config')
-nopassconfirm_app = factories.pyramid_app('nopassconfirm_config')
 nopassregister_app = factories.pyramid_app('nopassregister_config')
-default_app = factories.pyramid_app('default_config')
