@@ -28,6 +28,14 @@ EVENT_PATH = '/event?event={0.__name__}'
 EVENT_URL = 'http://localhost' + EVENT_PATH
 
 
+def unregister_subscriber(config, event):
+    """Unregister subscribers from given events."""
+    for key in config.registry.adapters._subscribers[1].keys():
+        if key.implementedBy(event):
+            del config.registry.adapters._subscribers[1][key]
+            break
+
+
 evented_config = factories.pyramid_config({
     'yml.location': 'tests:config',
     'env': 'login',
@@ -44,7 +52,6 @@ def include_views(config):
     """Dummy pyramid plugin including events."""
     config.add_route('event', '/event')
     config.scan('tests.views.test_events')
-    # config.add_subscriber(raise_attribute_error, BeforeLogIn)
 
 
 @view_config(route_name="event", renderer='json')
@@ -71,7 +78,9 @@ def raise_attribute_error(event):
 def alreadyloggedin_config(evented_config):
     """Add AlreadyLoggedIn event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AlreadyLoggedIn)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AlreadyLoggedIn)
 
 
 alreadyloggedin_app = factories.pyramid_app('alreadyloggedin_config')
@@ -88,7 +97,9 @@ def test_default_login_redirect_from_event(active_user, alreadyloggedin_app):
 def beforelogin_config(evented_config):
     """Add BeforeLogIn event that raises AttributeError with event class name."""
     evented_config.add_subscriber(raise_attribute_error, BeforeLogIn)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, BeforeLogIn)
 
 
 beforelogin_app = factories.pyramid_app('beforelogin_config')
@@ -111,7 +122,9 @@ def test_error_beforelogin(active_user, beforelogin_app):
 def afterlogin_config(evented_config):
     """Add AfterLogIn event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterLogIn)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterLogIn)
 
 
 afterlogin_app = factories.pyramid_app('afterlogin_config')
@@ -131,7 +144,9 @@ def test_login_redirect(active_user, afterlogin_app):
 def afterloginerror_config(evented_config):
     """Add AfterLogIn event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, AfterLogIn)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterLogIn)
 
 
 afterloginerror_app = factories.pyramid_app('afterloginerror_config')
@@ -156,7 +171,9 @@ def test_error_afterlogin(active_user, afterloginerror_app):
 def beforeemailchange_config(evented_config):
     """Add BeforeEmailChange event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, BeforeEmailChange)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, BeforeEmailChange)
 
 
 beforeemailchange_app = factories.pyramid_app('beforeemailchange_config')
@@ -185,7 +202,10 @@ def afteremailchange_config(evented_config):
     """Add AfterEmailChange, AfterEmailChangeActivation event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterEmailChange)
     evented_config.add_subscriber(redirect_to_secret, AfterEmailChangeActivation)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterEmailChange)
+    unregister_subscriber(evented_config, AfterEmailChangeActivation)
 
 
 afteremailchange_app = factories.pyramid_app('afteremailchange_config')
@@ -274,7 +294,10 @@ def afterreset_config(evented_config):
     """Add AfterReset, AfterResetRequest event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterResetRequest)
     evented_config.add_subscriber(redirect_to_secret, AfterReset)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterResetRequest)
+    unregister_subscriber(evented_config, AfterReset)
 
 
 afterreset_app = factories.pyramid_app('afterreset_config')
@@ -319,7 +342,9 @@ def test_afterreset(user, db_session, afterreset_app):
 def beforereset_config(evented_config):
     """Add BeforeReset event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, BeforeReset)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, BeforeReset)
 
 
 beforereset_app = factories.pyramid_app('beforereset_config')
@@ -344,7 +369,9 @@ def test_beforereset(user, db_session, beforereset_app):
 def aftersocialregister_config(evented_config):
     """Add AfterSocialRegister event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterSocialRegister)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterSocialRegister)
 
 
 aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
@@ -386,7 +413,9 @@ def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app
 def aftersociallogin_config(evented_config):
     """Add AfterSocialLogIn event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterSocialLogIn)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterSocialLogIn)
 
 
 aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')
@@ -429,7 +458,9 @@ def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_sess
 def alreadyconnected_config(evented_config):
     """Add SocialAccountAlreadyConnected event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, SocialAccountAlreadyConnected)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, SocialAccountAlreadyConnected)
 
 
 alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')
@@ -485,7 +516,9 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
 def afteractivate_config(evented_config):
     """Add AfterActivate event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterActivate)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterActivate)
 
 
 afteractivate_app = factories.pyramid_app('afteractivate_config')
@@ -512,7 +545,9 @@ def test_afteractivate(user, db_session, afteractivate_app):
 def beforeregister_config(evented_config):
     """Add BeforeRegister event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, BeforeRegister)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, BeforeRegister)
 
 
 beforeregister_app = factories.pyramid_app('beforeregister_config')
@@ -540,7 +575,9 @@ def test_beforeregister(db_session, beforeregister_app):
 def afterregister_config(evented_config):
     """Add AfterRegister event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterRegister)
-    return evented_config
+    evented_config.commit()
+    yield evented_config
+    unregister_subscriber(evented_config, AfterRegister)
 
 
 afteraregister_app = factories.pyramid_app('afterregister_config')
