@@ -16,12 +16,6 @@ from sqlalchemy.orm import validates
 from pyramid.compat import text_type
 from pyramid_fullauth.exceptions import EmptyError
 
-try:  # pragma: no cover
-    algorithms = hashlib.algorithms
-except AttributeError:  # pragma: no cover
-    # Simple tuple for Python 2.6
-    algorithms = ('md5', 'sha1')
-
 
 class UserPasswordMixin(object):
     """Authentication field definition along with appropriate methods."""
@@ -31,7 +25,7 @@ class UserPasswordMixin(object):
 
     #: hash_algorithm field
     _hash_algorithm = Column('hash_algorithm',
-                             Enum(*algorithms, name="hash_algorithms_enum"),
+                             Enum(*hashlib.algorithms, name="hash_algorithms_enum"),
                              default=text_type('sha256'), nullable=False)
 
     #: salt field
