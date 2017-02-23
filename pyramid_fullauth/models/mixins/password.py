@@ -32,7 +32,7 @@ class UserPasswordMixin(object):
     #: hash_algorithm field
     _hash_algorithm = Column('hash_algorithm',
                              Enum(*algorithms, name="hash_algorithms_enum"),
-                             default=text_type('sha1'), nullable=False)
+                             default=text_type('sha256'), nullable=False)
 
     #: salt field
     _salt = Column('salt', Unicode(50), nullable=False)

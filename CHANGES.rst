@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- default password hashing algorithm is sha256
+
 0.5.0
 -------
 
