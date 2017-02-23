@@ -21,7 +21,7 @@ class UserPasswordMixin(object):
     """Authentication field definition along with appropriate methods."""
 
     #: password field
-    password = Column(Unicode(40), nullable=False)
+    password = Column(Unicode(128), nullable=False)
 
     #: hash_algorithm field
     _hash_algorithm = Column('hash_algorithm',
@@ -29,7 +29,7 @@ class UserPasswordMixin(object):
                              default=text_type('sha256'), nullable=False)
 
     #: salt field
-    _salt = Column('salt', Unicode(50), nullable=False)
+    _salt = Column('salt', Unicode(128), nullable=False)
 
     #: reset key field
     reset_key = Column(String(255), unique=True)
