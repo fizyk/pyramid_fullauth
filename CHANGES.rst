@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- increased the size of password and salt fields to 128 characters each
 - default password hashing algorithm is sha256
 
 0.5.0
