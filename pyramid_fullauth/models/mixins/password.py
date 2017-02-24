@@ -15,6 +15,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import validates
 from pyramid.compat import text_type
 from pyramid_fullauth.exceptions import EmptyError
+from pyramid_fullauth.compat import algorithms
 
 
 class UserPasswordMixin(object):
@@ -25,7 +26,7 @@ class UserPasswordMixin(object):
 
     #: hash_algorithm field
     _hash_algorithm = Column('hash_algorithm',
-                             Enum(*hashlib.algorithms, name="hash_algorithms_enum"),
+                             Enum(*algorithms, name="hash_algorithms_enum"),
                              default=text_type('sha256'), nullable=False)
 
     #: salt field
