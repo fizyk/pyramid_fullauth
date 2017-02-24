@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+0.6.0
 -------
 
 - increased the size of password and salt fields to 128 characters each

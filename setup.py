@@ -44,7 +44,7 @@ extras_require = {
 
 setup(
     name='pyramid_fullauth',
-    version='0.5.0',
+    version='0.6.0',
     description='''This package intends to provide full authentication / authorisation
     implementation for pyramid applications''',
     long_description=(
