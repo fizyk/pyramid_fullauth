@@ -1,5 +1,5 @@
 # requirements of main dependencies used for tests
-pyramid==1.8.2
+pyramid==1.8.3
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
