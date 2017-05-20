@@ -6,6 +6,9 @@ python:
     - "3.4"
     - "3.5"
     - "3.6"
+branches:
+  except:
+  - requires-io-master
 install:
     # install hard pinned requirements for tests first.
     - "pip install -r requirements-test.txt"
