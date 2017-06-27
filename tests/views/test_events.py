@@ -49,14 +49,14 @@ evented_config = factories.pyramid_config({
 
 
 def include_views(config):
-    """Dummy pyramid plugin including events."""
+    """Configure pyramid to include test view and it's path."""
     config.add_route('event', '/event')
     config.scan('tests.views.test_events')
 
 
 @view_config(route_name="event", renderer='json')
 def event_view(request):
-    """Dummy view."""
+    """Return exactly received value."""
     return {'event', request.GET.get('event')}
 
 

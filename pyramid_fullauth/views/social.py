@@ -70,7 +70,7 @@ class SocialLoginViews(BaseView):
 
     def __call__(self):
         """
-        Action provides social authorization functionality.
+        Authorize user in a social network.
 
         When authorization with facebook or twitter is done successfully
         action tries to find existing user in database,
