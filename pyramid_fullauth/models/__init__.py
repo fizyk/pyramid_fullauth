@@ -105,7 +105,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
             return text_type(self.id)
 
     def __str__(self):  # pragma: no cover
-        """String cast rules."""
+        """Stringified user representation."""
         if sys.version[0] == '3':
             return self.__unicode__()
         else:

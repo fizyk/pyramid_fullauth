@@ -15,7 +15,7 @@ import pyramid_basemodel
 
 @pytest.fixture
 def web_request():
-    """Mocked web request for views testing."""
+    """Test web request for views testing."""
     request = Mock()
     config = Mock()
     config.configure_mock(
@@ -65,7 +65,7 @@ def db_session(request):
 
 @pytest.fixture
 def user(db_session):
-    """Default user."""
+    """Test user fixture."""
     from pyramid_fullauth.models import User
     from tests.tools import DEFAULT_USER
     user = User(**DEFAULT_USER)

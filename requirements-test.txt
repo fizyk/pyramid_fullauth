@@ -1,5 +1,5 @@
 # requirements of main dependencies used for tests
-pyramid==1.8.4
+pyramid==1.9
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
@@ -8,7 +8,7 @@ requests==2.18.1
 sqlalchemy==1.1.11
 velruse==1.1.1
 pymlconf==0.7.3
-pylama==7.3.3
+pylama==7.4.0
 pyflakes==1.5.0
 pycodestyle==2.3.1
 pydocstyle==2.0.0

@@ -9,6 +9,6 @@ class BaseView(object):
     """Basic view class."""
 
     def __init__(self, request):
-        """Common init for views."""
+        """Initialize views."""
         self.request = request
         self.config = request.registry['config'].fullauth

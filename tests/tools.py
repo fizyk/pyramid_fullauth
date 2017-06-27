@@ -43,12 +43,12 @@ def is_user_logged(app):
 
 
 def include_views(config):
-    """Dummy pyramid 'plugin' adding dummy secret view."""
+    """Pyramid 'plugin' adding dummy secret view."""
     config.add_route('secret', '/secret')
     config.scan('tests.tools')
 
 
 @view_config(route_name="secret", permission="super_high", renderer='json')
 def secret_view(request):
-    """Dummy view with redirect to login."""
+    """Protected pyramid view."""
     return {}
