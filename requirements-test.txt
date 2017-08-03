@@ -5,7 +5,7 @@ pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
 pyramid-tm==2.2
 requests==2.18.3
-sqlalchemy==1.1.12
+sqlalchemy==1.1.13
 velruse==1.1.1
 pymlconf==0.7.3
 pylama==7.4.1
