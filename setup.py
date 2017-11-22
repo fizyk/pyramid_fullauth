@@ -34,7 +34,7 @@ test_requires = [
     'pytest-pyramid==0.3.0',
     'pytest-cov==2.5.1',
     'pytest-mysql==1.1.1',
-    'pytest-postgresql==1.3.1',
+    'pytest-postgresql==1.3.2',
 ]
 
 extras_require = {
