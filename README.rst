@@ -1,7 +1,7 @@
 pyramid_fullauth
 ================
 
-.. image:: https://pypip.in/v/pyramid_fullauth/badge.png
+.. image:: https://img.shields.io/pypi/v/pyramid_fullauth.svg
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Latest PyPI version
 
@@ -9,11 +9,11 @@ pyramid_fullauth
     :target: https://readthedocs.org/projects/pyramid_fullauth/?badge=v0.6.0
     :alt: Documentation Status
 
-.. image:: https://pypip.in/d/pyramid_fullauth/badge.png
+.. image:: https://img.shields.io/pypi/dm/pyramid_fullauth.svg
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Number of PyPI downloads
 
-.. image:: https://pypip.in/wheel/pyramid_fullauth/badge.png
+.. image:: https://img.shields.io/pypi/wheel/pyramid_fullauth.svg
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Wheel Status
 
@@ -21,7 +21,7 @@ pyramid_fullauth
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Egg Status
 
-.. image:: https://pypip.in/license/pyramid_fullauth/badge.png
+.. image:: https://img.shields.io/pypi/l/pyramid_fullauth.svg
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: License
 
