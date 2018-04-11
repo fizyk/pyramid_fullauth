@@ -94,13 +94,13 @@ def active_user(user, db_session):
     # (only one @ is allowed outside quotation marks)
     text_type('A@b@c@example.com'),
     # (none of the special characters in this local part is allowed outside quotation marks)
-    text_type('a"b(c)d,e:f;g<h>i[j\k]l@example.com'),
+    text_type('a"b(c)d,e:f;g<h>i[j\\k]l@example.com'),
     # (quoted strings must be dot separated, or the only element making up the local-part)
     text_type('just"not"right@example.com'),
     # (spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash)
-    text_type('this is"not\allowed@example.com'),
+    text_type('this is"not\\allowed@example.com'),
     # (even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)
-    text_type('this\ still\"not\\allowed@example.com'),
+    text_type('this\\ still\"not\\allowed@example.com'),
     text_type('bad-mail'),
 ])
 def invalid_email(request):
