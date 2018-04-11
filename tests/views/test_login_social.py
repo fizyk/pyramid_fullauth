@@ -96,7 +96,7 @@ def test_login_different_social_account(social_config, db_session, facebook_user
     out = view()
     # user should be authenticated recognized by email!
     assert out['status'] is True
-    assert facebook_user.provider_id('facebook') is not profile['accounts'][0]['userid']
+    assert facebook_user.provider_id(text_type('facebook')) is not profile['accounts'][0]['userid']
 
 
 def test_login_social_connect(social_config, active_user, db_session):
@@ -156,7 +156,7 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
 
     transaction.commit()
     user = db_session.merge(user)
-    assert user.provider_id('facebook') == profile['accounts'][0]['userid']
+    assert user.provider_id(text_type('facebook')) == profile['accounts'][0]['userid']
 
 
 def test_logged_social_connect_self(social_config, facebook_user, db_session):
@@ -230,7 +230,7 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
     # status should be false
     assert out['status'] is False
     assert out['msg'] == 'Your account is already connected to other ${provider} account.'
-    assert user.provider_id('facebook') is not profile['accounts'][0]['userid']
+    assert user.provider_id(text_type('facebook')) is not profile['accounts'][0]['userid']
 
 
 def test_logged_social_connect_used_account(social_config, facebook_user, db_session):
@@ -279,4 +279,4 @@ def test_logged_social_connect_used_account(social_config, facebook_user, db_ses
     assert out['msg'] == 'This ${provider} account is already connected with other account.'
     transaction.begin()
     fresh_user = db_session.merge(fresh_user)
-    assert fresh_user.provider_id('facebook') is None
+    assert fresh_user.provider_id(text_type('facebook')) is None

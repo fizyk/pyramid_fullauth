@@ -406,7 +406,7 @@ def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app
     # read first new account
     user = db_session.query(User).one()
     assert user.is_active
-    assert user.provider_id('facebook') == profile['accounts'][0]['userid']
+    assert user.provider_id(text_type('facebook')) == profile['accounts'][0]['userid']
 
 
 @pytest.fixture
@@ -509,7 +509,7 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
     assert out.location == EVENT_PATH.format(SocialAccountAlreadyConnected)
     transaction.begin()
     fresh_user = db_session.merge(fresh_user)
-    assert fresh_user.provider_id('facebook') is None
+    assert fresh_user.provider_id(text_type('facebook')) is None
 
 
 @pytest.fixture
