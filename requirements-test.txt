@@ -7,7 +7,7 @@ pyramid-tm==2.2
 requests==2.19.1
 sqlalchemy==1.2.10
 velruse==1.1.1
-pymlconf==0.8.6
+pymlconf==0.8.9
 pylama==7.4.3
 pyflakes==2.0.0
 pycodestyle==2.4.0
