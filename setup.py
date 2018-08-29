@@ -30,7 +30,7 @@ requirements = [
 
 test_requires = [
     'mock==2.0.0',
-    'pytest==3.7.3',
+    'pytest==3.7.4',
     'pytest-pyramid==0.3.0',
     'pytest-cov==2.5.1',
     'pytest-mysql==2.0.0',
