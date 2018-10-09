@@ -8,7 +8,7 @@ requests==2.19.1
 sqlalchemy==1.2.12
 velruse==1.1.1
 tzf.pyramid_yml==1.1.1
-pylama==7.5.5
+pylama==7.6.2
 pyflakes==2.0.0
 pycodestyle==2.4.0
 pydocstyle==2.1.1
