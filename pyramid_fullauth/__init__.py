@@ -14,12 +14,9 @@ from pyramid.interfaces import (
 
 from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
-from pyramid_fullauth.request import login_perform, logout, user
+from pyramid_fullauth.request import login_perform, logout, request_user
 
 __version__ = '0.6.0'
-
-
-logger = logging.getLogger(__name__)
 
 
 def includeme(configurator):
@@ -102,4 +99,4 @@ def includeme(configurator):
     # we'll add some request methods:
     configurator.add_request_method(login_perform, name='login_perform')
     configurator.add_request_method(logout, name='logout')
-    configurator.add_request_method(user, name='user', reify=True)
+    configurator.add_request_method(request_user, name='user', reify=True)

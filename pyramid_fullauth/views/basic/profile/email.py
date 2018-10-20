@@ -50,13 +50,11 @@ class EmailChangeViews(BaseView):
             if self.request.is_xhr:
                 response_values['url'] = redirect.location
                 return response_values
-            else:
-                return redirect
+            return redirect
         else:
             if self.request.is_xhr:
                 return response_values
-            else:
-                return HTTPSeeOther(location='/')
+            return HTTPSeeOther(location='/')
 
     def validate_email(self, user):
         """
@@ -78,8 +76,8 @@ class EmailChangeViews(BaseView):
 
         try:
             self.request.registry.notify(BeforeEmailChange(self.request, user))
-        except AttributeError as e:
-            return {'status': False, 'msg': text_type(e), 'csrf_token': csrf_token}
+        except AttributeError as ex:
+            return {'status': False, 'msg': text_type(ex), 'csrf_token': csrf_token}
 
         try:
             user.set_new_email(email)
@@ -95,6 +93,7 @@ class EmailChangeViews(BaseView):
                 'msg': self.request._('Incorrect e-mail format', domain='pyramid_fullauth'),
                 'csrf_token': csrf_token
             }
+        return None
 
 
 @view_config(route_name='email:change:continue', permission=NO_PERMISSION_REQUIRED,
