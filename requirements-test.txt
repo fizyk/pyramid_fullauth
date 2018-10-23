@@ -3,7 +3,7 @@ pyramid==1.9.2
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
-pyramid-tm==2.2
+pyramid-tm==2.2.1
 requests==2.20.0
 sqlalchemy==1.2.12
 velruse==1.1.1
