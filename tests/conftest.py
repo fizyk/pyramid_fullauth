@@ -18,19 +18,15 @@ def web_request():
     """Test web request for views testing."""
     request = Mock()
     config = Mock()
-    config.configure_mock(
-        **{'fullauth.register.password':
-            {'length_min': 8, 'confirm': True},
-            'POST': {'confirm_password': '987654321'}
-           }
-    )
+    config.configure_mock(**{
+        'fullauth.register.password': {'length_min': 8, 'confirm': True},
+        'POST': {'confirm_password': '987654321'}
+    })
 
-    def _(message, *args, **kwargs):
+    def _(message, *_, **__):
         return message
     request._ = Mock(side_effect=_)
-    request.configure_mock(
-        **{'registry': {'config': config}}
-    )
+    request.configure_mock(**{'registry': {'config': config}})
 
     return request
 
@@ -65,18 +61,17 @@ def db_session(request):
 
 
 @pytest.fixture
-def user(db_session):
+def user(db_session):  # pylint:disable=redefined-outer-name
     """Test user fixture."""
     from pyramid_fullauth.models import User
     from tests.tools import DEFAULT_USER
-    user = User(**DEFAULT_USER)
-    db_session.add(user)
+    db_session.add(User(**DEFAULT_USER))
     transaction.commit()
     return user
 
 
 @pytest.fixture
-def active_user(user, db_session):
+def active_user(user, db_session):  # pylint:disable=redefined-outer-name
     """Active user."""
     user = db_session.merge(user)
     user.is_active = True
@@ -108,6 +103,7 @@ def invalid_email(request):
     return request.param
 
 
+# pylint:disable=invalid-name
 default_config = factories.pyramid_config({
     'pyramid.includes': [
         'pyramid_tm',
@@ -202,3 +198,4 @@ nopassregister_config = factories.pyramid_config({
 
 
 nopassregister_app = factories.pyramid_app('nopassregister_config')
+# pylint:enable=invalid-name
