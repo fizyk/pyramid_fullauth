@@ -65,9 +65,10 @@ def user(db_session):  # pylint:disable=redefined-outer-name
     """Test user fixture."""
     from pyramid_fullauth.models import User
     from tests.tools import DEFAULT_USER
-    db_session.add(User(**DEFAULT_USER))
+    new_user = User(**DEFAULT_USER)
+    db_session.add(new_user)
     transaction.commit()
-    return user
+    return new_user
 
 
 @pytest.fixture
