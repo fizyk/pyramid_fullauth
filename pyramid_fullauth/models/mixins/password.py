@@ -122,7 +122,9 @@ class UserPasswordMixin(object):
             raise EmptyError('password-empty')
 
         # reading default hash_algorithm
-        hash_algorithm = self.__class__._hash_algorithm.property.columns[0].default.arg  # pylint:disable=protected-access
+        # pylint:disable=protected-access
+        hash_algorithm = self.__class__._hash_algorithm.property.columns[0].default.arg
+        # pylint:enable=protected-access
 
         # getting currently used hash method
         hash_method = getattr(hashlib, hash_algorithm)
