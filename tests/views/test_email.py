@@ -17,7 +17,7 @@ def test_email_view_not_logged(default_app):
     assert res.location == 'http://localhost/login?after=%2Femail%2Fchange'
 
 
-@pytest.usefixture('active_user')
+@pytest.mark.usefixtures('active_user')
 def test_email_view_logged(db_session, default_app):
     """Simple get for change email view."""
     app = default_app
@@ -33,7 +33,7 @@ def test_email_view_logged(db_session, default_app):
     assert res.form['email']
 
 
-@pytest.usefixture('active_user')
+@pytest.mark.usefixtures('active_user')
 def test_email_valid(db_session, default_app):
     """Change email with valid data."""
     app = default_app
@@ -58,7 +58,7 @@ def test_email_valid(db_session, default_app):
     assert user.email_change_key is not None
 
 
-@pytest.usefixture('active_user')
+@pytest.mark.usefixtures('active_user')
 def test_email_valid_xhr(db_session, default_app):
     """Change email with valid data."""
     app = default_app
@@ -86,7 +86,7 @@ def test_email_valid_xhr(db_session, default_app):
     assert user.email_change_key is not None
 
 
-@pytest.usefixture('db_session, active_user')
+@pytest.mark.usefixtures('db_session, active_user')
 def test_wrong_email(default_app, invalid_email):
     """Change email with incorrect email."""
     app = default_app
@@ -100,7 +100,7 @@ def test_wrong_email(default_app, invalid_email):
     assert 'Error! Incorrect e-mail format' in res
 
 
-@pytest.usefixture('db_session, active_user')
+@pytest.mark.usefixtures('db_session, active_user')
 def test_empty_email(default_app):
     """Try to change email with empty value."""
     app = default_app
@@ -114,7 +114,7 @@ def test_empty_email(default_app):
     assert 'Error! E-mail is empty' in res
 
 
-@pytest.usefixture('active_user')
+@pytest.mark.usefixtures('active_user')
 def test_existing_email(db_session, default_app):
     """Try to change email to existing one email."""
     # add other user
@@ -137,7 +137,7 @@ def test_existing_email(db_session, default_app):
     assert 'Error! User with this email exists' in res
 
 
-@pytest.usefixture('active_user')
+@pytest.mark.usefixtures('active_user')
 def test_email_proceed(db_session, default_app):
     """Confirm email change view."""
     app = default_app
@@ -163,7 +163,7 @@ def test_email_proceed(db_session, default_app):
     assert not user.email_change_key
 
 
-@pytest.usefixture('active_user')
+@pytest.mark.usefixtures('active_user')
 def test_email_proceed_wrong_key(db_session, default_app):
     """Try to confirm email change view with wrong key."""
     app = default_app
