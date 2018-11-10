@@ -29,7 +29,8 @@ def test_login_view_secret(extended_app):
     DEFAULT_USER['email'].lower(),
     DEFAULT_USER['email'].upper()
 ))
-def test_login_ok(active_user, extended_app, email):
+@pytest.usefixture('active_user')
+def test_login_ok(extended_app, email):
     """Actually log in test."""
     res = extended_app.get('/secret', status=302)
     res = res.follow()
@@ -43,7 +44,8 @@ def test_login_ok(active_user, extended_app, email):
     assert is_user_logged(extended_app) is True
 
 
-def test_login_remember(active_user, extended_app):
+@pytest.usefixture('active_user')
+def test_login_remember(extended_app):
     """Login user and mark remember me field."""
     res = extended_app.get('/login')
     assert is_user_logged(extended_app) is False
@@ -54,7 +56,8 @@ def test_login_remember(active_user, extended_app):
     assert 'Max-Age=' in str(res)
 
 
-def test_login_inactive(user, extended_app):
+@pytest.usefixture('user')
+def test_login_inactive(extended_app):
     """Log in inactive user."""
     assert is_user_logged(extended_app) is False
 
@@ -63,7 +66,8 @@ def test_login_inactive(user, extended_app):
     assert is_user_logged(extended_app) is True
 
 
-def test_login_redirects(active_user, extended_app):
+@pytest.usefixture('active_user')
+def test_login_redirects(extended_app):
     """Login with redirects."""
     res = extended_app.get('/secret', status=302)
     assert res.status_code == 302
@@ -80,7 +84,8 @@ def test_login_redirects(active_user, extended_app):
     {'password': 'wrong password'},
     {'email': 'not@registered.py'}
 ))
-def test_login_wrong(active_user, user_kwargs, extended_app):
+@pytest.usefixture('active_user')
+def test_login_wrong(user_kwargs, extended_app):
     """Use wrong password during authentication."""
     res = authenticate(extended_app, response_code=200, **user_kwargs)
 
@@ -97,9 +102,9 @@ def test_login_wrong(active_user, user_kwargs, extended_app):
         'password': DEFAULT_USER['password'],
         'csrf_token': '8934798289723789347892397832789432789'
     }
-
 ))
-def test_login_csrf_error(active_user, extended_app, post_data):
+@pytest.usefixture('active_user')
+def test_login_csrf_error(extended_app, post_data):
     """Try to log in with erroneus csrf token."""
     res = extended_app.get('/login', status=200)
     assert res
@@ -108,7 +113,8 @@ def test_login_csrf_error(active_user, extended_app, post_data):
     assert is_user_logged(extended_app) is False
 
 
-def test_login_success_xhr(active_user, extended_app):
+@pytest.usefixture('active_user')
+def test_login_success_xhr(extended_app):
     """Test xhr authentication."""
     res = extended_app.get('/login')
     post_data = {
@@ -136,7 +142,8 @@ def test_login_success_xhr(active_user, extended_app):
     assert res.json['msg'] == 'Already logged in!'
 
 
-def test_default_login_forbidden(active_user, authable_app):
+@pytest.usefixture('active_user')
+def test_default_login_forbidden(authable_app):
     """After successful login, user should get 403 on secret page."""
     authable_app.get('/secret', status=302)
     forbidden = authable_app.get('/secret', xhr=True, status=403)
@@ -150,7 +157,8 @@ def test_default_login_forbidden(active_user, authable_app):
     assert 'login_url' not in forbidden.json
 
 
-def test_default_login_redirectaway(active_user, authable_app):
+@pytest.usefixture('active_user')
+def test_default_login_redirectaway(authable_app):
     """After successful login, access to login page should result in redirect."""
     authenticate(authable_app)
     res = authable_app.get('/login', status=303)

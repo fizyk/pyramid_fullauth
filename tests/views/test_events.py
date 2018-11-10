@@ -30,13 +30,14 @@ EVENT_URL = 'http://localhost' + EVENT_PATH
 
 def unregister_subscriber(config, event):
     """Unregister subscribers from given events."""
+    # pylint:disable=protected-access
     for key in config.registry.adapters._subscribers[1].keys():
         if key.implementedBy(event):
             del config.registry.adapters._subscribers[1][key]
             break
 
 
-evented_config = factories.pyramid_config({
+evented_config = factories.pyramid_config({  # pylint:disable=invalid-name
     'yml.location': 'tests:config',
     'env': 'login',
     'pyramid.includes': [
@@ -75,7 +76,7 @@ def raise_attribute_error(event):
 
 
 @pytest.fixture
-def alreadyloggedin_config(evented_config):
+def alreadyloggedin_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AlreadyLoggedIn event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AlreadyLoggedIn)
     evented_config.commit()
@@ -83,10 +84,11 @@ def alreadyloggedin_config(evented_config):
     unregister_subscriber(evented_config, AlreadyLoggedIn)
 
 
-alreadyloggedin_app = factories.pyramid_app('alreadyloggedin_config')
+alreadyloggedin_app = factories.pyramid_app('alreadyloggedin_config')  # pylint:disable=invalid-name
 
 
-def test_default_login_redirect_from_event(active_user, alreadyloggedin_app):
+@pytest.usefixture('active_user')
+def test_default_login_redirect_from_event(alreadyloggedin_app):  # pylint:disable=redefined-outer-name
     """After successful login, access to login page should result in redirect."""
     authenticate(alreadyloggedin_app)
     res = alreadyloggedin_app.get('/login', status=302)
@@ -94,7 +96,7 @@ def test_default_login_redirect_from_event(active_user, alreadyloggedin_app):
 
 
 @pytest.fixture
-def beforelogin_config(evented_config):
+def beforelogin_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add BeforeLogIn event that raises AttributeError with event class name."""
     evented_config.add_subscriber(raise_attribute_error, BeforeLogIn)
     evented_config.commit()
@@ -102,10 +104,11 @@ def beforelogin_config(evented_config):
     unregister_subscriber(evented_config, BeforeLogIn)
 
 
-beforelogin_app = factories.pyramid_app('beforelogin_config')
+beforelogin_app = factories.pyramid_app('beforelogin_config')  # pylint:disable=invalid-name
 
 
-def test_error_beforelogin(active_user, beforelogin_app):
+@pytest.usefixture('active_user')
+def test_error_beforelogin(beforelogin_app):  # pylint:disable=redefined-outer-name
     """Test errors from BeforeLogIn event."""
     res = beforelogin_app.get('/login')
     post_data = {
@@ -119,7 +122,7 @@ def test_error_beforelogin(active_user, beforelogin_app):
 
 
 @pytest.fixture
-def afterlogin_config(evented_config):
+def afterlogin_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterLogIn event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterLogIn)
     evented_config.commit()
@@ -127,10 +130,11 @@ def afterlogin_config(evented_config):
     unregister_subscriber(evented_config, AfterLogIn)
 
 
-afterlogin_app = factories.pyramid_app('afterlogin_config')
+afterlogin_app = factories.pyramid_app('afterlogin_config')  # pylint:disable=invalid-name
 
 
-def test_login_redirect(active_user, afterlogin_app):
+@pytest.usefixture('active_user')
+def test_login_redirect(afterlogin_app):  # pylint:disable=redefined-outer-name
     """Log in and test redirect from AfterLogIn."""
     assert is_user_logged(afterlogin_app) is False
 
@@ -141,7 +145,7 @@ def test_login_redirect(active_user, afterlogin_app):
 
 
 @pytest.fixture
-def afterloginerror_config(evented_config):
+def afterloginerror_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterLogIn event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, AfterLogIn)
     evented_config.commit()
@@ -149,10 +153,11 @@ def afterloginerror_config(evented_config):
     unregister_subscriber(evented_config, AfterLogIn)
 
 
-afterloginerror_app = factories.pyramid_app('afterloginerror_config')
+afterloginerror_app = factories.pyramid_app('afterloginerror_config')  # pylint:disable=invalid-name
 
 
-def test_error_afterlogin(active_user, afterloginerror_app):
+@pytest.usefixture('active_user')
+def test_error_afterlogin(afterloginerror_app):  # pylint:disable=redefined-outer-name
     """Test errors from BeforeLogIn event."""
     res = afterloginerror_app.get('/login')
     post_data = {
@@ -168,7 +173,7 @@ def test_error_afterlogin(active_user, afterloginerror_app):
 
 
 @pytest.fixture
-def beforeemailchange_config(evented_config):
+def beforeemailchange_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add BeforeEmailChange event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, BeforeEmailChange)
     evented_config.commit()
@@ -176,10 +181,11 @@ def beforeemailchange_config(evented_config):
     unregister_subscriber(evented_config, BeforeEmailChange)
 
 
-beforeemailchange_app = factories.pyramid_app('beforeemailchange_config')
+beforeemailchange_app = factories.pyramid_app('beforeemailchange_config')  # pylint:disable=invalid-name
 
 
-def test_beforeemailchange_error(active_user, beforeemailchange_app):
+@pytest.usefixture('active_user')
+def test_beforeemailchange_error(beforeemailchange_app):  # pylint:disable=redefined-outer-name
     """Raise AttributeError from BeforeEmailChange event."""
     app = beforeemailchange_app
 
@@ -198,7 +204,7 @@ def test_beforeemailchange_error(active_user, beforeemailchange_app):
 
 
 @pytest.fixture
-def afteremailchange_config(evented_config):
+def afteremailchange_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterEmailChange, AfterEmailChangeActivation event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterEmailChange)
     evented_config.add_subscriber(redirect_to_secret, AfterEmailChangeActivation)
@@ -208,10 +214,11 @@ def afteremailchange_config(evented_config):
     unregister_subscriber(evented_config, AfterEmailChangeActivation)
 
 
-afteremailchange_app = factories.pyramid_app('afteremailchange_config')
+afteremailchange_app = factories.pyramid_app('afteremailchange_config')  # pylint:disable=invalid-name
 
 
-def test_afteremailchange(db_session, active_user, afteremailchange_app):
+@pytest.usefixture('active_user')
+def test_afteremailchange(db_session, afteremailchange_app):  # pylint:disable=redefined-outer-name
     """Redirect after successful email change request."""
     app = afteremailchange_app
 
@@ -235,7 +242,8 @@ def test_afteremailchange(db_session, active_user, afteremailchange_app):
     assert user.email_change_key is not None
 
 
-def test_afteremailchange_xhr(db_session, active_user, afteremailchange_app):
+@pytest.usefixture('active_user')
+def test_afteremailchange_xhr(db_session, afteremailchange_app):  # pylint:disable=redefined-outer-name
     """Change email with valid data."""
     app = afteremailchange_app
 
@@ -263,7 +271,8 @@ def test_afteremailchange_xhr(db_session, active_user, afteremailchange_app):
     assert user.email_change_key is not None
 
 
-def test_afteremailchangeactivation(db_session, active_user, afteremailchange_app):
+@pytest.usefixture('active_user')
+def test_afteremailchangeactivation(db_session, afteremailchange_app):  # pylint:disable=redefined-outer-name
     """Confirm email change view with redirect from AfterEmailChangeActivation."""
     app = afteremailchange_app
     # login user
@@ -290,7 +299,7 @@ def test_afteremailchangeactivation(db_session, active_user, afteremailchange_ap
 
 
 @pytest.fixture
-def afterreset_config(evented_config):
+def afterreset_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterReset, AfterResetRequest event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterResetRequest)
     evented_config.add_subscriber(redirect_to_secret, AfterReset)
@@ -300,10 +309,10 @@ def afterreset_config(evented_config):
     unregister_subscriber(evented_config, AfterReset)
 
 
-afterreset_app = factories.pyramid_app('afterreset_config')
+afterreset_app = factories.pyramid_app('afterreset_config')  # pylint:disable=invalid-name
 
 
-def test_afterresetrequest(user, db_session, afterreset_app):
+def test_afterresetrequest(user, db_session, afterreset_app):  # pylint:disable=redefined-outer-name
     """Successful password reset request with redirect from AfterResetRequest."""
     user = db_session.merge(user)
     assert user.reset_key is None
@@ -319,7 +328,7 @@ def test_afterresetrequest(user, db_session, afterreset_app):
     assert user.reset_key is not None
 
 
-def test_afterreset(user, db_session, afterreset_app):
+def test_afterreset(user, db_session, afterreset_app):  # pylint:disable=redefined-outer-name
     """Actually change password with redirect from AfterReset."""
     user = db_session.merge(user)
     user.set_reset()
@@ -339,7 +348,7 @@ def test_afterreset(user, db_session, afterreset_app):
 
 
 @pytest.fixture
-def beforereset_config(evented_config):
+def beforereset_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add BeforeReset event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, BeforeReset)
     evented_config.commit()
@@ -347,10 +356,10 @@ def beforereset_config(evented_config):
     unregister_subscriber(evented_config, BeforeReset)
 
 
-beforereset_app = factories.pyramid_app('beforereset_config')
+beforereset_app = factories.pyramid_app('beforereset_config')  # pylint:disable=invalid-name
 
 
-def test_beforereset(user, db_session, beforereset_app):
+def test_beforereset(user, db_session, beforereset_app):  # pylint:disable=redefined-outer-name
     """Error thrown from BeforeReset event."""
     user = db_session.merge(user)
     user.set_reset()
@@ -366,7 +375,7 @@ def test_beforereset(user, db_session, beforereset_app):
 
 
 @pytest.fixture
-def aftersocialregister_config(evented_config):
+def aftersocialregister_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterSocialRegister event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterSocialRegister)
     evented_config.commit()
@@ -374,10 +383,11 @@ def aftersocialregister_config(evented_config):
     unregister_subscriber(evented_config, AfterSocialRegister)
 
 
-aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')
+aftersocialregister_app = factories.pyramid_app('aftersocialregister_config')  # pylint:disable=invalid-name
 
 
-def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app, db_session):
+@pytest.usefixture('aftersocialregister_app')
+def test_aftersocialregister(aftersocialregister_config, db_session):  # pylint:disable=redefined-outer-name
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
     profile = {
         'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
@@ -410,7 +420,7 @@ def test_aftersocialregister(aftersocialregister_config, aftersocialregister_app
 
 
 @pytest.fixture
-def aftersociallogin_config(evented_config):
+def aftersociallogin_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterSocialLogIn event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterSocialLogIn)
     evented_config.commit()
@@ -418,10 +428,11 @@ def aftersociallogin_config(evented_config):
     unregister_subscriber(evented_config, AfterSocialLogIn)
 
 
-aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')
+aftersociallogin_app = factories.pyramid_app('aftersociallogin_config')  # pylint:disable=invalid-name
 
 
-def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_session):
+@pytest.usefixture('aftersociallogin_app')
+def test_aftersociallogin(aftersociallogin_config, db_session):  # pylint:disable=redefined-outer-name
     """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
     profile = {
         'accounts': [{'domain': text_type('facebook.com'), 'userid': text_type('2343')}],
@@ -440,7 +451,7 @@ def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_sess
     request.remote_addr = text_type('127.0.0.123')
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
-    def login_perform(*args, **kwargs):
+    def login_perform(*_, **kwargs):
         return HTTPFound(location=kwargs['location'])
     request.login_perform = login_perform
     view = SocialLoginViews(request)
@@ -455,7 +466,7 @@ def test_aftersociallogin(aftersociallogin_config, aftersociallogin_app, db_sess
 
 
 @pytest.fixture
-def alreadyconnected_config(evented_config):
+def alreadyconnected_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add SocialAccountAlreadyConnected event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, SocialAccountAlreadyConnected)
     evented_config.commit()
@@ -463,10 +474,11 @@ def alreadyconnected_config(evented_config):
     unregister_subscriber(evented_config, SocialAccountAlreadyConnected)
 
 
-alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')
+alreadyconnected_app = factories.pyramid_app('alreadyconnected_config')  # pylint:disable=invalid-name
 
 
-def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, facebook_user, db_session):
+@pytest.usefixture('alreadyconnected_app')
+def test_alreadyconnected(alreadyconnected_config, facebook_user, db_session):  # pylint:disable=redefined-outer-name
     """
     Try to connect facebook account to logged in user used by other users facebook account.
 
@@ -513,7 +525,7 @@ def test_alreadyconnected(alreadyconnected_config, alreadyconnected_app, faceboo
 
 
 @pytest.fixture
-def afteractivate_config(evented_config):
+def afteractivate_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterActivate event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterActivate)
     evented_config.commit()
@@ -521,10 +533,10 @@ def afteractivate_config(evented_config):
     unregister_subscriber(evented_config, AfterActivate)
 
 
-afteractivate_app = factories.pyramid_app('afteractivate_config')
+afteractivate_app = factories.pyramid_app('afteractivate_config')  # pylint:disable=invalid-name
 
 
-def test_afteractivate(user, db_session, afteractivate_app):
+def test_afteractivate(user, db_session, afteractivate_app):  # pylint:disable=redefined-outer-name
     """Activate user adn check redirect through AfterActivate."""
     user = db_session.merge(user)
 
@@ -542,7 +554,7 @@ def test_afteractivate(user, db_session, afteractivate_app):
 
 
 @pytest.fixture
-def beforeregister_config(evented_config):
+def beforeregister_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add BeforeRegister event subscriber that raises AttributeError."""
     evented_config.add_subscriber(raise_attribute_error, BeforeRegister)
     evented_config.commit()
@@ -550,10 +562,10 @@ def beforeregister_config(evented_config):
     unregister_subscriber(evented_config, BeforeRegister)
 
 
-beforeregister_app = factories.pyramid_app('beforeregister_config')
+beforeregister_app = factories.pyramid_app('beforeregister_config')  # pylint:disable=invalid-name
 
 
-def test_beforeregister(db_session, beforeregister_app):
+def test_beforeregister(db_session, beforeregister_app):  # pylint:disable=redefined-outer-name
     """Register user check eror catching from BeforeRegister event."""
     assert db_session.query(User).count() == 0
 
@@ -572,7 +584,7 @@ def test_beforeregister(db_session, beforeregister_app):
 
 
 @pytest.fixture
-def afterregister_config(evented_config):
+def afterregister_config(evented_config):  # pylint:disable=redefined-outer-name
     """Add AfterRegister event subscriber that redirects to event page."""
     evented_config.add_subscriber(redirect_to_secret, AfterRegister)
     evented_config.commit()
@@ -580,10 +592,10 @@ def afterregister_config(evented_config):
     unregister_subscriber(evented_config, AfterRegister)
 
 
-afteraregister_app = factories.pyramid_app('afterregister_config')
+afteraregister_app = factories.pyramid_app('afterregister_config')  # pylint:disable=invalid-name
 
 
-def test_afterregister(db_session, afteraregister_app):
+def test_afterregister(db_session, afteraregister_app):  # pylint:disable=redefined-outer-name
     """Register user check eror catching from BeforeRegister event."""
     assert db_session.query(User).count() == 0
     email = 'test@test.co.uk'
