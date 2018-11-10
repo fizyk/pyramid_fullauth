@@ -86,7 +86,7 @@ def test_email_valid_xhr(db_session, default_app):
     assert user.email_change_key is not None
 
 
-@pytest.mark.usefixtures('db_session, active_user')
+@pytest.mark.usefixtures('db_session', 'active_user')
 def test_wrong_email(default_app, invalid_email):
     """Change email with incorrect email."""
     app = default_app
@@ -100,7 +100,7 @@ def test_wrong_email(default_app, invalid_email):
     assert 'Error! Incorrect e-mail format' in res
 
 
-@pytest.mark.usefixtures('db_session, active_user')
+@pytest.mark.usefixtures('db_session', 'active_user')
 def test_empty_email(default_app):
     """Try to change email with empty value."""
     app = default_app
