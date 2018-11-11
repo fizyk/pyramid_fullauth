@@ -7,7 +7,6 @@
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-
 from pyramid.compat import text_type
 import pyramid_basemodel
 
@@ -92,8 +91,8 @@ class RegisterView(BaseView):
                     AuthenticationProvider(provider=text_type('email'), provider_id=user.id))
             else:
                 return response
-        except AttributeError as e:
-            response['errors']['msg'] = text_type(e)
+        except AttributeError as ex:
+            response['errors']['msg'] = text_type(ex)
 
         return response
 
@@ -110,11 +109,13 @@ class RegisterView(BaseView):
         if self.config.register.password.require:
             try:
                 tools.validate_passsword(self.request, password, user)
-            except ValidateError as e:
-                return text_type(e)
+            except ValidateError as ex:
+                return text_type(ex)
         else:
             user.password = tools.password_generator(
-                self.config.register.password.length_min)
+                self.config.register.password.length_min
+            )
+        return None
 
     def _set_email(self, email, user):
         """
@@ -131,6 +132,7 @@ class RegisterView(BaseView):
 
         try:
             user.email = email
-        except ValidateError as e:
+        except ValidateError as ex:
             # do not overwrite existing error
-            return text_type(e)
+            return text_type(ex)
+        return None

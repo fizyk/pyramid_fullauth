@@ -90,6 +90,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         for user_provider in self.providers:
             if user_provider.provider == provider:
                 return user_provider.provider_id
+        return None
 
     def __repr__(self):
         """Object representation."""
@@ -99,20 +100,18 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         """Unicode cast rules."""
         if self.username:
             return self.username
-        elif self.email:
+        if self.email:
             return self.email.split('@')[0] + '@...'
-        else:
-            return text_type(self.id)
+        return text_type(self.id)
 
     def __str__(self):  # pragma: no cover
         """Stringified user representation."""
         if sys.version[0] == '3':
             return self.__unicode__()
-        else:
-            return self.__unicode__().encode('utf-8')
+        return self.__unicode__().encode('utf-8')
 
     @validates('is_admin')
-    def validate_is_admin(self, key, value):
+    def validate_is_admin(self, _, value):
         """
         Validate is_admin value, we forbid the deletion of the last superadmin.
 
@@ -180,7 +179,7 @@ class AuthenticationProvider(Base):
 
 
 #: Association table between User and Group models.
-user_group = Table(
+user_group = Table(  # pylint:disable=invalid-name
     'users_groups',
     Base.metadata,
     Column('user_id', Integer, ForeignKey(User.id), primary_key=True),

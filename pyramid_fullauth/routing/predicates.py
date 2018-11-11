@@ -5,50 +5,50 @@
 """Routing predicate definitions."""
 
 from sqlalchemy.orm.exc import NoResultFound
-from pyramid.config.predicates import CheckCSRFTokenPredicate
+from pyramid.predicates import CheckCSRFTokenPredicate
 from pyramid.httpexceptions import HTTPUnauthorized
 import pyramid_basemodel
 
 from pyramid_fullauth.models import User
 
 
-def reset_hash(info, request):
+def reset_hash(info, _):
     """
     Check whether reset hash is correct.
 
     :param dict info: pyramid info dict with path fragments and info
-    :param pyramid.request.Request request: request object
+    :param pyramid.request.Request _: request object
 
     :returns: whether reset hash exists or not
     :rtype: bool
 
     """
-    reset_hash = info['match'].get('hash', None)
-    if reset_hash:
+    reset_key = info['match'].get('hash', None)
+    if reset_key:
         try:
-            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(User.reset_key == reset_hash).one()
+            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(User.reset_key == reset_key).one()
             return True
         except NoResultFound:
             pass
     return False
 
 
-def change_email_hash(info, request):
+def change_email_hash(info, _):
     """
     Check whether change email hash is correct.
 
     :param dict info: pyramid info dict with path fragments and info
-    :param pyramid.request.Request request: request object
+    :param pyramid.request.Request _: request object
 
     :returns: whether change email hash exists or not
     :rtype: bool
 
     """
-    change_email_hash = info['match'].get('hash', None)
-    if change_email_hash:
+    email_change_key = info['match'].get('hash', None)
+    if email_change_key:
         try:
             info['match']['user'] = pyramid_basemodel.Session.query(User).filter(
-                User.email_change_key == change_email_hash
+                User.email_change_key == email_change_key
             ).one()
             return True
         except NoResultFound:

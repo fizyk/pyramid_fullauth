@@ -25,9 +25,12 @@ class UserPasswordMixin(object):
     password = Column(Unicode(128), nullable=False)
 
     #: hash_algorithm field
-    _hash_algorithm = Column('hash_algorithm',
-                             Enum(*algorithms, name="hash_algorithms_enum"),
-                             default=text_type('sha256'), nullable=False)
+    _hash_algorithm = Column(
+        'hash_algorithm',
+        Enum(*algorithms, name="hash_algorithms_enum"),
+        default=text_type('sha256'),
+        nullable=False
+    )
 
     #: salt field
     _salt = Column('salt', Unicode(128), nullable=False)
@@ -45,7 +48,7 @@ class UserPasswordMixin(object):
         :rtype: bool
         """
         if password and self.hash_password(password, self._salt, self._hash_algorithm) == self.password:
-                return True
+            return True
 
         return False
 
@@ -83,7 +86,7 @@ class UserPasswordMixin(object):
         return hash_method(password + salt).hexdigest()
 
     @validates('password')
-    def password_validator(self, key, password):
+    def password_validator(self, _, password):
         """
         Validate password.
 
@@ -119,7 +122,9 @@ class UserPasswordMixin(object):
             raise EmptyError('password-empty')
 
         # reading default hash_algorithm
+        # pylint:disable=protected-access
         hash_algorithm = self.__class__._hash_algorithm.property.columns[0].default.arg
+        # pylint:enable=protected-access
 
         # getting currently used hash method
         hash_method = getattr(hashlib, hash_algorithm)

@@ -39,7 +39,7 @@ def login_perform(request, user, location=None, remember_me=False):
     return HTTPSeeOther(location=location, headers=request.response.headers)
 
 
-def user(request):
+def request_user(request):
     """
     Return user object.
 
@@ -51,12 +51,13 @@ def user(request):
     """
     if request.unauthenticated_userid:
         try:
-            user = pyramid_basemodel.Session.query(User).filter(
+            user = pyramid_basemodel.Session.query(User).filter(  # pylint:disable=no-member
                 User.id == request.unauthenticated_userid
             ).one()
             return user
         except NoResultFound:  # pragma: no cover
             pass
+    return None
 
 
 def logout(request):

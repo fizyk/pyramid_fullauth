@@ -159,9 +159,6 @@ class AfterLogIn(_BaseRegisterEvent):
 
 
 # Social events
-# TODO: extract to sub module
-
-
 class _BaseSocialRegister(_BaseRegisterEvent):
     """Base for all social requests."""
 

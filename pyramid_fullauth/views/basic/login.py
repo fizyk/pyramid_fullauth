@@ -8,9 +8,9 @@ from pyramid.view import view_config
 from pyramid.view import view_defaults
 from pyramid.httpexceptions import HTTPSeeOther, HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.compat import text_type
 
 from sqlalchemy.orm.exc import NoResultFound
-from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -52,8 +52,7 @@ class BaseLoginView(BaseView):
                 domain='pyramid_fullauth')
             self.response['after'] = redirect.location
             return self.response
-        else:
-            return redirect
+        return redirect
 
 
 @view_config(request_method='GET')
@@ -90,11 +89,12 @@ class LoginViewPost(BaseLoginView):
         except NoResultFound:
             self.request.registry.notify(BeforeLogIn(self.request, None))
 
-            self.response['msg'] = self.request._('Wrong e-mail or password.',
-                                                  domain='pyramid_fullauth')
+            self.response['msg'] = self.request._(
+                'Wrong e-mail or password.', domain='pyramid_fullauth'
+            )
             return self.response
-        except AttributeError as e:
-            self.response['msg'] = text_type(e)
+        except AttributeError as ex:
+            self.response['msg'] = text_type(ex)
             return self.response
 
         if not user.check_password(password):
@@ -106,8 +106,8 @@ class LoginViewPost(BaseLoginView):
         try:
             # if remember in POST set cookie timeout to one month
             self.request.registry.notify(AfterLogIn(self.request, user))
-        except AttributeError as e:
-            self.response['msg'] = text_type(e)
+        except AttributeError as ex:
+            self.response['msg'] = text_type(ex)
             return self.response
         except HTTPRedirection as redirect:
             login_kwargs['location'] = redirect.location

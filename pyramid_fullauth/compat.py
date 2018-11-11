@@ -7,6 +7,7 @@
 
 import sys
 
+# pylint:disable=no-name-in-module,import-error,ungrouped-imports
 
 if sys.version_info.major == 2:
     from urllib import urlencode
