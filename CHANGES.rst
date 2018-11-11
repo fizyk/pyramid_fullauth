@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- properly lint code through pylint an fix found issues
+
 0.6.0
 -------
 
