@@ -6,7 +6,6 @@ pyramid-mako==1.0.2
 pyramid-tm==2.2
 transaction==2.4.0
 requests==2.20.1
-sqlalchemy==1.2.12
 velruse==1.1.1
 tzf.pyramid_yml==1.1.1
 sqlalchemy==1.2.14
