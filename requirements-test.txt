@@ -1,11 +1,11 @@
 # requirements of main dependencies used for tests
-pyramid==1.9.2
+pyramid==1.10.1
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
 pyramid-tm==2.2
-transaction==2.3.0
-requests==2.19.1
-sqlalchemy==1.2.12
+transaction==2.3.0  # rq.filter: !=2.4.0
+requests==2.20.1
 velruse==1.1.1
 tzf.pyramid_yml==1.1.1
+sqlalchemy==1.2.14
