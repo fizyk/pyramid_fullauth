@@ -4,6 +4,8 @@ CHANGELOG
 unreleased
 -------
 
+- Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
+  Require minimum pyramid 1.5.
 - properly lint code through pylint an fix found issues
 
 0.6.0

@@ -46,7 +46,8 @@ It stores data needed to authenticate with different providers for each user, bu
 ACL
 ---
 
-``pyramid_fullauth`` package provides also a basic ACL Mixin for your RootFactory. it contains basic acl definition as well as init method.
+``pyramid_fullauth`` package provides also a basic ACL Mixin for your RootFactory.
+It contains basic acl definition as well as init method.
 
 See :class:`pyramid_fullauth.auth.BaseACLRootFactoryMixin`
 
@@ -54,16 +55,22 @@ See :class:`pyramid_fullauth.auth.BaseACLRootFactoryMixin`
 Events
 ------
 
-Plugin emits several events throughout the registration process, login and several other actions.
+Plugin emits several events throughout the registration process,
+login and several other actions.
 
 All of them, along with details description can be found in the :mod:`pyramid_fullauth.events` package.
 
-Read the :ref:`events_chapter` chapter of Pyramid's documentation to see how to add an event subscriber to Your application and handle those events.
+Read the :ref:`events_chapter` chapter of Pyramid's documentation to see how to
+add an event subscriber to Your application and handle those events.
 
 
 Session Factory
 ---------------
 
-*pyramid_fullauth* allows you to connect custom session factory within application, by default, it uses pyramid's :func:`~pyramid.session.UnencryptedCookieSessionFactoryConfig`, but using different session factory is just a matter of appropriate settings in **fullauth.session**. See :ref:`configuration` section on how to configure.
+*pyramid_fullauth* allows you to connect custom session factory within application,
+by default, it uses pyramid's :func:`~pyramid.session.SignedCookieSessionFactory`,
+but using different session factory is just a matter of appropriate settings in **fullauth.session**.
+See :ref:`configuration` section on how to configure.
 
-More on sessions and session factory can be read in _ :ref:`sessions_chapter` chapter of Pyramid's documentation
+More on sessions and session factory can be read in _ :ref:`sessions_chapter`
+chapter of Pyramid's documentation
