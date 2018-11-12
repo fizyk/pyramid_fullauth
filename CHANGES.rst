@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- refactored route_predicates. Now user_path_hash can handle all user hashes.
 - Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
   Require minimum pyramid 1.5.
 - properly lint code through pylint an fix found issues
