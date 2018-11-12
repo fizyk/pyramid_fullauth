@@ -4,7 +4,7 @@ import time
 from tests.tools import authenticate, is_user_logged
 
 
-def test_logout(active_user, extended_app):
+def test_logout(active_user, extended_app):  # pylint:disable=unused-argument
     """Check logout action."""
     authenticate(extended_app)
     assert is_user_logged(extended_app) is True
@@ -15,7 +15,7 @@ def test_logout(active_user, extended_app):
     assert res.status_code == 302
 
 
-def test_logout_login(active_user, extended_config, extended_app):
+def test_logout_login(active_user, extended_config, extended_app):  # pylint:disable=unused-argument
     """Check logout action with configured logout redirection."""
     extended_config.registry['config'].fullauth.redirects.logout = 'login'
     authenticate(extended_app)
@@ -29,7 +29,7 @@ def test_logout_login(active_user, extended_config, extended_app):
     assert res.status_code == 302
 
 
-def test_automatic_logout(active_user, short_config, short_app):
+def test_automatic_logout(active_user, short_config, short_app):  # pylint:disable=unused-argument
     """Test automatic logout."""
     timeout = short_config.registry['config']['fullauth']['AuthTkt']['timeout'] + 1
 

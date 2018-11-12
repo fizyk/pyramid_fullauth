@@ -3,9 +3,10 @@ pyramid==1.10.1
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
 pyramid-mako==1.0.2
-pyramid-tm==2.2.1
+pyramid-tm==2.2
 transaction==2.4.0
 requests==2.20.1
-sqlalchemy==1.2.14
+sqlalchemy==1.2.12
 velruse==1.1.1
 tzf.pyramid_yml==1.1.1
+sqlalchemy==1.2.14

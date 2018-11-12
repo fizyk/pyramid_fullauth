@@ -49,6 +49,6 @@ def include_views(config):
 
 
 @view_config(route_name="secret", permission="super_high", renderer='json')
-def secret_view(request):
+def secret_view(_):
     """Protected pyramid view."""
     return {}

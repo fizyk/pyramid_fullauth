@@ -15,7 +15,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
 from pyramid_fullauth.models.extensions import CaseInsensitive
 
-pattern_mail = re.compile(
+PATTERN_MAIL = re.compile(
     r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]{0,256}(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+){0,256}"  # dot-atom
     # quoted-string, see also http://tools.ietf.org/html/rfc2822#section-3.2.5
     r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177 ]|\\[\001-\011\013\014\016-\177 ]){0,256}"'
@@ -27,7 +27,7 @@ pattern_mail = re.compile(
 class UserEmailMixin(object):
     """User email fields and functionality."""
 
-    __pattern_mail = pattern_mail
+    __pattern_mail = PATTERN_MAIL
 
     _email = Column('email', Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)
     _new_email = Column('new_email', Unicode(254), unique=True, nullable=True)  # RFC5321 and RFC3696(errata)
@@ -38,7 +38,7 @@ class UserEmailMixin(object):
         if 'email' in kwargs:
             kwargs['_email'] = kwargs.pop('email')
         if 'new_email' in kwargs:
-            kwargs['_new_email'] - kwargs.pop('new_email')
+            kwargs['_new_email'] = kwargs.pop('new_email')
 
         super(UserEmailMixin, self).__init__(*args, **kwargs)
 
@@ -57,7 +57,7 @@ class UserEmailMixin(object):
         self._email = value
 
     @email.comparator
-    def email(cls):
+    def email(cls):  # pylint:disable=no-self-argument,method-hidden
         """Email field comparator."""
         return CaseInsensitive(cls._email)
 
@@ -76,12 +76,12 @@ class UserEmailMixin(object):
         self._new_email = value
 
     @new_email.comparator
-    def new_email(cls):
+    def new_email(cls):  # pylint:disable=no-self-argument,method-hidden
         """Email field comparator."""
         return CaseInsensitive(cls._new_email)
 
     @validates('_email', '_new_email')
-    def validate_email(self, key, address):
+    def validate_email(self, _, address):  # pylint:disable=no-self-use
         """
         Validate email addresses.
 
@@ -97,10 +97,10 @@ class UserEmailMixin(object):
         :raises EmptyError:
         """
         if address:
-            if pattern_mail.match(address):
+            if PATTERN_MAIL.match(address):
                 return address
-            else:
-                raise EmailValidationError('Incorrect e-mail format')
+
+            raise EmailValidationError('Incorrect e-mail format')
 
         raise EmptyError('E-mail is empty')
 

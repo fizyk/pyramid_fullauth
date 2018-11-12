@@ -36,8 +36,8 @@ class ActivateView(BaseView):
                 response['status'] = False
         try:
             self.request.registry.notify(AfterActivate(self.request, user))
-        except HTTPRedirection as e:
+        except HTTPRedirection as ex:
             # it's a redirect, let's follow it!
-            return e
+            return ex
 
         return response

@@ -43,7 +43,7 @@ def test_register_success(db_session, default_app, email, password):
     assert user.check_password(password)
 
 
-def test_register_user_exists(db_session, user, default_app):
+def test_register_user_exists(db_session, user, default_app):  # pylint:disable=unused-argument
     """Trying to register existing user."""
     res = default_app.get('/register')
     res.form['email'] = DEFAULT_USER['email']
@@ -57,20 +57,18 @@ def test_register_user_exists(db_session, user, default_app):
 
 @pytest.mark.parametrize('email, password, confirm_password, error', (
     # no email
-    (None, DEFAULT_USER['password'], DEFAULT_USER['password'],
-        'E-mail is empty'),
+    (None, DEFAULT_USER['password'], DEFAULT_USER['password'], 'E-mail is empty'),
     # empty email
-    ('', DEFAULT_USER['password'], DEFAULT_USER['password'],
-        'E-mail is empty'),
+    ('', DEFAULT_USER['password'], DEFAULT_USER['password'], 'E-mail is empty'),
     # not matching passwords
-    (DEFAULT_USER['email'], DEFAULT_USER['password'], DEFAULT_USER['password'] + 'Typo',
-        'Passwords don\'t match'),
+    (DEFAULT_USER['email'], DEFAULT_USER['password'], DEFAULT_USER['password'] + 'Typo', 'Passwords don\'t match'),
     # long, incorect email
-    (text_type('email') * 100 + text_type('@wap.pl'), DEFAULT_USER['password'], DEFAULT_USER['password'],
-        'Incorrect e-mail format'),
+    (
+        text_type('email') * 100 + text_type('@wap.pl'), DEFAULT_USER['password'], DEFAULT_USER['password'],
+        'Incorrect e-mail format'
+    ),
     # too short password
-    (DEFAULT_USER['email'], '12', '12',
-        'Password is too short'),
+    (DEFAULT_USER['email'], '12', '12', 'Password is too short'),
     # empty password
     (DEFAULT_USER['email'], '', '', 'Please enter your password'),
 ))

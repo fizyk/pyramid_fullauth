@@ -6,7 +6,7 @@ from pyramid.compat import text_type
 from pyramid_fullauth.models import AuthenticationProvider
 
 
-def mock_translate(msg, *args, **kwargs):
+def mock_translate(msg, *_, **__):
     """Mock translate function (simply returns message)."""
     return msg
 

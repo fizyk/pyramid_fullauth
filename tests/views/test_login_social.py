@@ -16,7 +16,7 @@ from tests.views.conftest import mock_translate
 def test_social_login_link(social_app):
     """Login:Form displayed social form."""
     res = social_app.get('/login')
-    assert ('Connect with facebook</a>' in res.body.decode('unicode_escape'))
+    assert 'Connect with facebook</a>' in res.body.decode('unicode_escape')
 
 
 def test_social_click_link(social_app):
@@ -64,7 +64,7 @@ def test_social_login_register(social_config, db_session):
     assert user.provider_id('facebook') == profile['accounts'][0]['userid']
 
 
-def test_login_different_social_account(social_config, db_session, facebook_user):
+def test_login_different_social_account(social_config, db_session, facebook_user):  # pylint:disable=unused-argument
     """
     Login with different social account than connected from same provider.
 

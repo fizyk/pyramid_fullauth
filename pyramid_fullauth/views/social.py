@@ -8,10 +8,9 @@ import logging
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-
+from pyramid.compat import text_type
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
-from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -23,7 +22,7 @@ from pyramid_fullauth.events import AfterSocialLogIn
 from pyramid_fullauth.events import SocialAccountAlreadyConnected
 from pyramid_fullauth import tools
 
-logger = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 @view_config(context='velruse.AuthenticationComplete',
@@ -32,7 +31,7 @@ logger = logging.getLogger(__name__)
 class SocialLoginViews(BaseView):
     """Social login views definition."""
 
-    def set_provider(self, user, provider_name, user_provider_id):
+    def set_provider(self, user, provider_name, user_provider_id):  # pylint:disable=no-self-use
         """
         Set authentication provider on user.
 
@@ -86,29 +85,27 @@ class SocialLoginViews(BaseView):
         if user:
             # Lets try to connect our user
             return self._connect_user(response_values)
+        try:
+            user = pyramid_basemodel.Session.query(
+                User
+            ).join(AuthenticationProvider).filter(
+                AuthenticationProvider.provider == context.provider_name,
+                AuthenticationProvider.provider_id == context.profile['accounts'][0]['userid']
+            ).one()
+        except NoResultFound:
+            user = None
 
-        else:
+        # If the user for the provider was not found then check
+        # if in the DB exists user with the same email
+        if not user:
+            user = self._register_user()
             try:
-                user = pyramid_basemodel.Session.query(
-                    User
-                ).join(AuthenticationProvider).filter(
-                    AuthenticationProvider.provider == context.provider_name,
-                    AuthenticationProvider.provider_id == context.profile['accounts'][0]['userid']
-                ).one()
-            except NoResultFound:
-                user = None
-
-            # If the user for the provider was not found then check
-            # if in the DB exists user with the same email
-            if not user:
-                user = self._register_user()
-                try:
-                    self.request.registry.notify(
-                        AfterSocialRegister(
-                            self.request, user, context.profile, response_values))
-                except HTTPRedirection as redirect:
-                    # it's a redirect, let's follow it!
-                    return redirect
+                self.request.registry.notify(
+                    AfterSocialRegister(
+                        self.request, user, context.profile, response_values))
+            except HTTPRedirection as redirect:
+                # it's a redirect, let's follow it!
+                return redirect
 
         # if we're here, user exists,
         try:
@@ -133,7 +130,7 @@ class SocialLoginViews(BaseView):
         user = self.request.user
         try:
             if not self.set_provider(
-                user, context.provider_name, context.profile['accounts'][0]['userid']
+                    user, context.provider_name, context.profile['accounts'][0]['userid']
             ):
                 response_values['msg'] = self.request._(
                     'Your account is already connected to other ${provider} account.',
@@ -172,17 +169,17 @@ class SocialLoginViews(BaseView):
             # If we are here that means that in the DB exists user with the same email but without the provider
             # then we connect social account to this user
             if not self.set_provider(
-                user, context.provider_name, context.profile['accounts'][0]['userid']
+                    user, context.provider_name, context.profile['accounts'][0]['userid']
             ):
                 # authenticating user with different social account than assigned,
                 # recogniced by same email address used
-                logger.debug('''Authenticated {user.id} connected to
-                             {context.provider_name} id {connected_id},
-                             with {userid}'''.format(
-                    user=user,
-                    context=context,
-                    connected_id=user.provider_id(context.provider_name),
-                    userid=context.profile['accounts'][0]['userid']))
+                LOG.debug(
+                    '''Authenticated %d connected to %s id %s, with %s''',
+                    user.id,
+                    context.provider_name,
+                    user.provider_id(context.provider_name),
+                    context.profile['accounts'][0]['userid']
+                )
             pyramid_basemodel.Session.flush()
         except NoResultFound:
             length_min = self.config.register.password.length_min
@@ -198,7 +195,7 @@ class SocialLoginViews(BaseView):
             user.is_active = True
         return user
 
-    def _email_from_context(self, context):
+    def _email_from_context(self, context):  # pylint:disable=no-self-use
         """
         Extract or generate email from context values.
 
@@ -208,13 +205,12 @@ class SocialLoginViews(BaseView):
         if 'verifiedEmail' in context.profile:
             return context.profile['verifiedEmail']
         # getting first of the emails provided by social login provider
-        elif 'emails' in context.profile and context.profile['emails'] and 'value' in context.profile['emails'][0]:
+        if 'emails' in context.profile and context.profile['emails'] and 'value' in context.profile['emails'][0]:
             return context.profile['emails'][0]['value']
         # generating some random email address based on social userid and provider domain
-        else:
-            return text_type(
-                '{0}@{1}'.format(
-                    context.profile['accounts'][0]['userid'],
-                    context.profile['accounts'][0]['domain']
-                )
+        return text_type(
+            '{0}@{1}'.format(
+                context.profile['accounts'][0]['userid'],
+                context.profile['accounts'][0]['domain']
             )
+        )
