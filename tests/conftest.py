@@ -39,7 +39,6 @@ def db_session(request):
     if request.param == 'sqlite':
         connection = 'sqlite:///fullauth.sqlite'
     elif request.param == 'mysql':
-        pytest.xfail(reason='MySQL 5.7 manual start issues')
         request.getfixturevalue('mysql')  # takes care of creating database
         connection = 'mysql+mysqldb://root:@127.0.0.1:3307/tests?charset=utf8'
     elif request.param == 'postgresql':
