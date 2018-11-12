@@ -1,10 +1,11 @@
 language: python
-sudo: false
+dist: xenial
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+  - 2.7
+  - 3.4
+  - 3.5
+  - 3.6
+  - 3.7
 branches:
   except:
   - requires-io-master
@@ -12,13 +13,13 @@ install:
   - pip install -r requirements-test.txt
   - pip install .[tests] coveralls wheel
 script:
-  - "py.test -v --cov pyramid_fullauth tests/"
+  - py.test -v --cov pyramid_fullauth tests/
 after_success:
   - coveralls
 jobs:
   include:
     - stage: linters
-      python: 3.6
+      python: 3.7
       install:
       - pip install -r requirements-lint.txt
       - pip install .[tests]
@@ -29,7 +30,7 @@ jobs:
       - pyroma .
       after_success: skip
     - stage: deploy
-      python: 3.6
+      python: 3.7
       if: tag IS present
       script: skip
       deploy:
@@ -41,5 +42,5 @@ jobs:
           tags: true
           all_branches: true
           repo: fizyk/pyramid_fullauth
-        distributions: "sdist bdist_egg bdist_wheel"
+        distributions: bdist_wheel
 
