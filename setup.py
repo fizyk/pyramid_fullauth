@@ -20,7 +20,7 @@ def read(fname):
 
 requirements = [
     'pyramid_localize',
-    'pyramid>=1.5',
+    'pyramid>=1.7',
     'pyramid_mako',
     'tzf.pyramid_yml>=1.0',
     'pyramid_basemodel>=0.3',

@@ -28,8 +28,8 @@ class RegisterView(BaseView):
         csrf_token = self.request.session.get_csrf_token()
         return {'status': True, 'msg': None, 'csrf_token': csrf_token, 'errors': {}}
 
-    @view_config(request_method='POST', check_csrf=True)
-    @view_config(request_method='POST', check_csrf=True, xhr=True, renderer="json")
+    @view_config(request_method='POST', require_csrf=True)
+    @view_config(request_method='POST', require_csrf=True, xhr=True, renderer="json")
     def post(self):
         """Process registration request."""
         response = {
