@@ -6,7 +6,9 @@ unreleased
 
 - refactored route_predicates. Now user_path_hash can handle all user hashes.
 - Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
-  Require minimum pyramid 1.5.
+- Use require_csrf instead of use_csrf view decorator predicate.
+  This raises now 400 http error instead of 401 in case of bad or no csrf token when required.
+- Require minimum pyramid 1.7.
 - properly lint code through pylint an fix found issues
 
 0.6.0
