@@ -9,6 +9,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.interfaces import (
     IAuthorizationPolicy, IAuthenticationPolicy, IRootFactory, ISessionFactory
 )
+from pyramid.session import JSONSerializer
 
 from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
@@ -51,6 +52,10 @@ def includeme(configurator):
         session_module = __import__(module, fromlist=[module])
         # get the  factory class
         session_factory = getattr(session_module, factory)
+
+        session_settings = fullauth_config.session.settings.copy()
+        if 'serializer' not in session_settings:
+            session_settings['serializer'] = JSONSerializer()
 
         # set the new session factory
         configurator.set_session_factory(

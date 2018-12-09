@@ -8,7 +8,8 @@ unreleased
 - Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
 - Use require_csrf instead of use_csrf view decorator predicate.
   This raises now 400 http error instead of 401 in case of bad or no csrf token when required.
-- Require minimum pyramid 1.7.
+- Set default session serializer as JSONSerializer to comply with pyramid's 2.0 change
+- Require minimum pyramid 1.10.
 - properly lint code through pylint an fix found issues
 
 0.6.0
