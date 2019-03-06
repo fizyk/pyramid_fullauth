@@ -12,48 +12,39 @@ import pyramid_basemodel
 from pyramid_fullauth.models import User
 
 
-def reset_hash(info, _):
-    """
-    Check whether reset hash is correct.
+class UserPathHashRoutePredicate(object):
+    """Check reset hash from url."""
 
-    :param dict info: pyramid info dict with path fragments and info
-    :param pyramid.request.Request _: request object
+    def __init__(self, val, _):
+        self.val = val
 
-    :returns: whether reset hash exists or not
-    :rtype: bool
+    def text(self):
+        """Predicate's representation."""
+        return 'user_path_hash = %s' % (self.val,)
 
-    """
-    reset_key = info['match'].get('hash', None)
-    if reset_key:
-        try:
-            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(User.reset_key == reset_key).one()
-            return True
-        except NoResultFound:
-            pass
-    return False
+    phash = text
 
+    def __call__(self, context, _):
+        """
+        Check whether hash is correct and fits configured user attribute.
 
-def change_email_hash(info, _):
-    """
-    Check whether change email hash is correct.
+        :param dict context: pyramid info dict with path fragments and info
+        :param pyramid.request.Request _: request object
 
-    :param dict info: pyramid info dict with path fragments and info
-    :param pyramid.request.Request _: request object
+        :returns: whether reset hash exists or not
+        :rtype: bool
 
-    :returns: whether change email hash exists or not
-    :rtype: bool
-
-    """
-    email_change_key = info['match'].get('hash', None)
-    if email_change_key:
-        try:
-            info['match']['user'] = pyramid_basemodel.Session.query(User).filter(
-                User.email_change_key == email_change_key
-            ).one()
-            return True
-        except NoResultFound:
-            pass
-    return False
+        """
+        passed_hash = context['match'].get('hash', None)
+        if passed_hash:
+            try:
+                context['match']['user'] = pyramid_basemodel.Session.query(User).filter(
+                    getattr(User, self.val) == passed_hash
+                ).one()
+                return True
+            except NoResultFound:
+                pass
+        return False
 
 
 class CSRFCheckPredicate(CheckCSRFTokenPredicate):

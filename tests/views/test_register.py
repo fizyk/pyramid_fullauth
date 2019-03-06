@@ -98,7 +98,7 @@ def test_register_wrong_csrf(db_session, default_app):
     res.form['confirm_password'] = DEFAULT_USER['password']
     res.form['csrf_token'] = 'wrong_token'
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'},
-                          status=401)
+                          status=400)
     transaction.commit()
 
     assert db_session.query(User).count() == 0

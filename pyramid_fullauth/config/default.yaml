@@ -20,7 +20,7 @@ fullauth:
         logout: False
     session: # session factory settings
         # factory key is responsible for providing full path to factory class (module.submodule.SessionFactory)
-        factory: pyramid.session.UnencryptedCookieSessionFactoryConfig
+        factory: pyramid.session.SignedCookieSessionFactory
         # settings are key: value pairs of all factory initialize attributes
         settings:
             secret: THATS_NOT_SECRET_ITS_A_SECRET

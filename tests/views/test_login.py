@@ -108,7 +108,7 @@ def test_login_csrf_error(extended_app, post_data):
     """Try to log in with erroneus csrf token."""
     res = extended_app.get('/login', status=200)
     assert res
-    res = extended_app.post('/login', post_data, status=401)
+    res = extended_app.post('/login', post_data, status=400)
 
     assert is_user_logged(extended_app) is False
 

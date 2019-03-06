@@ -102,4 +102,4 @@ def test_reset_proceed_wrong_csrf(user, db_session, default_app):
     res.form['password'] = NEW_PASSWORD
     res.form['confirm_password'] = NEW_PASSWORD
     res.form['csrf_token'] = 'sadasere723612dassdgaSDs7a'
-    res.form.submit(status=401)
+    res.form.submit(status=400)
