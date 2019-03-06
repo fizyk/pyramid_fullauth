@@ -71,8 +71,8 @@ class LoginView(BaseLoginView):
         return self.response
 
 
-@view_config(request_method='POST', check_csrf=True)
-@view_config(request_method='POST', check_csrf=True, xhr=True, renderer="json")
+@view_config(request_method='POST', require_csrf=True)
+@view_config(request_method='POST', require_csrf=True, xhr=True, renderer="json")
 class LoginViewPost(BaseLoginView):
     """Login view POST method."""
 

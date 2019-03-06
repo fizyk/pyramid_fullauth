@@ -3,14 +3,13 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Fullauth's configuration module."""
-import logging
-
 from tzf.pyramid_yml import config_defaults
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.interfaces import (
     IAuthorizationPolicy, IAuthenticationPolicy, IRootFactory, ISessionFactory
 )
+from pyramid.session import JSONSerializer
 
 from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
@@ -54,12 +53,18 @@ def includeme(configurator):
         # get the  factory class
         session_factory = getattr(session_module, factory)
 
+        session_settings = fullauth_config.session.settings.copy()
+        if 'serializer' not in session_settings:
+            session_settings['serializer'] = JSONSerializer()
+
         # set the new session factory
         configurator.set_session_factory(
             session_factory(**fullauth_config.session.settings))
 
+    # add predicates
     configurator.add_view_predicate(
         'check_csrf', predicates.CSRFCheckPredicate)
+    configurator.add_route_predicate('user_path_hash', predicates.UserPathHashRoutePredicate)
 
     # add routes
     configurator.add_route(name='login', pattern='/login')
@@ -70,11 +75,11 @@ def includeme(configurator):
     configurator.add_route(name='password:reset', pattern='/password/reset')
     configurator.add_route(
         name='password:reset:continue', pattern='/password/reset/{hash}',
-        custom_predicates=(predicates.reset_hash,))
+        user_path_hash='reset_key')
     configurator.add_route(name='email:change', pattern='/email/change')
     configurator.add_route(
         name='email:change:continue', pattern='/email/change/{hash}',
-        custom_predicates=(predicates.change_email_hash,))
+        user_path_hash='email_change_key')
     # scan base views
     configurator.scan('pyramid_fullauth.views.basic')
 
