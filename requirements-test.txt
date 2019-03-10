@@ -8,4 +8,4 @@ transaction==2.4.0
 requests==2.21.0
 velruse==1.1.1
 tzf.pyramid_yml==1.1.1
-sqlalchemy==1.3.0
+sqlalchemy==1.3.1
