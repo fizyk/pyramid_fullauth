@@ -32,7 +32,7 @@ test_requires = [
     'mock==3.0.3',
     'pytest==4.4.1',
     'pytest-pyramid==0.3.1',
-    'pytest-cov==2.6.1',
+    'pytest-cov==2.7.1',
     'pytest-mysql==2.0.1',
     'pytest-postgresql==1.4.1',
 ]
