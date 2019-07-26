@@ -27,4 +27,3 @@ class PasswordConfirmMismatchError(ValidateError):
 
 class EmailValidationError(ValidateError):
     """Exception thrown, when there's incorrect email provided."""
-

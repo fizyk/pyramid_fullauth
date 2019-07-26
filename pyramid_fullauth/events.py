@@ -235,4 +235,3 @@ class AfterEmailChange(_BaseRegisterEvent):
 
 class AfterEmailChangeActivation(_BaseRegisterEvent):
     """Allow to add custom logic, after changed email had been activated."""
-
