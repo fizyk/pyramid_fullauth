@@ -87,8 +87,6 @@ class AfterActivate(_BaseRegisterEvent):
         be risen in event listener.
     """
 
-    pass
-
 
 class AfterResetRequest(_BaseRegisterEvent):
     """
@@ -99,13 +97,9 @@ class AfterResetRequest(_BaseRegisterEvent):
         be risen in event listener.
     """
 
-    pass
-
 
 class BeforeReset(_BaseRegisterEvent):
     """Add custom pre-processing before the actual reset-password process."""
-
-    pass
 
 
 class AfterReset(_BaseRegisterEvent):
@@ -116,8 +110,6 @@ class AfterReset(_BaseRegisterEvent):
         Action emitting this event, should catch all HTTPRedirection that might
         be risen in event listener.
     """
-
-    pass
 
 
 class AlreadyLoggedIn(object):
@@ -149,13 +141,9 @@ class BeforeLogIn(_BaseRegisterEvent):
         User param set to None when user is not found or request method is GET.
     """
 
-    pass
-
 
 class AfterLogIn(_BaseRegisterEvent):
     """Add custom logic after user logs in."""
-
-    pass
 
 
 # Social events
@@ -176,8 +164,6 @@ class _BaseSocialRegister(_BaseRegisterEvent):
 
 class BeforeSocialRegister(_BaseSocialRegister):
     """Adds custom logic before the social login process start."""
-
-    pass
 
 
 class AfterSocialRegister(_BaseSocialRegister):
@@ -211,8 +197,6 @@ class AfterSocialLogIn(_BaseSocialRegister):
         be risen in event listener.
     """
 
-    pass
-
 
 class SocialAccountAlreadyConnected(_BaseSocialRegister):
     """
@@ -244,16 +228,11 @@ class SocialAccountAlreadyConnected(_BaseSocialRegister):
 class BeforeEmailChange(_BaseRegisterEvent):
     """Allow to add custom validation (like checking password) before email change process."""
 
-    pass
-
 
 class AfterEmailChange(_BaseRegisterEvent):
     """Allow to add some custom post-processing, like e-mail sending, after email change process."""
-
-    pass
 
 
 class AfterEmailChangeActivation(_BaseRegisterEvent):
     """Allow to add custom logic, after changed email had been activated."""
 
-    pass
