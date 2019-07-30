@@ -24,7 +24,7 @@ requirements = [
     'pyramid_mako',
     'tzf.pyramid_yml>=1.0',
     'pyramid_basemodel>=0.3',
-    'SQLAlchemy!=1.1.0,!=1.1.1',
+    'SQLAlchemy>=1.3.0',  # secured against CVE-2019-7164, CVE-2019-7548
     'velruse >=1.1.1'
 ]
 

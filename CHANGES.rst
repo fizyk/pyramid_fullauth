@@ -4,13 +4,16 @@ CHANGELOG
 unreleased
 -------
 
-- refactored route_predicates. Now user_path_hash can handle all user hashes.
-- Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
-- Use require_csrf instead of use_csrf view decorator predicate.
+- [enhancement] refactored route_predicates. Now user_path_hash can handle all user hashes.
+- [enhancement] Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
+- [enhancement] Use require_csrf instead of use_csrf view decorator predicate.
   This raises now 400 http error instead of 401 in case of bad or no csrf token when required.
-- Set default session serializer as JSONSerializer to comply with pyramid's 2.0 change
-- Require minimum pyramid 1.10.
-- properly lint code through pylint an fix found issues
+- [enhancement] Set default session serializer as JSONSerializer to comply with pyramid's 2.0 change
+- [enhancement] Require minimum pyramid 1.10.
+- [enhancement] properly lint code through pylint an fix found issues
+- [security] Set minimum requirement for SQLAlchemy to be at least 1.3.0 to protect against
+  `CVE-2019-7164 <https://nvd.nist.gov/vuln/detail/CVE-2019-7164>`_ and
+  `CVE-2019-7548 <https://nvd.nist.gov/vuln/detail/CVE-2019-7548>`_
 
 0.6.0
 -------
