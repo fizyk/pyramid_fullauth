@@ -1,13 +1,14 @@
 language: python
 dist: xenial
 python:
-  - 2.7
   - 3.5
   - 3.6
   - 3.7
+  - 3.8-dev
 branches:
   except:
   - requires-io-master
+  - /^dependabot.*$/
 install:
   - pip install -r requirements-test.txt
   - pip install .[tests] coveralls wheel
