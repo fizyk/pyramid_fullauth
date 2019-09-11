@@ -29,12 +29,12 @@ requirements = [
 ]
 
 test_requires = [
-    'mock==2.0.0',
-    'pytest==4.0.1',
-    'pytest-pyramid==0.3.1',
-    'pytest-cov==2.6.0',
-    'pytest-mysql==2.0.1',
-    'pytest-postgresql==1.3.4',
+    'mock',
+    'pytest',
+    'pytest-pyramid',
+    'pytest-cov',
+    'pytest-mysql',
+    'pytest-postgresql',
 ]
 
 extras_require = {
