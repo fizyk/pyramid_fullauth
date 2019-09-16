@@ -32,6 +32,8 @@ test_requires = [
     'mock',
     'pytest',
     'pytest-pyramid',
+    'psycopg2-binary;platform_python_implementation!= "PyPy"',
+    'psycopg2cffi;platform_python_implementation=="PyPy"',
     'pytest-cov',
     'pytest-mysql',
     'pytest-postgresql',
