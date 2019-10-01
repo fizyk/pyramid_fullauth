@@ -3,7 +3,7 @@ pyramid==1.10.4
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
 pyramid-mako==1.1.0
-pyramid-tm==2.2.1
+pyramid-tm==2.3
 transaction==2.4.0
 requests==2.22.0
 velruse==1.1.1
