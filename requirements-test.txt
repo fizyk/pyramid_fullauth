@@ -2,6 +2,7 @@
 pyramid==1.10.4
 pyramid_localize==0.1.0
 pyramid-basemodel==0.3.6
+zope.sqlalchemy==1.1.0
 pyramid-mako==1.1.0
 pyramid-tm==2.3
 transaction==2.4.0
@@ -15,3 +16,4 @@ pytest-pyramid==0.3.1
 pytest-cov==2.8.1
 pytest-mysql==2.0.1
 pytest-postgresql==2.2.0
+-e .[tests]
