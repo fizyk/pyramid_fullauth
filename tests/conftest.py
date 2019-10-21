@@ -34,7 +34,7 @@ def web_request():
 @pytest.fixture(scope='function', params=['sqlite', 'mysql', 'postgresql'])
 def db_session(request):
     """Session for SQLAlchemy."""
-    from pyramid_fullauth.models import Base
+    from pyramid_fullauth.models import Base  # pylint:disable=import-outside-toplevel
 
     if request.param == 'sqlite':
         connection = 'sqlite:///fullauth.sqlite'
@@ -62,8 +62,8 @@ def db_session(request):
 @pytest.fixture
 def user(db_session):  # pylint:disable=redefined-outer-name
     """Test user fixture."""
-    from pyramid_fullauth.models import User
-    from tests.tools import DEFAULT_USER
+    from pyramid_fullauth.models import User  # pylint:disable=import-outside-toplevel
+    from tests.tools import DEFAULT_USER  # pylint:disable=import-outside-toplevel
     new_user = User(**DEFAULT_USER)
     db_session.add(new_user)
     transaction.commit()
