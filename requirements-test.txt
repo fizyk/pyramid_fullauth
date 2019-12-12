@@ -5,7 +5,7 @@ pyramid-basemodel==0.3.6
 zope.sqlalchemy==1.1.0
 pyramid-mako==1.1.0
 pyramid-tm==2.3
-transaction==2.4.0
+transaction==3.0.0
 requests==2.22.0
 velruse==1.1.1
 tzf.pyramid_yml==2.0.0
