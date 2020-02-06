@@ -1,10 +1,10 @@
 language: python
 dist: xenial
 python:
-  - 3.5
-  - 3.6
+  - 3.8
   - 3.7
-  - 3.8-dev
+  - 3.6
+  - 3.9-dev
 branches:
   except:
   - requires-io-master
@@ -17,9 +17,10 @@ script:
 after_success:
   - coveralls
 jobs:
+  allow_failures:
+    - python: 3.9-dev
   include:
     - stage: linters
-      python: 3.7
       install:
       - pip install -r requirements-lint.txt
       script:
@@ -29,7 +30,6 @@ jobs:
       - pyroma .
       after_success: skip
     - stage: deploy
-      python: 3.7
       if: tag IS present
       script: skip
       deploy:
