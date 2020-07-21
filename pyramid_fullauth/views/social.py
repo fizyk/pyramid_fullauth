@@ -182,7 +182,7 @@ class SocialLoginViews(BaseView):
                 )
             pyramid_basemodel.Session.flush()
         except NoResultFound:
-            length_min = self.config.register.password.length_min
+            length_min = self.config["register"]["password"]["length_min"]
             user = User(
                 email=email,
                 password=tools.password_generator(length_min),

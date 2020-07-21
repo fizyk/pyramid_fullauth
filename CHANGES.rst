@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [breaking] removed dependency on tzf.pyramid_yml and pymlconf. All configuration has to be handled within .ini file now.
 - [enhancement] refactored route_predicates. Now user_path_hash can handle all user hashes.
 - [enhancement] Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.
 - [enhancement] Use require_csrf instead of use_csrf view decorator predicate.

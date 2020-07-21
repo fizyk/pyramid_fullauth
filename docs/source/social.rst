@@ -12,14 +12,11 @@ Configuration
 Plugin creates login/register views for auth providers provided in config file.
 Below is example for facebook, you can check required configuration for other providers here: https://velruse.readthedocs.org/en/latest/
 
-.. code-block:: yaml
+.. code-block:: ini
 
-    fullauth:
-        social:
-            facebook:
-                consumer_key : some_key
-                consumer_secret : some_secret
-                scope : email,offline_access # some providers requires additional information about user data our application wants from provider
+    fullauth.social.facebook.consumer_key = some_key
+    fullauth.social.facebook.consumer_secret = some_secret
+    fullauth.social.facebook.scope = mail,offline_access
 
 Usage
 -----
@@ -36,7 +33,7 @@ and puting one of those links in your templates:
 
 .. code-block:: mako
 
-    <a href="${social.social_auth_uri('facebook', scope=request.config.fullauth.social.facebook.scope)}">Connect with facebook</a>
+    <a href="${social.social_auth_uri('facebook', scope=request.registry["fullauth"]["social"]["facebook"]["scope"])}">Connect with facebook</a>
     <a href="${social.social_auth_uri('twitter')}">Connect with twitter</a>
 
 Events

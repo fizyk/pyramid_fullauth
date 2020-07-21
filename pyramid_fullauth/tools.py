@@ -44,11 +44,11 @@ def validate_passsword(request, password, user=None):
 
     :raises: pyramid_fullauth.exceptions.ValidateError
     """
-    password_config = request.registry['config'].fullauth.register.password
+    password_config = request.registry["fullauth"]["register"]["password"]
     if not password:
         raise EmptyError(
-            request._('Please enter your password',
-                      domain='pyramid_fullauth'))
+            request._("Please enter your password",
+                      domain="pyramid_fullauth"))
 
     if password_config['length_min'] and\
             len(password) < password_config['length_min']:

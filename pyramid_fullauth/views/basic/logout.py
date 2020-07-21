@@ -18,8 +18,8 @@ class LogoutView(BaseView):
     def __call__(self):
         """Logout action."""
         location = '/'
-        if self.config.redirects.logout:
-            location = self.request.route_path(self.config.redirects.logout)
+        if self.config["redirects"]["logout"]:
+            location = self.request.route_path(self.config["redirects"]["logout"])
         # forget headers
         self.request.logout()
 

@@ -8,7 +8,6 @@ pyramid-tm==2.4
 transaction==3.0.0
 requests==2.24.0
 velruse==1.1.1
-tzf.pyramid_yml==2.0.0
 sqlalchemy==1.3.20
 mock==4.0.2
 pytest==6.1.2

@@ -70,7 +70,7 @@ class CSRFCheckPredicate(CheckCSRFTokenPredicate):
         :param pyramid.request.Request request:
 
         """
-        if request.registry['config'].fullauth.check_csrf:
+        if request.registry['fullauth']["check_csrf"]:
             result = CheckCSRFTokenPredicate.__call__(self, context, request)
             if not result:
                 raise HTTPUnauthorized
