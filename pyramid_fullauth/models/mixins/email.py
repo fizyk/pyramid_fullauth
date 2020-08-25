@@ -40,7 +40,7 @@ class UserEmailMixin(object):
         if 'new_email' in kwargs:
             kwargs['_new_email'] = kwargs.pop('new_email')
 
-        super(UserEmailMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     @hybrid_property
     def email(self):
