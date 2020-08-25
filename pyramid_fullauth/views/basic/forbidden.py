@@ -15,7 +15,7 @@ class ForbiddenViews(BaseView):
 
     def __init__(self, request):
         """Set all responses status to 403 by default."""
-        super(ForbiddenViews, self).__init__(request)
+        super().__init__(request)
         self.request.response.status_code = 403
 
     @forbidden_view_config(renderer='pyramid_fullauth:resources/templates/403.mako')

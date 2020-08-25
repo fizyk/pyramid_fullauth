@@ -27,7 +27,7 @@ class BaseLoginView(BaseView):
 
     def __init__(self, request):
         """Prepare login views."""
-        super(BaseLoginView, self).__init__(request)
+        super().__init__(request)
 
         self.response = {
             'status': False,
