@@ -1,7 +1,7 @@
 # requirements of main dependencies used for tests
 pyramid==1.10.4
 pyramid_localize==0.1.0
-pyramid-basemodel==0.3.7
+pyramid-basemodel==0.4.0
 zope.sqlalchemy==1.1.0
 pyramid-mako==1.1.0
 pyramid-tm==2.4
