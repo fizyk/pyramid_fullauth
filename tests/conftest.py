@@ -6,7 +6,7 @@ import transaction
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import NullPool
-from zope.sqlalchemy import ZopeTransactionExtension
+from zope.sqlalchemy import register
 
 from pyramid.compat import text_type
 from pytest_pyramid import factories
@@ -46,7 +46,8 @@ def db_session(request):
         connection = 'postgresql+psycopg2://postgres:@127.0.0.1:5433/tests'
 
     engine = create_engine(connection, echo=False, poolclass=NullPool)
-    pyramid_basemodel.Session = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+    pyramid_basemodel.Session = scoped_session(sessionmaker())
+    register(pyramid_basemodel.Session)
     pyramid_basemodel.bind_engine(
         engine, pyramid_basemodel.Session, should_create=True, should_drop=True)
 
