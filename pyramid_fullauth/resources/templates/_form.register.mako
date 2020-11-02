@@ -27,7 +27,7 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
             </div>
         </div>
         <%
-            password_options = request.registry['config'].fullauth.register.password
+            password_options = request.registry["fullauth"]["register"]["password"]
         %>
         % if password_options['confirm']:
             <div class="control-group ${'error' if 'confirm_password' in errors else ''}">

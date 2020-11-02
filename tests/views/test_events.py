@@ -38,8 +38,12 @@ def unregister_subscriber(config, event):
 
 
 evented_config = factories.pyramid_config({  # pylint:disable=invalid-name
-    'yml.location': 'tests:config',
     'env': 'login',
+    'fullauth.authtkt.timeout': 2,
+    'fullauth.authtkt.reissue_time': 0.2,
+    "fullauth.register.password.require": True,
+    "fullauth.register.password.length_min": 8,
+    "fullauth.register.password.confirm": True,
     'pyramid.includes': [
         'pyramid_tm',
         'pyramid_fullauth',

@@ -19,14 +19,22 @@ def web_request():
     request = Mock()
     config = Mock()
     config.configure_mock(**{
-        'fullauth.register.password': {'length_min': 8, 'confirm': True},
         'POST': {'confirm_password': '987654321'}
     })
+
+    fullauth_config = {
+        "register": {
+            "password": {
+                "length_min": 8,
+                "confirm": True
+            }
+        }
+    }
 
     def _(message, *_, **__):
         return message
     request._ = Mock(side_effect=_)
-    request.configure_mock(**{'registry': {'config': config}})
+    request.configure_mock(**{"registry": {"config": config, "fullauth": fullauth_config}})
 
     return request
 
@@ -129,10 +137,10 @@ extended_app = factories.pyramid_app('extended_config')
 
 
 short_config = factories.pyramid_config({
-    'yml.location': 'tests:config/short_memory.yaml',
+    "fullauth.authtkt.timeout": 2,
+    "fullauth.authtkt.reissue_time": 0.2,
     'pyramid.includes': [
         'pyramid_tm',
-        'tzf.pyramid_yml',
         'pyramid_fullauth',
         'tests.tools.include_views'
     ]
@@ -143,10 +151,11 @@ short_app = factories.pyramid_app('short_config')
 
 
 social_config = factories.pyramid_config({
-    'yml.location': 'tests:config/social.yaml',
+    "fullauth.social.facebook.consumer_key": "173883269419608",
+    "fullauth.social.facebook.consumer_secret": "f8421ff0856d742fc10aa764537be181",
+    "fullauth.social.facebook.scope": "email,offline_access",
     'pyramid.includes': [
         'pyramid_tm',
-        'tzf.pyramid_yml',
         'pyramid_fullauth',
         'tests.tools.include_views'
     ]
@@ -157,11 +166,9 @@ social_app = factories.pyramid_app('social_config')
 
 
 authable_config = factories.pyramid_config({
-    'yml.location': 'tests:config',
     'env': 'login',
     'pyramid.includes': [
         'pyramid_tm',
-        'tzf.pyramid_yml',
         'pyramid_fullauth',
         'tests.tools.include_views'
     ]
@@ -172,11 +179,11 @@ authable_app = factories.pyramid_app('authable_config')
 
 
 nopassconfirm_config = factories.pyramid_config({
-    'yml.location': 'tests:config/no_password_confirm.yaml',
+    "fullauth.register.password.require": True,
+    "fullauth.register.password.confirm": False,
     'env': 'login',
     'pyramid.includes': [
         'pyramid_tm',
-        'tzf.pyramid_yml',
         'pyramid_fullauth',
         'tests.tools.include_views'
     ]
@@ -187,11 +194,10 @@ nopassconfirm_app = factories.pyramid_app('nopassconfirm_config')
 
 
 nopassregister_config = factories.pyramid_config({
-    'yml.location': 'tests:config/no_password_register.yaml',
+    "fullauth.register.password.require": False,
     'env': 'login',
     'pyramid.includes': [
         'pyramid_tm',
-        'tzf.pyramid_yml',
         'pyramid_fullauth',
         'tests.tools.include_views'
     ]

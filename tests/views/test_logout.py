@@ -17,7 +17,7 @@ def test_logout(active_user, extended_app):  # pylint:disable=unused-argument
 
 def test_logout_login(active_user, extended_config, extended_app):  # pylint:disable=unused-argument
     """Check logout action with configured logout redirection."""
-    extended_config.registry['config'].fullauth.redirects.logout = 'login'
+    extended_config.registry["fullauth"]["redirects"]["logout"] = 'login'
     authenticate(extended_app)
     assert is_user_logged(extended_app) is True
 
@@ -31,7 +31,7 @@ def test_logout_login(active_user, extended_config, extended_app):  # pylint:dis
 
 def test_automatic_logout(active_user, short_config, short_app):  # pylint:disable=unused-argument
     """Test automatic logout."""
-    timeout = short_config.registry['config']['fullauth']['AuthTkt']['timeout'] + 1
+    timeout = short_config.registry["fullauth"]["authtkt"]["timeout"] + 1
 
     authenticate(short_app)
     # Simulating inactivity

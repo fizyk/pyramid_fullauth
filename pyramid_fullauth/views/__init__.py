@@ -11,4 +11,4 @@ class BaseView(object):
     def __init__(self, request):
         """Initialize views."""
         self.request = request
-        self.config = request.registry['config'].fullauth
+        self.config = request.registry["fullauth"]

@@ -1,4 +1,0 @@
-fullauth:
-    AuthTkt:
-        timeout: 86400
-        reissue_time: 8640

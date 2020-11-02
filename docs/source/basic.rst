@@ -57,9 +57,18 @@ Configuration
 
 Plugin, by default works on these assumptions:
 
-.. literalinclude:: ../../pyramid_fullauth/config/default.yaml
-    :language: yaml
-    :linenos:
+.. code-block:: ini
+
+    fullauth.authtkt.secret = "fullauth_psst"
+    fullauth.authtkt.hashalg = "sha512"
+    fullauth.session.factory = "pyramid.session.SignedCookieSessionFactory"
+    fullauth.session.settings.secret = "THATS_NOT_SECRET_ITS_A_SECRET"
+    fullauth.register.password.require = True
+    fullauth.register.password.length_min = 6
+    fullauth.register.password.confirm = True
+    fullauth.redirects.logout = False
+    fullauth.check_csrf = True
+    fullauth.login.cookie_max_age = 2592000  # 30 days
 
 .. note::
     For alternative values of the settings above look at config.{env}.yml configurations found in tests.config directory.

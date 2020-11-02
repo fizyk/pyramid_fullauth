@@ -106,14 +106,14 @@ class RegisterView(BaseView):
         :returns: error or None if no error occured.
         :rtype: str
         """
-        if self.config.register.password.require:
+        if self.config["register"]["password"]["require"]:
             try:
                 tools.validate_passsword(self.request, password, user)
             except ValidateError as ex:
                 return text_type(ex)
         else:
             user.password = tools.password_generator(
-                self.config.register.password.length_min
+                self.config["register"]["password"]["length_min"]
             )
         return None
 
