@@ -1,8 +1,6 @@
 """Reset password views."""
-try:
-    from HTMLParser import HTMLParser
-except ImportError:
-    from html.parser import HTMLParser
+
+from html.parser import unescape
 
 import transaction
 from pyramid.compat import text_type
@@ -87,7 +85,7 @@ def test_reset_proceed_wrong_confirm(user, db_session, default_app):
     res.form['confirm_password'] = NEW_PASSWORD + 'Typo'
     res = res.form.submit()
 
-    assert 'Error! Password doesn\'t match' in HTMLParser().unescape(res.body.decode('unicode_escape'))
+    assert 'Error! Password doesn\'t match' in unescape(res.body.decode('unicode_escape'))
 
 
 def test_reset_proceed_wrong_csrf(user, db_session, default_app):
