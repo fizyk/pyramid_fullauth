@@ -1,8 +1,6 @@
 """Registration related tests."""
-try:
-    from HTMLParser import HTMLParser
-except ImportError:
-    from html.parser import HTMLParser
+
+from html.parser import unescape
 
 import pytest
 import transaction
@@ -84,7 +82,7 @@ def test_register_error(db_session, default_app, email, password, confirm_passwo
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
     transaction.commit()
 
-    assert error in HTMLParser().unescape(res.body.decode('unicode_escape'))
+    assert error in unescape(res.body.decode('unicode_escape'))
     assert db_session.query(User).count() == 0
 
 
@@ -113,7 +111,7 @@ def test_no_pass_confirm(db_session, nopassconfirm_app):
     res.form['password'] = DEFAULT_USER['password']
     res = res.form.submit(extra_environ={'REMOTE_ADDR': '0.0.0.0'})
 
-    assert 'Passwords don\'t match!' not in HTMLParser().unescape(res.body.decode('unicode_escape'))
+    assert 'Passwords don\'t match!' not in unescape(res.body.decode('unicode_escape'))
     transaction.commit()
 
     user = db_session.query(User).filter(User.email == DEFAULT_USER['email']).one()
