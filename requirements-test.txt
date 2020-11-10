@@ -1,5 +1,5 @@
 # requirements of main dependencies used for tests
-pyramid==1.10.4
+pyramid==1.10.5
 pyramid_localize==1.0.0
 pyramid-basemodel==0.4.0
 zope.sqlalchemy==1.3
