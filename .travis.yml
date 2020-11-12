@@ -1,10 +1,10 @@
 language: python
 dist: xenial
 python:
+  - 3.9
   - 3.8
   - 3.7
   - 3.6
-  - 3.9-dev
 branches:
   except:
   - requires-io-master
@@ -17,8 +17,6 @@ script:
 after_success:
   - coveralls
 jobs:
-  allow_failures:
-    - python: 3.9-dev
   include:
     - stage: linters
       install:
