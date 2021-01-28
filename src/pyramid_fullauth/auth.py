@@ -32,12 +32,12 @@ def groupfinder(userid, request):
         # let's add inactive group for users that have not activated their account
 
         if user.is_admin:
-            groups.append('s:superadmin')
+            groups.append("s:superadmin")
 
         if user.is_active:
-            groups.append('s:user')
+            groups.append("s:user")
         else:
-            groups.append('s:inactive')
+            groups.append("s:inactive")
 
         return groups
     return None
@@ -57,10 +57,11 @@ class BaseACLRootFactoryMixin(object):
         Can be converted later to database stored (sqlalchemy session is accessible through request.db)
     """
 
-    __acl__ = [(Allow, Everyone, 'view'),
-               (Allow, 's:superadmin', ALL_PERMISSIONS),
-               (Allow, 's:user', ('password_change', 'email_change'))
-               ]
+    __acl__ = [
+        (Allow, Everyone, "view"),
+        (Allow, "s:superadmin", ALL_PERMISSIONS),
+        (Allow, "s:user", ("password_change", "email_change")),
+    ]
 
     def __init__(self, request):
         """Assing request as instance attribute."""

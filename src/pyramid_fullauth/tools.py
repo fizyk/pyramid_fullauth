@@ -10,11 +10,15 @@ from random import choice
 from pyramid.compat import text_type
 
 from pyramid_fullauth.exceptions import (
-    EmptyError, ShortPasswordError, PasswordConfirmMismatchError
+    EmptyError,
+    ShortPasswordError,
+    PasswordConfirmMismatchError,
 )
 
 
-def password_generator(length, chars=(string.ascii_letters + string.digits + string.punctuation)):
+def password_generator(
+    length, chars=(string.ascii_letters + string.digits + string.punctuation)
+):
     """
     Generate random password.
 
@@ -27,7 +31,7 @@ def password_generator(length, chars=(string.ascii_letters + string.digits + str
     :returns: password
     :rtype: str
     """
-    return text_type(''.join([choice(chars) for i in range(length)]))
+    return text_type("".join([choice(chars) for i in range(length)]))
 
 
 def validate_passsword(request, password, user=None):
@@ -47,23 +51,25 @@ def validate_passsword(request, password, user=None):
     password_config = request.registry["fullauth"]["register"]["password"]
     if not password:
         raise EmptyError(
-            request._("Please enter your password",
-                      domain="pyramid_fullauth"))
+            request._("Please enter your password", domain="pyramid_fullauth")
+        )
 
-    if password_config['length_min'] and\
-            len(password) < password_config['length_min']:
+    if password_config["length_min"] and len(password) < password_config["length_min"]:
         raise ShortPasswordError(
-            request._('Password is too short',
-                      domain='pyramid_fullauth'))
+            request._("Password is too short", domain="pyramid_fullauth")
+        )
 
     # here if password doesn't match
-    if password_config['confirm']:
-        confirm_password = request.POST.get('confirm_password', text_type(''))
+    if password_config["confirm"]:
+        confirm_password = request.POST.get("confirm_password", text_type(""))
         if password != confirm_password:
             raise PasswordConfirmMismatchError(
-                request._('password-mismatch',
-                          default='Passwords don\'t match',
-                          domain='pyramid_fullauth'))
+                request._(
+                    "password-mismatch",
+                    default="Passwords don't match",
+                    domain="pyramid_fullauth",
+                )
+            )
 
     if user:
         user.password = password

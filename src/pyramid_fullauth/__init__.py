@@ -7,7 +7,10 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.config import Configurator
 from pyramid.interfaces import (
-    IAuthorizationPolicy, IAuthenticationPolicy, IRootFactory, ISessionFactory
+    IAuthorizationPolicy,
+    IAuthenticationPolicy,
+    IRootFactory,
+    ISessionFactory,
 )
 from pyramid.session import JSONSerializer
 
@@ -15,7 +18,7 @@ from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform, logout, request_user
 
-__version__ = '0.6.0'
+__version__ = "0.6.0"
 
 
 def build_fullauth_config(settings):
@@ -23,28 +26,16 @@ def build_fullauth_config(settings):
     fullauth_config = {
         "authtkt": {
             "secret": settings.get("fullauth.authtkt.secret", "fullauth_psst"),
-            "hashalg": settings.get("fullauth.authtkt.hashalg", "sha512")
+            "hashalg": settings.get("fullauth.authtkt.hashalg", "sha512"),
         },
         "session": {
             "factory": "pyramid.session.SignedCookieSessionFactory",
-            "settings": {
-                "secret": "THATS_NOT_SECRET_ITS_A_SECRET"
-            }
+            "settings": {"secret": "THATS_NOT_SECRET_ITS_A_SECRET"},
         },
-        "register": {
-            "password": {
-                "require": True,
-                "length_min": 6,
-                "confirm": True
-            }
-        },
-        "redirects": {
-            "logout": False
-        },
+        "register": {"password": {"require": True, "length_min": 6, "confirm": True}},
+        "redirects": {"logout": False},
         "check_csrf": True,
-        "login": {
-            "cookie_max_age": 2592000  # 30 days
-        }
+        "login": {"cookie_max_age": 2592000},  # 30 days
     }
     fullauth_settings = {s: settings[s] for s in settings if s.startswith("fullauth")}
 
@@ -82,8 +73,8 @@ def includeme(configurator: Configurator) -> None:
 
     :param pyramid.configurator.Configurator configurator: pyramid's configurator object
     """
-    configurator.include('pyramid_localize')
-    configurator.include('pyramid_mako')
+    configurator.include("pyramid_localize")
+    configurator.include("pyramid_mako")
     fullauth_settings = build_fullauth_config(configurator.get_settings())
     configurator.registry["fullauth"] = fullauth_settings
 
@@ -93,72 +84,78 @@ def includeme(configurator: Configurator) -> None:
     # register authentication policy, only if not set already
     if configurator.registry.queryUtility(IAuthenticationPolicy) is None:
         configurator.set_authentication_policy(
-            AuthTktAuthenticationPolicy(callback=groupfinder,
-                                        **fullauth_settings["authtkt"]))
+            AuthTktAuthenticationPolicy(
+                callback=groupfinder, **fullauth_settings["authtkt"]
+            )
+        )
 
     # register root factory, only if not set already
     if configurator.registry.queryUtility(IRootFactory) is None:
-        configurator.set_root_factory(
-            'pyramid_fullauth.auth.BaseACLRootFactoryMixin')
+        configurator.set_root_factory("pyramid_fullauth.auth.BaseACLRootFactoryMixin")
 
     # register session factory, only, if not already registered
     if configurator.registry.queryUtility(ISessionFactory) is None:
         # loading and setting session factory
         # first, divide provided path for module, and factory name
-        module, factory = fullauth_settings["session"]["factory"].rsplit('.', 1)
+        module, factory = fullauth_settings["session"]["factory"].rsplit(".", 1)
         # import session module first
         session_module = __import__(module, fromlist=[module])
         # get the  factory class
         session_factory = getattr(session_module, factory)
 
         session_settings = fullauth_settings["session"]["settings"].copy()
-        if 'serializer' not in session_settings:
-            session_settings['serializer'] = JSONSerializer()
+        if "serializer" not in session_settings:
+            session_settings["serializer"] = JSONSerializer()
 
         # set the new session factory
-        configurator.set_session_factory(
-            session_factory(**session_settings))
+        configurator.set_session_factory(session_factory(**session_settings))
 
     # add predicates
-    configurator.add_view_predicate(
-        'check_csrf', predicates.CSRFCheckPredicate)
-    configurator.add_route_predicate('user_path_hash', predicates.UserPathHashRoutePredicate)
+    configurator.add_view_predicate("check_csrf", predicates.CSRFCheckPredicate)
+    configurator.add_route_predicate(
+        "user_path_hash", predicates.UserPathHashRoutePredicate
+    )
 
     # add routes
-    configurator.add_route(name='login', pattern='/login')
-    configurator.add_route(name='logout', pattern='/logout')
-    configurator.add_route(name='register', pattern='/register')
+    configurator.add_route(name="login", pattern="/login")
+    configurator.add_route(name="logout", pattern="/logout")
+    configurator.add_route(name="register", pattern="/register")
     configurator.add_route(
-        name='register:activate', pattern='/register/activate/{hash}')
-    configurator.add_route(name='password:reset', pattern='/password/reset')
+        name="register:activate", pattern="/register/activate/{hash}"
+    )
+    configurator.add_route(name="password:reset", pattern="/password/reset")
     configurator.add_route(
-        name='password:reset:continue', pattern='/password/reset/{hash}',
-        user_path_hash='reset_key')
-    configurator.add_route(name='email:change', pattern='/email/change')
+        name="password:reset:continue",
+        pattern="/password/reset/{hash}",
+        user_path_hash="reset_key",
+    )
+    configurator.add_route(name="email:change", pattern="/email/change")
     configurator.add_route(
-        name='email:change:continue', pattern='/email/change/{hash}',
-        user_path_hash='email_change_key')
+        name="email:change:continue",
+        pattern="/email/change/{hash}",
+        user_path_hash="email_change_key",
+    )
     # scan base views
-    configurator.scan('pyramid_fullauth.views.basic')
+    configurator.scan("pyramid_fullauth.views.basic")
 
     # check for the social.
     # If social is not available, we will not turn it on!
-    if 'social' in fullauth_settings:
+    if "social" in fullauth_settings:
         # Velruse init (for social auth)
 
         # scan social views
-        configurator.scan('pyramid_fullauth.views.social')
+        configurator.scan("pyramid_fullauth.views.social")
         providers = fullauth_settings["social"]
         for provider in providers:
             # Ugly hack for using google oauth2, not OpenID + Oauth2 from google
             provider_settings = fullauth_settings["social"][provider]
-            if provider == 'google':  # pragma: no cover
-                provider = 'google_oauth2'
+            if provider == "google":  # pragma: no cover
+                provider = "google_oauth2"
 
-            configurator.include('velruse.providers.' + provider)
-            getattr(configurator, 'add_{0}_login'.format(provider))(**provider_settings)
+            configurator.include("velruse.providers." + provider)
+            getattr(configurator, "add_{0}_login".format(provider))(**provider_settings)
 
     # we'll add some request methods:
-    configurator.add_request_method(login_perform, name='login_perform')
-    configurator.add_request_method(logout, name='logout')
-    configurator.add_request_method(request_user, name='user', reify=True)
+    configurator.add_request_method(login_perform, name="login_perform")
+    configurator.add_request_method(logout, name="logout")
+    configurator.add_request_method(request_user, name="user", reify=True)

@@ -27,12 +27,15 @@ def login_perform(request, user, location=None, remember_me=False):
     """
     user.logged_at = func.now()
     if remember_me:  # if remember in POST set cookie timeout to one from configure
-        headers = remember(request, user.id,
-                           max_age=request.registry["fullauth"]["login"]["cookie_max_age"])
+        headers = remember(
+            request,
+            user.id,
+            max_age=request.registry["fullauth"]["login"]["cookie_max_age"],
+        )
     else:
         headers = remember(request, user.id)
     if not location:
-        location = '/'
+        location = "/"
 
     # this remembers user immediately, without the need to redirect (see below)
     request.response.headers.extend(headers)
@@ -51,9 +54,13 @@ def request_user(request):
     """
     if request.unauthenticated_userid:
         try:
-            user = pyramid_basemodel.Session.query(User).filter(  # pylint:disable=no-member
-                User.id == request.unauthenticated_userid
-            ).one()
+            user = (
+                pyramid_basemodel.Session.query(User)
+                .filter(  # pylint:disable=no-member
+                    User.id == request.unauthenticated_userid
+                )
+                .one()
+            )
             return user
         except NoResultFound:  # pragma: no cover
             pass

@@ -1,4 +1,3 @@
-
 # Copyright (c) 2013 - 2015 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
 # This module is part of pyramid_fullauth and is released under
@@ -18,4 +17,4 @@ else:
     from hashlib import algorithms_guaranteed as algorithms
 
 
-__all__ = ('urlencode', 'urlparse', 'parse_qs', 'algorithms')
+__all__ = ("urlencode", "urlparse", "parse_qs", "algorithms")

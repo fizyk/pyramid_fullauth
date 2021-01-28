@@ -12,12 +12,12 @@ from tests.tools import authenticate, DEFAULT_USER
 def test_email_view_not_logged(default_app):
     """Try to access email change view anonymously."""
     app = default_app
-    res = app.get('/email/change')
+    res = app.get("/email/change")
     assert res.status_code == 302
-    assert res.location == 'http://localhost/login?after=%2Femail%2Fchange'
+    assert res.location == "http://localhost/login?after=%2Femail%2Fchange"
 
 
-@pytest.mark.usefixtures('active_user')
+@pytest.mark.usefixtures("active_user")
 def test_email_view_logged(db_session, default_app):
     """Simple get for change email view."""
     app = default_app
@@ -27,26 +27,26 @@ def test_email_view_logged(db_session, default_app):
     # login user
     authenticate(app)
 
-    res = app.get('/email/change')
+    res = app.get("/email/change")
     assert res.status_code == 200
     assert res.form
-    assert res.form['email']
+    assert res.form["email"]
 
 
-@pytest.mark.usefixtures('active_user')
+@pytest.mark.usefixtures("active_user")
 def test_email_valid(db_session, default_app):
     """Change email with valid data."""
     app = default_app
 
     authenticate(app)
-    email = DEFAULT_USER['email']
-    new_email = 'email@email.com'
+    email = DEFAULT_USER["email"]
+    new_email = "email@email.com"
 
     user = db_session.query(User).filter(User.email == email).one()
 
-    res = app.get('/email/change')
+    res = app.get("/email/change")
     form = res.form
-    form['email'] = new_email
+    form["email"] = new_email
     res = form.submit()
     assert res
 
@@ -58,25 +58,24 @@ def test_email_valid(db_session, default_app):
     assert user.email_change_key is not None
 
 
-@pytest.mark.usefixtures('active_user')
+@pytest.mark.usefixtures("active_user")
 def test_email_valid_xhr(db_session, default_app):
     """Change email with valid data."""
     app = default_app
 
     authenticate(app)
-    email = DEFAULT_USER['email']
-    new_email = 'email@email.com'
+    email = DEFAULT_USER["email"]
+    new_email = "email@email.com"
 
     user = db_session.query(User).filter(User.email == email).one()
 
-    res = app.get('/email/change')
+    res = app.get("/email/change")
     res = app.post(
-        '/email/change',
-        {
-            'csrf_token': res.form['csrf_token'].value,
-            'email': new_email},
-        xhr=True)
-    assert res.json['status'] is True
+        "/email/change",
+        {"csrf_token": res.form["csrf_token"].value, "email": new_email},
+        xhr=True,
+    )
+    assert res.json["status"] is True
 
     transaction.commit()
 
@@ -86,35 +85,35 @@ def test_email_valid_xhr(db_session, default_app):
     assert user.email_change_key is not None
 
 
-@pytest.mark.usefixtures('db_session', 'active_user')
+@pytest.mark.usefixtures("db_session", "active_user")
 def test_wrong_email(default_app, invalid_email):
     """Change email with incorrect email."""
     app = default_app
     # login user
     authenticate(app)
 
-    res = app.get('/email/change')
+    res = app.get("/email/change")
     form = res.form
-    form['email'] = invalid_email
+    form["email"] = invalid_email
     res = form.submit()
-    assert 'Error! Incorrect e-mail format' in res
+    assert "Error! Incorrect e-mail format" in res
 
 
-@pytest.mark.usefixtures('db_session', 'active_user')
+@pytest.mark.usefixtures("db_session", "active_user")
 def test_empty_email(default_app):
     """Try to change email with empty value."""
     app = default_app
     # login user
     authenticate(app)
 
-    res = app.get('/email/change')
+    res = app.get("/email/change")
     form = res.form
-    form['email'] = ''
+    form["email"] = ""
     res = form.submit()
-    assert 'Error! E-mail is empty' in res
+    assert "Error! E-mail is empty" in res
 
 
-@pytest.mark.usefixtures('active_user')
+@pytest.mark.usefixtures("active_user")
 def test_existing_email(db_session, default_app):
     """Try to change email to existing one email."""
     # add other user
@@ -123,36 +122,37 @@ def test_existing_email(db_session, default_app):
         User(
             email=existing_email,
             password=text_type("somepassword"),
-            address_ip=DEFAULT_USER['address_ip']
-        ))
+            address_ip=DEFAULT_USER["address_ip"],
+        )
+    )
     transaction.commit()
     # login user
     authenticate(default_app)
 
     # submit request!
-    res = default_app.get('/email/change')
+    res = default_app.get("/email/change")
     form = res.form
-    form['email'] = existing_email
+    form["email"] = existing_email
     res = form.submit()
-    assert 'Error! User with this email exists' in res
+    assert "Error! User with this email exists" in res
 
 
-@pytest.mark.usefixtures('active_user')
+@pytest.mark.usefixtures("active_user")
 def test_email_proceed(db_session, default_app):
     """Confirm email change view."""
     app = default_app
     # login user
     authenticate(app)
 
-    email = DEFAULT_USER['email']
+    email = DEFAULT_USER["email"]
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = text_type('email2@email.com')
+    new_email = text_type("email2@email.com")
     user.set_new_email(new_email)
     transaction.commit()
 
     user = db_session.merge(user)
-    res = app.get('/email/change/' + user.email_change_key)
+    res = app.get("/email/change/" + user.email_change_key)
     assert res.status_code == 303
 
     with pytest.raises(NoResultFound):
@@ -163,21 +163,20 @@ def test_email_proceed(db_session, default_app):
     assert not user.email_change_key
 
 
-@pytest.mark.usefixtures('active_user')
+@pytest.mark.usefixtures("active_user")
 def test_email_proceed_wrong_key(db_session, default_app):
     """Try to confirm email change view with wrong key."""
     app = default_app
     # login user
     authenticate(app)
 
-    email = DEFAULT_USER['email']
+    email = DEFAULT_USER["email"]
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = text_type('email2@email.com')
+    new_email = text_type("email2@email.com")
     user.set_new_email(new_email)
     transaction.commit()
 
     user = db_session.merge(user)
-    res = app.get(
-        '/email/change/' + user.email_change_key + 'randomchars', status=404)
+    res = app.get("/email/change/" + user.email_change_key + "randomchars", status=404)
     assert res.status_code == 404
