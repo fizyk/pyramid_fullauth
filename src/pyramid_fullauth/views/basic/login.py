@@ -20,8 +20,11 @@ from pyramid_fullauth.events import AfterLogIn
 from pyramid_fullauth.events import AlreadyLoggedIn
 
 
-@view_defaults(route_name='login', permission=NO_PERMISSION_REQUIRED,
-               renderer='pyramid_fullauth:resources/templates/login.mako')
+@view_defaults(
+    route_name="login",
+    permission=NO_PERMISSION_REQUIRED,
+    renderer="pyramid_fullauth:resources/templates/login.mako",
+)
 class BaseLoginView(BaseView):
     """Basic logic for login views."""
 
@@ -30,32 +33,31 @@ class BaseLoginView(BaseView):
         super().__init__(request)
 
         self.response = {
-            'status': False,
-            'msg': self.request._('Login error', domain='pyramid_fullauth'),
-            'after': self.request.params.get(
-                'after', self.request.referer or '/'),
-            'csrf_token': self.request.session.get_csrf_token()
+            "status": False,
+            "msg": self.request._("Login error", domain="pyramid_fullauth"),
+            "after": self.request.params.get("after", self.request.referer or "/"),
+            "csrf_token": self.request.session.get_csrf_token(),
         }
 
     def _redirect_authenticated_user(self):
         """Redirect already logged in user away from login page."""
-        redirect = HTTPSeeOther(location=self.response['after'])
+        redirect = HTTPSeeOther(location=self.response["after"])
         try:
             self.request.registry.notify(AlreadyLoggedIn(self.request))
         except HTTPRedirection as e_redirect:
             redirect = e_redirect
 
         if self.request.is_xhr:
-            self.response['status'] = True
-            self.response['msg'] = self.request._(
-                'Already logged in!',
-                domain='pyramid_fullauth')
-            self.response['after'] = redirect.location
+            self.response["status"] = True
+            self.response["msg"] = self.request._(
+                "Already logged in!", domain="pyramid_fullauth"
+            )
+            self.response["after"] = redirect.location
             return self.response
         return redirect
 
 
-@view_config(request_method='GET')
+@view_config(request_method="GET")
 class LoginView(BaseLoginView):
     """Login view."""
 
@@ -66,13 +68,13 @@ class LoginView(BaseLoginView):
 
         self.request.registry.notify(BeforeLogIn(self.request, None))
 
-        self.response['status'] = True
-        del self.response['msg']
+        self.response["status"] = True
+        del self.response["msg"]
         return self.response
 
 
-@view_config(request_method='POST', require_csrf=True)
-@view_config(request_method='POST', require_csrf=True, xhr=True, renderer="json")
+@view_config(request_method="POST", require_csrf=True)
+@view_config(request_method="POST", require_csrf=True, xhr=True, renderer="json")
 class LoginViewPost(BaseLoginView):
     """Login view POST method."""
 
@@ -81,42 +83,45 @@ class LoginViewPost(BaseLoginView):
         if self.request.authenticated_userid:
             return self._redirect_authenticated_user()
 
-        email = self.request.POST.get('email', '')
-        password = self.request.POST.get('password', '')
+        email = self.request.POST.get("email", "")
+        password = self.request.POST.get("password", "")
         try:
-            user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
+            user = (
+                pyramid_basemodel.Session.query(User).filter(User.email == email).one()
+            )
             self.request.registry.notify(BeforeLogIn(self.request, user))
         except NoResultFound:
             self.request.registry.notify(BeforeLogIn(self.request, None))
 
-            self.response['msg'] = self.request._(
-                'Wrong e-mail or password.', domain='pyramid_fullauth'
+            self.response["msg"] = self.request._(
+                "Wrong e-mail or password.", domain="pyramid_fullauth"
             )
             return self.response
         except AttributeError as ex:
-            self.response['msg'] = text_type(ex)
+            self.response["msg"] = text_type(ex)
             return self.response
 
         if not user.check_password(password):
-            self.response['msg'] = self.request._('Wrong e-mail or password.',
-                                                  domain='pyramid_fullauth')
+            self.response["msg"] = self.request._(
+                "Wrong e-mail or password.", domain="pyramid_fullauth"
+            )
             return self.response
 
-        login_kwargs = {'remember_me': self.request.POST.get('remember')}
+        login_kwargs = {"remember_me": self.request.POST.get("remember")}
         try:
             # if remember in POST set cookie timeout to one month
             self.request.registry.notify(AfterLogIn(self.request, user))
         except AttributeError as ex:
-            self.response['msg'] = text_type(ex)
+            self.response["msg"] = text_type(ex)
             return self.response
         except HTTPRedirection as redirect:
-            login_kwargs['location'] = redirect.location
+            login_kwargs["location"] = redirect.location
 
         redirect = self.request.login_perform(user, **login_kwargs)
         if self.request.is_xhr:
-            self.response['status'] = True
-            del self.response['msg']
-            self.response['after'] = redirect.location
+            self.response["status"] = True
+            del self.response["msg"]
+            self.response["after"] = redirect.location
             return self.response
 
         return redirect

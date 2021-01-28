@@ -19,9 +19,11 @@ PATTERN_MAIL = re.compile(
     r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]{0,256}(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+){0,256}"  # dot-atom
     # quoted-string, see also http://tools.ietf.org/html/rfc2822#section-3.2.5
     r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177 ]|\\[\001-\011\013\014\016-\177 ]){0,256}"'
-    r')@((?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2}\.?)$)'  # domain
+    r")@((?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2}\.?)$)"  # domain
     # literal form, ipv4 address (SMTP 4.1.3)
-    r'|\[(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}\]$', re.IGNORECASE)
+    r"|\[(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}\]$",
+    re.IGNORECASE,
+)
 
 
 class UserEmailMixin(object):
@@ -29,16 +31,20 @@ class UserEmailMixin(object):
 
     __pattern_mail = PATTERN_MAIL
 
-    _email = Column('email', Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)
-    _new_email = Column('new_email', Unicode(254), unique=True, nullable=True)  # RFC5321 and RFC3696(errata)
+    _email = Column(
+        "email", Unicode(254), unique=True, nullable=False
+    )  # RFC5321 and RFC3696(errata)
+    _new_email = Column(
+        "new_email", Unicode(254), unique=True, nullable=True
+    )  # RFC5321 and RFC3696(errata)
     email_change_key = Column(String(255), default=None, unique=True)
 
     def __init__(self, *args, **kwargs):
         """Switch possible email and new_email kwarg into new column attribute names."""
-        if 'email' in kwargs:
-            kwargs['_email'] = kwargs.pop('email')
-        if 'new_email' in kwargs:
-            kwargs['_new_email'] = kwargs.pop('new_email')
+        if "email" in kwargs:
+            kwargs["_email"] = kwargs.pop("email")
+        if "new_email" in kwargs:
+            kwargs["_new_email"] = kwargs.pop("new_email")
 
         super().__init__(*args, **kwargs)
 
@@ -80,7 +86,7 @@ class UserEmailMixin(object):
         """Email field comparator."""
         return CaseInsensitive(cls._new_email)
 
-    @validates('_email', '_new_email')
+    @validates("_email", "_new_email")
     def validate_email(self, _, address):  # pylint:disable=no-self-use
         """
         Validate email addresses.
@@ -100,9 +106,9 @@ class UserEmailMixin(object):
             if PATTERN_MAIL.match(address):
                 return address
 
-            raise EmailValidationError('Incorrect e-mail format')
+            raise EmailValidationError("Incorrect e-mail format")
 
-        raise EmptyError('E-mail is empty')
+        raise EmptyError("E-mail is empty")
 
     def set_new_email(self, email_new):
         """

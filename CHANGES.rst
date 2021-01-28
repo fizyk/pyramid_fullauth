@@ -4,6 +4,8 @@ CHANGELOG
 unreleased
 -------
 
+- [cleanup] blackify codebase
+- [enhancement] move CI to github-actions
 - [breaking] removed dependency on tzf.pyramid_yml and pymlconf. All configuration has to be handled within .ini file now.
 - [enhancement] refactored route_predicates. Now user_path_hash can handle all user hashes.
 - [enhancement] Changed default cookie session factory from `UnencryptedCookieSessionFactoryConfig` to `SignedCookieSessionFactory`.

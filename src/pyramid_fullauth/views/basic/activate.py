@@ -16,24 +16,31 @@ from pyramid_fullauth.models import User
 from pyramid_fullauth.events import AfterActivate
 
 
-@view_config(route_name='register:activate', permission=NO_PERMISSION_REQUIRED,
-             renderer="pyramid_fullauth:resources/templates/activate.mako")
+@view_config(
+    route_name="register:activate",
+    permission=NO_PERMISSION_REQUIRED,
+    renderer="pyramid_fullauth:resources/templates/activate.mako",
+)
 class ActivateView(BaseView):
     """Activate account views."""
 
     def __call__(self):
         """Process account activation."""
-        activate_hash = self.request.matchdict.get('hash')
+        activate_hash = self.request.matchdict.get("hash")
         user = None
         response = {}
-        response['status'] = True
+        response["status"] = True
         if activate_hash:
             try:
-                user = pyramid_basemodel.Session.query(User).filter(User.activate_key == activate_hash).one()
+                user = (
+                    pyramid_basemodel.Session.query(User)
+                    .filter(User.activate_key == activate_hash)
+                    .one()
+                )
                 if not user.is_active:
                     user.is_active = True
             except NoResultFound:
-                response['status'] = False
+                response["status"] = False
         try:
             self.request.registry.notify(AfterActivate(self.request, user))
         except HTTPRedirection as ex:

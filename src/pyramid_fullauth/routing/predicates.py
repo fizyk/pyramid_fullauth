@@ -20,7 +20,7 @@ class UserPathHashRoutePredicate(object):
 
     def text(self):
         """Predicate's representation."""
-        return 'user_path_hash = %s' % (self.val,)
+        return "user_path_hash = %s" % (self.val,)
 
     phash = text
 
@@ -35,12 +35,14 @@ class UserPathHashRoutePredicate(object):
         :rtype: bool
 
         """
-        passed_hash = context['match'].get('hash', None)
+        passed_hash = context["match"].get("hash", None)
         if passed_hash:
             try:
-                context['match']['user'] = pyramid_basemodel.Session.query(User).filter(
-                    getattr(User, self.val) == passed_hash
-                ).one()
+                context["match"]["user"] = (
+                    pyramid_basemodel.Session.query(User)
+                    .filter(getattr(User, self.val) == passed_hash)
+                    .one()
+                )
                 return True
             except NoResultFound:
                 pass
@@ -70,7 +72,7 @@ class CSRFCheckPredicate(CheckCSRFTokenPredicate):
         :param pyramid.request.Request request:
 
         """
-        if request.registry['fullauth']["check_csrf"]:
+        if request.registry["fullauth"]["check_csrf"]:
             result = CheckCSRFTokenPredicate.__call__(self, context, request)
             if not result:
                 raise HTTPUnauthorized

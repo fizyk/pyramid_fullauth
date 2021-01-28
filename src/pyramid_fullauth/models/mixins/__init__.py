@@ -7,4 +7,4 @@
 from pyramid_fullauth.models.mixins.password import UserPasswordMixin
 from pyramid_fullauth.models.mixins.email import UserEmailMixin
 
-__all__ = ('UserPasswordMixin', 'UserEmailMixin')
+__all__ = ("UserPasswordMixin", "UserEmailMixin")

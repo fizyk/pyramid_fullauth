@@ -21,8 +21,11 @@ from pyramid_fullauth.exceptions import ValidateError
 from pyramid_fullauth.tools import validate_passsword
 
 
-@view_defaults(route_name='password:reset', permission=NO_PERMISSION_REQUIRED,
-               renderer='pyramid_fullauth:resources/templates/reset.mako')
+@view_defaults(
+    route_name="password:reset",
+    permission=NO_PERMISSION_REQUIRED,
+    renderer="pyramid_fullauth:resources/templates/reset.mako",
+)
 class PasswordResetView(BaseView):
     """Profile related views."""
 
@@ -31,22 +34,29 @@ class PasswordResetView(BaseView):
         """Password reset request view."""
         csrf_token = self.request.session.get_csrf_token()
 
-        return {'status': True, 'csrf_token': csrf_token}
+        return {"status": True, "csrf_token": csrf_token}
 
-    @view_config(request_method='POST', require_csrf=True)
+    @view_config(request_method="POST", require_csrf=True)
     def post(self):
         """View processing requests to reset password."""
         csrf_token = self.request.session.get_csrf_token()
 
         try:
-            user = pyramid_basemodel.Session.query(User).filter(
-                User.email == self.request.POST.get('email', '')).one()
+            user = (
+                pyramid_basemodel.Session.query(User)
+                .filter(User.email == self.request.POST.get("email", ""))
+                .one()
+            )
         except NoResultFound:
-            return {'status': False,
-                    'msg': self.request._('user-not-exists',
-                                          default='User does not exist',
-                                          domain='pyramid_fullauth'),
-                    'csrf_token': csrf_token}
+            return {
+                "status": False,
+                "msg": self.request._(
+                    "user-not-exists",
+                    default="User does not exist",
+                    domain="pyramid_fullauth",
+                ),
+                "csrf_token": csrf_token,
+            }
 
         user.set_reset()
         try:
@@ -54,11 +64,14 @@ class PasswordResetView(BaseView):
         except HTTPRedirection as redirect:
             return redirect
 
-        return HTTPSeeOther(location='/')
+        return HTTPSeeOther(location="/")
 
 
-@view_defaults(route_name='password:reset:continue', permission=NO_PERMISSION_REQUIRED,
-               renderer='pyramid_fullauth:resources/templates/reset.proceed.mako')
+@view_defaults(
+    route_name="password:reset:continue",
+    permission=NO_PERMISSION_REQUIRED,
+    renderer="pyramid_fullauth:resources/templates/reset.proceed.mako",
+)
 class PasswordResetContinueView(BaseView):
     """
     Password reset views.
@@ -66,22 +79,19 @@ class PasswordResetContinueView(BaseView):
     These views display actual reset password views.
     """
 
-    @view_config(request_method='GET')
+    @view_config(request_method="GET")
     def get(self):
         """Display actual password reset form."""
         self.request.logout()
-        return {
-            'status': True,
-            'csrf_token': self.request.session.get_csrf_token()
-        }
+        return {"status": True, "csrf_token": self.request.session.get_csrf_token()}
 
-    @view_config(request_method='POST', require_csrf=True)
+    @view_config(request_method="POST", require_csrf=True)
     def post(self):
         """Validate and possibly accept new email."""
-        user = self.request.matchdict.get('user')
+        user = self.request.matchdict.get("user")
 
-        password = self.request.POST.get('password', None)
-        password_confirm = self.request.POST.get('confirm_password', None)
+        password = self.request.POST.get("password", None)
+        password_confirm = self.request.POST.get("confirm_password", None)
         if password == password_confirm:
 
             try:
@@ -92,22 +102,21 @@ class PasswordResetContinueView(BaseView):
                 try:
                     pyramid_basemodel.Session.query(AuthenticationProvider).filter(
                         AuthenticationProvider.user_id == user.id,
-                        AuthenticationProvider.provider == text_type('email')
+                        AuthenticationProvider.provider == text_type("email"),
                     ).one()
                 except NoResultFound:
                     user.providers.append(
                         AuthenticationProvider(
-                            provider=text_type('email'),
-                            provider_id=user.id
+                            provider=text_type("email"), provider_id=user.id
                         )
                     )
 
                 pyramid_basemodel.Session.flush()
             except (ValidateError, AttributeError) as ex:
                 return {
-                    'status': False,
-                    'msg': text_type(ex),
-                    'csrf_token': self.request.session.get_csrf_token()
+                    "status": False,
+                    "msg": text_type(ex),
+                    "csrf_token": self.request.session.get_csrf_token(),
                 }
 
             try:
@@ -116,11 +125,13 @@ class PasswordResetContinueView(BaseView):
                 return redirect
         else:
             return {
-                'status': False,
-                'msg': self.request._('password-mismatch',
-                                      default='Password doesn\'t match',
-                                      domain='pyramid_fullauth'),
-                'csrf_token': self.request.session.get_csrf_token()
+                "status": False,
+                "msg": self.request._(
+                    "password-mismatch",
+                    default="Password doesn't match",
+                    domain="pyramid_fullauth",
+                ),
+                "csrf_token": self.request.session.get_csrf_token(),
             }
 
         return self.get()

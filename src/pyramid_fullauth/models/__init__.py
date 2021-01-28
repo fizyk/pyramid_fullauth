@@ -9,8 +9,16 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import (
-    Column, Unicode, String, Integer, Boolean, Sequence, DateTime,
-    Table, ForeignKey, UniqueConstraint
+    Column,
+    Unicode,
+    String,
+    Integer,
+    Boolean,
+    Sequence,
+    DateTime,
+    Table,
+    ForeignKey,
+    UniqueConstraint,
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import validates, relationship
@@ -26,9 +34,9 @@ from pyramid_fullauth.models.mixins import UserPasswordMixin, UserEmailMixin
 class User(UserPasswordMixin, UserEmailMixin, Base):
     """User object."""
 
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
-    id = Column(Integer, Sequence(__tablename__ + '_sq'), primary_key=True)
+    id = Column(Integer, Sequence(__tablename__ + "_sq"), primary_key=True)
     username = Column(Unicode(32), unique=True, nullable=True)
     firstname = Column(Unicode(100), nullable=True)
     lastname = Column(Unicode(100), nullable=True)
@@ -52,7 +60,9 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         :rtype: bool
 
         """
-        return not (self.deactivated_at or self.deleted_at or self.activate_key) and bool(self.activated_at)
+        return not (
+            self.deactivated_at or self.deleted_at or self.activate_key
+        ) and bool(self.activated_at)
 
     @is_active.setter
     def is_active(self, value):
@@ -76,7 +86,9 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
                 self.deactivated_at = datetime.now()
                 self.activated_at = None
         else:
-            raise AttributeError('User has to be in the persistent state - stored in the DB')
+            raise AttributeError(
+                "User has to be in the persistent state - stored in the DB"
+            )
 
     def provider_id(self, provider):
         """
@@ -101,16 +113,16 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         if self.username:
             return self.username
         if self.email:
-            return self.email.split('@')[0] + '@...'
+            return self.email.split("@")[0] + "@..."
         return text_type(self.id)
 
     def __str__(self):  # pragma: no cover
         """Stringified user representation."""
-        if sys.version[0] == '3':
+        if sys.version[0] == "3":
             return self.__unicode__()
-        return self.__unicode__().encode('utf-8')
+        return self.__unicode__().encode("utf-8")
 
-    @validates('is_admin')
+    @validates("is_admin")
     def validate_is_admin(self, _, value):
         """
         Validate is_admin value, we forbid the deletion of the last superadmin.
@@ -123,11 +135,14 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         """
         if self.is_admin and not value:
-            admin_counter = object_session(self).query(User).filter(
-                User.is_admin, User.deleted_at.is_(None)
-            ).count()
+            admin_counter = (
+                object_session(self)
+                .query(User)
+                .filter(User.is_admin, User.deleted_at.is_(None))
+                .count()
+            )
             if admin_counter and admin_counter <= 1:
-                raise AttributeError('Can\'t delete last superadmin!')
+                raise AttributeError("Can't delete last superadmin!")
         return value
 
     def delete(self):
@@ -141,11 +156,14 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         """
         if self.is_admin:
-            admin_counter = object_session(self).query(User).filter(
-                User.is_admin, User.deleted_at.is_(None)
-            ).count()
+            admin_counter = (
+                object_session(self)
+                .query(User)
+                .filter(User.is_admin, User.deleted_at.is_(None))
+                .count()
+            )
             if admin_counter and admin_counter <= 1:
-                raise exceptions.DeleteException('Can\'t delete last superadmin!')
+                raise exceptions.DeleteException("Can't delete last superadmin!")
 
         self.deleted_at = datetime.now()
 
@@ -153,35 +171,37 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 class Group(Base):
     """User group object."""
 
-    __tablename__ = 'groups'
+    __tablename__ = "groups"
 
-    id = Column(Integer, Sequence(__tablename__ + '_sq'), primary_key=True)
+    id = Column(Integer, Sequence(__tablename__ + "_sq"), primary_key=True)
     name = Column(Unicode(100), unique=True, nullable=False)
 
     #: Relation to User object
-    users = relationship(User, secondary=lambda: user_group, backref='groups')
+    users = relationship(User, secondary=lambda: user_group, backref="groups")
 
 
 class AuthenticationProvider(Base):
     """Model to store authentication methods for different providers."""
 
-    __tablename__ = 'user_authentication_provider'
+    __tablename__ = "user_authentication_provider"
 
     __table_args__ = (
-        UniqueConstraint('provider', 'provider_id', name='user_authentication_methods_provider_id'),
+        UniqueConstraint(
+            "provider", "provider_id", name="user_authentication_methods_provider_id"
+        ),
     )
 
     user_id = Column(Integer, ForeignKey(User.id), primary_key=True)
     provider = Column(Unicode(15), primary_key=True)
     provider_id = Column(String(255), nullable=False)
 
-    user = relationship(User, backref='providers')
+    user = relationship(User, backref="providers")
 
 
 #: Association table between User and Group models.
 user_group = Table(  # pylint:disable=invalid-name
-    'users_groups',
+    "users_groups",
     Base.metadata,
-    Column('user_id', Integer, ForeignKey(User.id), primary_key=True),
-    Column('group_id', Integer, ForeignKey(Group.id), primary_key=True)
+    Column("user_id", Integer, ForeignKey(User.id), primary_key=True),
+    Column("group_id", Integer, ForeignKey(Group.id), primary_key=True),
 )

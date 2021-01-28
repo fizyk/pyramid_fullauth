@@ -11,17 +11,16 @@ from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid_fullauth.views import BaseView
 
 
-@view_config(route_name='logout', permission=NO_PERMISSION_REQUIRED)
+@view_config(route_name="logout", permission=NO_PERMISSION_REQUIRED)
 class LogoutView(BaseView):
     """Logout view."""
 
     def __call__(self):
         """Logout action."""
-        location = '/'
+        location = "/"
         if self.config["redirects"]["logout"]:
             location = self.request.route_path(self.config["redirects"]["logout"])
         # forget headers
         self.request.logout()
 
-        return HTTPSeeOther(location=location,
-                            headers=self.request.response.headers)
+        return HTTPSeeOther(location=location, headers=self.request.response.headers)

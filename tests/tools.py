@@ -3,25 +3,28 @@ from pyramid.view import view_config
 from pyramid.compat import text_type
 
 DEFAULT_USER = {
-    'username': text_type('u1'),
-    'password': text_type('password1'),
-    'email': text_type('email@example.com'),
-    'address_ip': text_type('127.0.0.1')
+    "username": text_type("u1"),
+    "password": text_type("password1"),
+    "email": text_type("email@example.com"),
+    "address_ip": text_type("127.0.0.1"),
 }
 
 
-def authenticate(app, email=DEFAULT_USER['email'],
-                 password=DEFAULT_USER['password'],
-                 remember=False,
-                 response_code=303):
+def authenticate(
+    app,
+    email=DEFAULT_USER["email"],
+    password=DEFAULT_USER["password"],
+    remember=False,
+    response_code=303,
+):
     """Authenticate user."""
-    res = app.get('/login')
+    res = app.get("/login")
     form = res.form
 
-    form['email'] = email
-    form['password'] = password
+    form["email"] = email
+    form["password"] = password
     if remember:
-        form['remember'] = 1
+        form["remember"] = 1
 
     res = form.submit()
 
@@ -34,21 +37,22 @@ def authenticate(app, email=DEFAULT_USER['email'],
 def is_user_logged(app):
     """Check for auth_tkt cookies beeing set to see if user is logged in."""
     cookies = app.cookies
-    if 'auth_tkt' in cookies and cookies['auth_tkt']:
+    if "auth_tkt" in cookies and cookies["auth_tkt"]:
 
         return True
     return False
+
 
 # this below are additional views crafted for tests.
 
 
 def include_views(config):
     """Pyramid 'plugin' adding dummy secret view."""
-    config.add_route('secret', '/secret')
-    config.scan('tests.tools')
+    config.add_route("secret", "/secret")
+    config.scan("tests.tools")
 
 
-@view_config(route_name="secret", permission="super_high", renderer='json')
+@view_config(route_name="secret", permission="super_high", renderer="json")
 def secret_view(_):
     """Protected pyramid view."""
     return {}

@@ -25,13 +25,17 @@ from pyramid_fullauth import tools
 LOG = logging.getLogger(__name__)
 
 
-@view_config(context='velruse.AuthenticationComplete',
-             permission=NO_PERMISSION_REQUIRED,
-             renderer="pyramid_fullauth:resources/templates/register.mako")
+@view_config(
+    context="velruse.AuthenticationComplete",
+    permission=NO_PERMISSION_REQUIRED,
+    renderer="pyramid_fullauth:resources/templates/register.mako",
+)
 class SocialLoginViews(BaseView):
     """Social login views definition."""
 
-    def set_provider(self, user, provider_name, user_provider_id):  # pylint:disable=no-self-use
+    def set_provider(
+        self, user, provider_name, user_provider_id
+    ):  # pylint:disable=no-self-use
         """
         Set authentication provider on user.
 
@@ -47,12 +51,14 @@ class SocialLoginViews(BaseView):
         """
         if user.id:
             try:
-                provider_auth = pyramid_basemodel.Session.query(
-                    AuthenticationProvider
-                ).filter(
-                    AuthenticationProvider.user_id == user.id,
-                    AuthenticationProvider.provider == provider_name
-                ).one()
+                provider_auth = (
+                    pyramid_basemodel.Session.query(AuthenticationProvider)
+                    .filter(
+                        AuthenticationProvider.user_id == user.id,
+                        AuthenticationProvider.provider == provider_name,
+                    )
+                    .one()
+                )
                 if provider_auth.provider_id != user_provider_id:
                     return False
                 return True
@@ -60,8 +66,7 @@ class SocialLoginViews(BaseView):
                 pass
 
         provider_auth = AuthenticationProvider(
-            provider=provider_name,
-            provider_id=user_provider_id
+            provider=provider_name, provider_id=user_provider_id
         )
         user.providers.append(provider_auth)
         pyramid_basemodel.Session.flush()
@@ -77,8 +82,8 @@ class SocialLoginViews(BaseView):
         """
         context = self.request.context
         response_values = {
-            'status': False,
-            'csrf_token': self.request.session.get_csrf_token()
+            "status": False,
+            "csrf_token": self.request.session.get_csrf_token(),
         }
         user = self.request.user
 
@@ -86,12 +91,16 @@ class SocialLoginViews(BaseView):
             # Lets try to connect our user
             return self._connect_user(response_values)
         try:
-            user = pyramid_basemodel.Session.query(
-                User
-            ).join(AuthenticationProvider).filter(
-                AuthenticationProvider.provider == context.provider_name,
-                AuthenticationProvider.provider_id == context.profile['accounts'][0]['userid']
-            ).one()
+            user = (
+                pyramid_basemodel.Session.query(User)
+                .join(AuthenticationProvider)
+                .filter(
+                    AuthenticationProvider.provider == context.provider_name,
+                    AuthenticationProvider.provider_id
+                    == context.profile["accounts"][0]["userid"],
+                )
+                .one()
+            )
         except NoResultFound:
             user = None
 
@@ -102,14 +111,18 @@ class SocialLoginViews(BaseView):
             try:
                 self.request.registry.notify(
                     AfterSocialRegister(
-                        self.request, user, context.profile, response_values))
+                        self.request, user, context.profile, response_values
+                    )
+                )
             except HTTPRedirection as redirect:
                 # it's a redirect, let's follow it!
                 return redirect
 
         # if we're here, user exists,
         try:
-            self.request.registry.notify(AfterSocialLogIn(self.request, user, context.profile))
+            self.request.registry.notify(
+                AfterSocialLogIn(self.request, user, context.profile)
+            )
         except HTTPRedirection as redirect:
             # it's a redirect, let's follow it!
             return self.request.login_perform(user, location=redirect.location)
@@ -130,30 +143,32 @@ class SocialLoginViews(BaseView):
         user = self.request.user
         try:
             if not self.set_provider(
-                    user, context.provider_name, context.profile['accounts'][0]['userid']
+                user, context.provider_name, context.profile["accounts"][0]["userid"]
             ):
-                response_values['msg'] = self.request._(
-                    'Your account is already connected to other ${provider} account.',
-                    domain='pyramid_fullauth',
-                    mapping={'provider': context.provider_name}
+                response_values["msg"] = self.request._(
+                    "Your account is already connected to other ${provider} account.",
+                    domain="pyramid_fullauth",
+                    mapping={"provider": context.provider_name},
                 )
             else:
-                response_values['status'] = True
-                response_values['msg'] = self.request._(
-                    'Your account has been connected to ${provider} account.',
-                    domain='pyramid_fullauth',
-                    mapping={'provider': context.provider_name}
+                response_values["status"] = True
+                response_values["msg"] = self.request._(
+                    "Your account has been connected to ${provider} account.",
+                    domain="pyramid_fullauth",
+                    mapping={"provider": context.provider_name},
                 )
         except IntegrityError:
-            response_values['msg'] = self.request._(
-                'This ${provider} account is already connected with other account.',
-                domain='pyramid_fullauth',
-                mapping={'provider': context.provider_name}
+            response_values["msg"] = self.request._(
+                "This ${provider} account is already connected with other account.",
+                domain="pyramid_fullauth",
+                mapping={"provider": context.provider_name},
             )
             try:
                 self.request.registry.notify(
                     SocialAccountAlreadyConnected(
-                        self.request, user, context.profile, response_values))
+                        self.request, user, context.profile, response_values
+                    )
+                )
             except HTTPRedirection as redirect:
                 # it's a redirect, let's follow it!
                 return redirect
@@ -165,20 +180,22 @@ class SocialLoginViews(BaseView):
         email = self._email_from_context(context)
 
         try:
-            user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
+            user = (
+                pyramid_basemodel.Session.query(User).filter(User.email == email).one()
+            )
             # If we are here that means that in the DB exists user with the same email but without the provider
             # then we connect social account to this user
             if not self.set_provider(
-                    user, context.provider_name, context.profile['accounts'][0]['userid']
+                user, context.provider_name, context.profile["accounts"][0]["userid"]
             ):
                 # authenticating user with different social account than assigned,
                 # recogniced by same email address used
                 LOG.debug(
-                    '''Authenticated %d connected to %s id %s, with %s''',
+                    """Authenticated %d connected to %s id %s, with %s""",
                     user.id,
                     context.provider_name,
                     user.provider_id(context.provider_name),
-                    context.profile['accounts'][0]['userid']
+                    context.profile["accounts"][0]["userid"],
                 )
             pyramid_basemodel.Session.flush()
         except NoResultFound:
@@ -186,10 +203,14 @@ class SocialLoginViews(BaseView):
             user = User(
                 email=email,
                 password=tools.password_generator(length_min),
-                address_ip=self.request.remote_addr
+                address_ip=self.request.remote_addr,
             )
-            self.request.registry.notify(BeforeSocialRegister(self.request, user, context.profile))
-            self.set_provider(user, context.provider_name, context.profile['accounts'][0]['userid'])
+            self.request.registry.notify(
+                BeforeSocialRegister(self.request, user, context.profile)
+            )
+            self.set_provider(
+                user, context.provider_name, context.profile["accounts"][0]["userid"]
+            )
             pyramid_basemodel.Session.add(user)
             pyramid_basemodel.Session.flush()
             user.is_active = True
@@ -202,15 +223,19 @@ class SocialLoginViews(BaseView):
         :param velruse.AuthenticationComplete context: velruse context
         """
         # getting verified email from provider
-        if 'verifiedEmail' in context.profile:
-            return context.profile['verifiedEmail']
+        if "verifiedEmail" in context.profile:
+            return context.profile["verifiedEmail"]
         # getting first of the emails provided by social login provider
-        if 'emails' in context.profile and context.profile['emails'] and 'value' in context.profile['emails'][0]:
-            return context.profile['emails'][0]['value']
+        if (
+            "emails" in context.profile
+            and context.profile["emails"]
+            and "value" in context.profile["emails"][0]
+        ):
+            return context.profile["emails"][0]["value"]
         # generating some random email address based on social userid and provider domain
         return text_type(
-            '{0}@{1}'.format(
-                context.profile['accounts'][0]['userid'],
-                context.profile['accounts'][0]['domain']
+            "{0}@{1}".format(
+                context.profile["accounts"][0]["userid"],
+                context.profile["accounts"][0]["domain"],
             )
         )

@@ -26,14 +26,14 @@ class UserPasswordMixin(object):
 
     #: hash_algorithm field
     _hash_algorithm = Column(
-        'hash_algorithm',
+        "hash_algorithm",
         Enum(*algorithms, name="hash_algorithms_enum"),
-        default=text_type('sha256'),
-        nullable=False
+        default=text_type("sha256"),
+        nullable=False,
     )
 
     #: salt field
-    _salt = Column('salt', Unicode(128), nullable=False)
+    _salt = Column("salt", Unicode(128), nullable=False)
 
     #: reset key field
     reset_key = Column(String(255), unique=True)
@@ -47,7 +47,11 @@ class UserPasswordMixin(object):
         :returns: True, if password is same, False if not
         :rtype: bool
         """
-        if password and self.hash_password(password, self._salt, self._hash_algorithm) == self.password:
+        if (
+            password
+            and self.hash_password(password, self._salt, self._hash_algorithm)
+            == self.password
+        ):
             return True
 
         return False
@@ -75,17 +79,17 @@ class UserPasswordMixin(object):
 
         # let's convert password to string from unicode
         if isinstance(password, text_type):
-            password = password.encode('utf-8')
+            password = password.encode("utf-8")
 
         # it's actually for Python 3, where str is unicode not bytestring,
         # and haslib methods accepts only bytestr
         if isinstance(salt, text_type):
-            salt = salt.encode('utf-8')
+            salt = salt.encode("utf-8")
 
         # generating salted hash
         return hash_method(password + salt).hexdigest()
 
-    @validates('password')
+    @validates("password")
     def password_validator(self, _, password):
         """
         Validate password.
@@ -119,7 +123,7 @@ class UserPasswordMixin(object):
 
         """
         if not password:
-            raise EmptyError('password-empty')
+            raise EmptyError("password-empty")
 
         # reading default hash_algorithm
         # pylint:disable=protected-access
@@ -137,4 +141,6 @@ class UserPasswordMixin(object):
         # storing used hash algorithm
         self._hash_algorithm = hash_algorithm
         self._salt = text_type(salt_value)
-        return text_type(self.__class__.hash_password(password, salt_value, hash_method))
+        return text_type(
+            self.__class__.hash_password(password, salt_value, hash_method)
+        )

@@ -2,7 +2,7 @@
 from pyramid.compat import text_type
 from pyramid_fullauth.models import User
 
-NEW_EMAIL = text_type('new@example.com')
+NEW_EMAIL = text_type("new@example.com")
 
 
 def test_set_new_email():

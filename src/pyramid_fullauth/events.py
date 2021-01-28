@@ -222,6 +222,7 @@ class SocialAccountAlreadyConnected(_BaseSocialRegister):
         _BaseSocialRegister.__init__(self, request, user, profile)
         self.response_values = response_values
 
+
 # Email change events.
 
 

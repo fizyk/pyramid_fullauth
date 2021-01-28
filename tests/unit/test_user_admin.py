@@ -34,10 +34,10 @@ def test_delete_admin(db_session, user):
     """Admin user soft delete behaviour - more than one admins present."""
     user = db_session.merge(user)
     user2 = User(
-        email=text_type('test2@example.com'),
-        address_ip='127.0.0.1',
-        password='pass',
-        is_admin=True
+        email=text_type("test2@example.com"),
+        address_ip="127.0.0.1",
+        password="pass",
+        is_admin=True,
     )
     db_session.add(user2)
     user.is_admin = True
