@@ -67,9 +67,7 @@ def test_reset_proceed_wrong_reset_key(user, db_session, default_app):
     transaction.commit()
 
     user = db_session.merge(user)
-    res = default_app.get(
-        "/password/reset/" + user.reset_key + "randomchars", status=404
-    )
+    res = default_app.get("/password/reset/" + user.reset_key + "randomchars", status=404)
     assert res.status_code == 404
 
 
@@ -86,9 +84,7 @@ def test_reset_proceed_wrong_confirm(user, db_session, default_app):
     res.form["confirm_password"] = NEW_PASSWORD + "Typo"
     res = res.form.submit()
 
-    assert "Error! Password doesn't match" in unescape(
-        res.body.decode("unicode_escape")
-    )
+    assert "Error! Password doesn't match" in unescape(res.body.decode("unicode_escape"))
 
 
 def test_reset_proceed_wrong_csrf(user, db_session, default_app):

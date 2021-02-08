@@ -26,9 +26,7 @@ def web_request():
         return message
 
     request._ = Mock(side_effect=_)
-    request.configure_mock(
-        **{"registry": {"config": config, "fullauth": fullauth_config}}
-    )
+    request.configure_mock(**{"registry": {"config": config, "fullauth": fullauth_config}})
 
     return request
 
@@ -50,9 +48,7 @@ def db_session(request):
     engine = create_engine(connection, echo=False, poolclass=NullPool)
     pyramid_basemodel.Session = scoped_session(sessionmaker())
     register(pyramid_basemodel.Session)
-    pyramid_basemodel.bind_engine(
-        engine, pyramid_basemodel.Session, should_create=True, should_drop=True
-    )
+    pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_create=True, should_drop=True)
 
     def destroy():
         transaction.commit()
@@ -111,9 +107,7 @@ def invalid_email(request):
 
 
 # pylint:disable=invalid-name
-default_config = factories.pyramid_config(
-    {"pyramid.includes": ["pyramid_tm", "pyramid_fullauth"]}
-)
+default_config = factories.pyramid_config({"pyramid.includes": ["pyramid_tm", "pyramid_fullauth"]})
 
 
 default_app = factories.pyramid_app("default_config")

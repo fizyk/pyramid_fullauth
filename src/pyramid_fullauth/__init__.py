@@ -84,9 +84,7 @@ def includeme(configurator: Configurator) -> None:
     # register authentication policy, only if not set already
     if configurator.registry.queryUtility(IAuthenticationPolicy) is None:
         configurator.set_authentication_policy(
-            AuthTktAuthenticationPolicy(
-                callback=groupfinder, **fullauth_settings["authtkt"]
-            )
+            AuthTktAuthenticationPolicy(callback=groupfinder, **fullauth_settings["authtkt"])
         )
 
     # register root factory, only if not set already
@@ -112,17 +110,13 @@ def includeme(configurator: Configurator) -> None:
 
     # add predicates
     configurator.add_view_predicate("check_csrf", predicates.CSRFCheckPredicate)
-    configurator.add_route_predicate(
-        "user_path_hash", predicates.UserPathHashRoutePredicate
-    )
+    configurator.add_route_predicate("user_path_hash", predicates.UserPathHashRoutePredicate)
 
     # add routes
     configurator.add_route(name="login", pattern="/login")
     configurator.add_route(name="logout", pattern="/logout")
     configurator.add_route(name="register", pattern="/register")
-    configurator.add_route(
-        name="register:activate", pattern="/register/activate/{hash}"
-    )
+    configurator.add_route(name="register:activate", pattern="/register/activate/{hash}")
     configurator.add_route(name="password:reset", pattern="/password/reset")
     configurator.add_route(
         name="password:reset:continue",

@@ -35,9 +35,7 @@ def test_social_click_link(social_app):
 def test_social_login_register(social_config, db_session):
     """Register fresh user and logs him in."""
     profile = {
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "verifiedEmail": text_type("we@po.pl"),
         "preferredUsername": text_type("teddy"),
@@ -51,9 +49,7 @@ def test_social_login_register(social_config, db_session):
     request.user = None
     request.registry = social_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name="login_perform")
     request.login_perform.return_value = {"status": True}
@@ -68,9 +64,7 @@ def test_social_login_register(social_config, db_session):
     assert user.provider_id("facebook") == profile["accounts"][0]["userid"]
 
 
-def test_login_different_social_account(
-    social_config, db_session, facebook_user
-):  # pylint:disable=unused-argument
+def test_login_different_social_account(social_config, db_session, facebook_user):  # pylint:disable=unused-argument
     """
     Login with different social account than connected from same provider.
 
@@ -79,9 +73,7 @@ def test_login_different_social_account(
     # profile mock response
     profile = {
         # facebook user id is different than user's
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "verifiedEmail": facebook_user.email,
         "preferredUsername": text_type("teddy"),
@@ -105,10 +97,7 @@ def test_login_different_social_account(
     out = view()
     # user should be authenticated recognized by email!
     assert out["status"] is True
-    assert (
-        facebook_user.provider_id(text_type("facebook"))
-        is not profile["accounts"][0]["userid"]
-    )
+    assert facebook_user.provider_id(text_type("facebook")) is not profile["accounts"][0]["userid"]
 
 
 def test_login_social_connect(social_config, active_user, db_session):
@@ -116,9 +105,7 @@ def test_login_social_connect(social_config, active_user, db_session):
     user = db_session.merge(active_user)
 
     profile = {
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "preferredUsername": text_type("teddy"),
         "emails": [{"value": user.email}],
@@ -132,9 +119,7 @@ def test_login_social_connect(social_config, active_user, db_session):
     request.user = user
     request.registry = social_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name="login_perform")
     request.login_perform.return_value = {"status": True}
@@ -148,9 +133,7 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
     user = db_session.merge(active_user)
 
     profile = {
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "preferredUsername": text_type("teddy"),
         "emails": [{"value": text_type("aasd@basd.pl")}],
@@ -163,9 +146,7 @@ def test_logged_social_connect_account(social_config, active_user, db_session):
     request.user = user
     request.registry = social_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = mock_translate
 
     request.login_perform = MagicMock(name="login_perform")
@@ -202,9 +183,7 @@ def test_logged_social_connect_self(social_config, facebook_user, db_session):
     request.user = user
     request.registry = social_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = mock_translate
 
     request.login_perform = MagicMock(name="login_perform")
@@ -223,9 +202,7 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
 
     # mock request
     profile = {
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "preferredUsername": text_type("teddy"),
         "emails": [{"value": text_type("aasd@basd.pl")}],
@@ -238,9 +215,7 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
     request.user = user
     request.registry = social_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = mock_translate
 
     request.login_perform = MagicMock(name="login_perform")
@@ -249,12 +224,8 @@ def test_logged_social_connect_second_account(social_config, facebook_user, db_s
     out = view()
     # status should be false
     assert out["status"] is False
-    assert (
-        out["msg"] == "Your account is already connected to other ${provider} account."
-    )
-    assert (
-        user.provider_id(text_type("facebook")) is not profile["accounts"][0]["userid"]
-    )
+    assert out["msg"] == "Your account is already connected to other ${provider} account."
+    assert user.provider_id(text_type("facebook")) is not profile["accounts"][0]["userid"]
 
 
 def test_logged_social_connect_used_account(social_config, facebook_user, db_session):
@@ -290,9 +261,7 @@ def test_logged_social_connect_used_account(social_config, facebook_user, db_ses
     request.user = fresh_user
     request.registry = social_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = mock_translate
 
     request.login_perform = MagicMock(name="login_perform")
@@ -302,10 +271,7 @@ def test_logged_social_connect_used_account(social_config, facebook_user, db_ses
     out = view()
     # status should be false
     assert out["status"] is False
-    assert (
-        out["msg"]
-        == "This ${provider} account is already connected with other account."
-    )
+    assert out["msg"] == "This ${provider} account is already connected with other account."
     transaction.begin()
     fresh_user = db_session.merge(fresh_user)
     assert fresh_user.provider_id(text_type("facebook")) is None

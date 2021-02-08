@@ -32,11 +32,7 @@ class ActivateView(BaseView):
         response["status"] = True
         if activate_hash:
             try:
-                user = (
-                    pyramid_basemodel.Session.query(User)
-                    .filter(User.activate_key == activate_hash)
-                    .one()
-                )
+                user = pyramid_basemodel.Session.query(User).filter(User.activate_key == activate_hash).one()
                 if not user.is_active:
                     user.is_active = True
             except NoResultFound:

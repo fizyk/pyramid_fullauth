@@ -76,9 +76,7 @@ class EmailChangeViews(BaseView):
         if pyramid_basemodel.Session.query(User).filter(User.email == email).first():
             return {
                 "status": False,
-                "msg": self.request._(
-                    "User with this email exists", domain="pyramid_fullauth"
-                ),
+                "msg": self.request._("User with this email exists", domain="pyramid_fullauth"),
                 "csrf_token": csrf_token,
             }
 
@@ -98,9 +96,7 @@ class EmailChangeViews(BaseView):
         except EmailValidationError:
             return {
                 "status": False,
-                "msg": self.request._(
-                    "Incorrect e-mail format", domain="pyramid_fullauth"
-                ),
+                "msg": self.request._("Incorrect e-mail format", domain="pyramid_fullauth"),
                 "csrf_token": csrf_token,
             }
         return None

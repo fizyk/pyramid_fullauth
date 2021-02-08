@@ -16,9 +16,7 @@ from pyramid_fullauth.exceptions import (
 )
 
 
-def password_generator(
-    length, chars=(string.ascii_letters + string.digits + string.punctuation)
-):
+def password_generator(length, chars=(string.ascii_letters + string.digits + string.punctuation)):
     """
     Generate random password.
 
@@ -50,14 +48,10 @@ def validate_passsword(request, password, user=None):
     """
     password_config = request.registry["fullauth"]["register"]["password"]
     if not password:
-        raise EmptyError(
-            request._("Please enter your password", domain="pyramid_fullauth")
-        )
+        raise EmptyError(request._("Please enter your password", domain="pyramid_fullauth"))
 
     if password_config["length_min"] and len(password) < password_config["length_min"]:
-        raise ShortPasswordError(
-            request._("Password is too short", domain="pyramid_fullauth")
-        )
+        raise ShortPasswordError(request._("Password is too short", domain="pyramid_fullauth"))
 
     # here if password doesn't match
     if password_config["confirm"]:

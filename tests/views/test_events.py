@@ -78,9 +78,7 @@ def event_view(request):
 
 def redirect_to_secret(event):
     """Redirect to event page with event name set as query event attribute."""
-    raise HTTPFound(
-        event.request.route_path("event", _query=(("event", event.__class__.__name__),))
-    )
+    raise HTTPFound(event.request.route_path("event", _query=(("event", event.__class__.__name__),)))
 
 
 def raise_attribute_error(event):
@@ -98,9 +96,7 @@ def alreadyloggedin_config(evented_config):  # pylint:disable=redefined-outer-na
     unregister_subscriber(evented_config, AlreadyLoggedIn)
 
 
-alreadyloggedin_app = factories.pyramid_app(
-    "alreadyloggedin_config"
-)  # pylint:disable=invalid-name
+alreadyloggedin_app = factories.pyramid_app("alreadyloggedin_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("active_user")
@@ -122,9 +118,7 @@ def beforelogin_config(evented_config):  # pylint:disable=redefined-outer-name
     unregister_subscriber(evented_config, BeforeLogIn)
 
 
-beforelogin_app = factories.pyramid_app(
-    "beforelogin_config"
-)  # pylint:disable=invalid-name
+beforelogin_app = factories.pyramid_app("beforelogin_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("active_user")
@@ -150,9 +144,7 @@ def afterlogin_config(evented_config):  # pylint:disable=redefined-outer-name
     unregister_subscriber(evented_config, AfterLogIn)
 
 
-afterlogin_app = factories.pyramid_app(
-    "afterlogin_config"
-)  # pylint:disable=invalid-name
+afterlogin_app = factories.pyramid_app("afterlogin_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("active_user")
@@ -175,9 +167,7 @@ def afterloginerror_config(evented_config):  # pylint:disable=redefined-outer-na
     unregister_subscriber(evented_config, AfterLogIn)
 
 
-afterloginerror_app = factories.pyramid_app(
-    "afterloginerror_config"
-)  # pylint:disable=invalid-name
+afterloginerror_app = factories.pyramid_app("afterloginerror_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("active_user")
@@ -205,9 +195,7 @@ def beforeemailchange_config(evented_config):  # pylint:disable=redefined-outer-
     unregister_subscriber(evented_config, BeforeEmailChange)
 
 
-beforeemailchange_app = factories.pyramid_app(
-    "beforeemailchange_config"
-)  # pylint:disable=invalid-name
+beforeemailchange_app = factories.pyramid_app("beforeemailchange_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("active_user")
@@ -241,15 +229,11 @@ def afteremailchange_config(evented_config):  # pylint:disable=redefined-outer-n
     unregister_subscriber(evented_config, AfterEmailChangeActivation)
 
 
-afteremailchange_app = factories.pyramid_app(
-    "afteremailchange_config"
-)  # pylint:disable=invalid-name
+afteremailchange_app = factories.pyramid_app("afteremailchange_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("active_user")
-def test_afteremailchange(
-    db_session, afteremailchange_app
-):  # pylint:disable=redefined-outer-name
+def test_afteremailchange(db_session, afteremailchange_app):  # pylint:disable=redefined-outer-name
     """Redirect after successful email change request."""
     app = afteremailchange_app
 
@@ -274,9 +258,7 @@ def test_afteremailchange(
 
 
 @pytest.mark.usefixtures("active_user")
-def test_afteremailchange_xhr(
-    db_session, afteremailchange_app
-):  # pylint:disable=redefined-outer-name
+def test_afteremailchange_xhr(db_session, afteremailchange_app):  # pylint:disable=redefined-outer-name
     """Change email with valid data."""
     app = afteremailchange_app
 
@@ -304,9 +286,7 @@ def test_afteremailchange_xhr(
 
 
 @pytest.mark.usefixtures("active_user")
-def test_afteremailchangeactivation(
-    db_session, afteremailchange_app
-):  # pylint:disable=redefined-outer-name
+def test_afteremailchangeactivation(db_session, afteremailchange_app):  # pylint:disable=redefined-outer-name
     """Confirm email change view with redirect from AfterEmailChangeActivation."""
     app = afteremailchange_app
     # login user
@@ -343,14 +323,10 @@ def afterreset_config(evented_config):  # pylint:disable=redefined-outer-name
     unregister_subscriber(evented_config, AfterReset)
 
 
-afterreset_app = factories.pyramid_app(
-    "afterreset_config"
-)  # pylint:disable=invalid-name
+afterreset_app = factories.pyramid_app("afterreset_config")  # pylint:disable=invalid-name
 
 
-def test_afterresetrequest(
-    user, db_session, afterreset_app
-):  # pylint:disable=redefined-outer-name
+def test_afterresetrequest(user, db_session, afterreset_app):  # pylint:disable=redefined-outer-name
     """Successful password reset request with redirect from AfterResetRequest."""
     user = db_session.merge(user)
     assert user.reset_key is None
@@ -366,9 +342,7 @@ def test_afterresetrequest(
     assert user.reset_key is not None
 
 
-def test_afterreset(
-    user, db_session, afterreset_app
-):  # pylint:disable=redefined-outer-name
+def test_afterreset(user, db_session, afterreset_app):  # pylint:disable=redefined-outer-name
     """Actually change password with redirect from AfterReset."""
     user = db_session.merge(user)
     user.set_reset()
@@ -396,14 +370,10 @@ def beforereset_config(evented_config):  # pylint:disable=redefined-outer-name
     unregister_subscriber(evented_config, BeforeReset)
 
 
-beforereset_app = factories.pyramid_app(
-    "beforereset_config"
-)  # pylint:disable=invalid-name
+beforereset_app = factories.pyramid_app("beforereset_config")  # pylint:disable=invalid-name
 
 
-def test_beforereset(
-    user, db_session, beforereset_app
-):  # pylint:disable=redefined-outer-name
+def test_beforereset(user, db_session, beforereset_app):  # pylint:disable=redefined-outer-name
     """Error thrown from BeforeReset event."""
     user = db_session.merge(user)
     user.set_reset()
@@ -427,20 +397,14 @@ def aftersocialregister_config(evented_config):  # pylint:disable=redefined-oute
     unregister_subscriber(evented_config, AfterSocialRegister)
 
 
-aftersocialregister_app = factories.pyramid_app(
-    "aftersocialregister_config"
-)  # pylint:disable=invalid-name
+aftersocialregister_app = factories.pyramid_app("aftersocialregister_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("aftersocialregister_app")
-def test_aftersocialregister(
-    aftersocialregister_config, db_session
-):  # pylint:disable=redefined-outer-name
+def test_aftersocialregister(aftersocialregister_config, db_session):  # pylint:disable=redefined-outer-name
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
     profile = {
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "verifiedEmail": text_type("we@po.pl"),
         "preferredUsername": text_type("teddy"),
@@ -454,9 +418,7 @@ def test_aftersocialregister(
     request.user = None
     request.registry = aftersocialregister_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name="login_perform")
     request.login_perform.return_value = {"status": True}
@@ -480,20 +442,14 @@ def aftersociallogin_config(evented_config):  # pylint:disable=redefined-outer-n
     unregister_subscriber(evented_config, AfterSocialLogIn)
 
 
-aftersociallogin_app = factories.pyramid_app(
-    "aftersociallogin_config"
-)  # pylint:disable=invalid-name
+aftersociallogin_app = factories.pyramid_app("aftersociallogin_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("aftersociallogin_app")
-def test_aftersociallogin(
-    aftersociallogin_config, db_session
-):  # pylint:disable=redefined-outer-name
+def test_aftersociallogin(aftersociallogin_config, db_session):  # pylint:disable=redefined-outer-name
     """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
     profile = {
-        "accounts": [
-            {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-        ],
+        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
         "displayName": text_type("teddy"),
         "verifiedEmail": text_type("we@po.pl"),
         "preferredUsername": text_type("teddy"),
@@ -507,9 +463,7 @@ def test_aftersociallogin(
     request.user = None
     request.registry = aftersociallogin_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     def login_perform(*_, **kwargs):
         return HTTPFound(location=kwargs["location"])
@@ -535,15 +489,11 @@ def alreadyconnected_config(evented_config):  # pylint:disable=redefined-outer-n
     unregister_subscriber(evented_config, SocialAccountAlreadyConnected)
 
 
-alreadyconnected_app = factories.pyramid_app(
-    "alreadyconnected_config"
-)  # pylint:disable=invalid-name
+alreadyconnected_app = factories.pyramid_app("alreadyconnected_config")  # pylint:disable=invalid-name
 
 
 @pytest.mark.usefixtures("alreadyconnected_app")
-def test_alreadyconnected(
-    alreadyconnected_config, facebook_user, db_session
-):  # pylint:disable=redefined-outer-name
+def test_alreadyconnected(alreadyconnected_config, facebook_user, db_session):  # pylint:disable=redefined-outer-name
     """
     Try to connect facebook account to logged in user used by other users facebook account.
 
@@ -580,9 +530,7 @@ def test_alreadyconnected(
     request.user = fresh_user
     request.registry = alreadyconnected_config.registry
     request.remote_addr = text_type("127.0.0.123")
-    request.context = AuthenticationComplete(
-        profile, credentials, provider_name, provider_type
-    )
+    request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = mock_translate
 
     request.login_perform = MagicMock(name="login_perform")
@@ -605,14 +553,10 @@ def afteractivate_config(evented_config):  # pylint:disable=redefined-outer-name
     unregister_subscriber(evented_config, AfterActivate)
 
 
-afteractivate_app = factories.pyramid_app(
-    "afteractivate_config"
-)  # pylint:disable=invalid-name
+afteractivate_app = factories.pyramid_app("afteractivate_config")  # pylint:disable=invalid-name
 
 
-def test_afteractivate(
-    user, db_session, afteractivate_app
-):  # pylint:disable=redefined-outer-name
+def test_afteractivate(user, db_session, afteractivate_app):  # pylint:disable=redefined-outer-name
     """Activate user adn check redirect through AfterActivate."""
     user = db_session.merge(user)
 
@@ -638,14 +582,10 @@ def beforeregister_config(evented_config):  # pylint:disable=redefined-outer-nam
     unregister_subscriber(evented_config, BeforeRegister)
 
 
-beforeregister_app = factories.pyramid_app(
-    "beforeregister_config"
-)  # pylint:disable=invalid-name
+beforeregister_app = factories.pyramid_app("beforeregister_config")  # pylint:disable=invalid-name
 
 
-def test_beforeregister(
-    db_session, beforeregister_app
-):  # pylint:disable=redefined-outer-name
+def test_beforeregister(db_session, beforeregister_app):  # pylint:disable=redefined-outer-name
     """Register user check eror catching from BeforeRegister event."""
     assert db_session.query(User).count() == 0
 
@@ -673,14 +613,10 @@ def afterregister_config(evented_config):  # pylint:disable=redefined-outer-name
     unregister_subscriber(evented_config, AfterRegister)
 
 
-afteraregister_app = factories.pyramid_app(
-    "afterregister_config"
-)  # pylint:disable=invalid-name
+afteraregister_app = factories.pyramid_app("afterregister_config")  # pylint:disable=invalid-name
 
 
-def test_afterregister(
-    db_session, afteraregister_app
-):  # pylint:disable=redefined-outer-name
+def test_afterregister(db_session, afteraregister_app):  # pylint:disable=redefined-outer-name
     """Register user check eror catching from BeforeRegister event."""
     assert db_session.query(User).count() == 0
     email = "test@test.co.uk"

@@ -49,9 +49,7 @@ class BaseLoginView(BaseView):
 
         if self.request.is_xhr:
             self.response["status"] = True
-            self.response["msg"] = self.request._(
-                "Already logged in!", domain="pyramid_fullauth"
-            )
+            self.response["msg"] = self.request._("Already logged in!", domain="pyramid_fullauth")
             self.response["after"] = redirect.location
             return self.response
         return redirect
@@ -86,25 +84,19 @@ class LoginViewPost(BaseLoginView):
         email = self.request.POST.get("email", "")
         password = self.request.POST.get("password", "")
         try:
-            user = (
-                pyramid_basemodel.Session.query(User).filter(User.email == email).one()
-            )
+            user = pyramid_basemodel.Session.query(User).filter(User.email == email).one()
             self.request.registry.notify(BeforeLogIn(self.request, user))
         except NoResultFound:
             self.request.registry.notify(BeforeLogIn(self.request, None))
 
-            self.response["msg"] = self.request._(
-                "Wrong e-mail or password.", domain="pyramid_fullauth"
-            )
+            self.response["msg"] = self.request._("Wrong e-mail or password.", domain="pyramid_fullauth")
             return self.response
         except AttributeError as ex:
             self.response["msg"] = text_type(ex)
             return self.response
 
         if not user.check_password(password):
-            self.response["msg"] = self.request._(
-                "Wrong e-mail or password.", domain="pyramid_fullauth"
-            )
+            self.response["msg"] = self.request._("Wrong e-mail or password.", domain="pyramid_fullauth")
             return self.response
 
         login_kwargs = {"remember_me": self.request.POST.get("remember")}

@@ -44,9 +44,7 @@ def test_register_success(db_session, default_app, email, password):
     assert user.check_password(password)
 
 
-def test_register_user_exists(
-    db_session, user, default_app
-):  # pylint:disable=unused-argument
+def test_register_user_exists(db_session, user, default_app):  # pylint:disable=unused-argument
     """Trying to register existing user."""
     res = default_app.get("/register")
     res.form["email"] = DEFAULT_USER["email"]
@@ -85,9 +83,7 @@ def test_register_user_exists(
         (DEFAULT_USER["email"], "", "", "Please enter your password"),
     ),
 )
-def test_register_error(
-    db_session, default_app, email, password, confirm_password, error
-):
+def test_register_error(db_session, default_app, email, password, confirm_password, error):
     """Error in registration process."""
     assert db_session.query(User).count() == 0
 

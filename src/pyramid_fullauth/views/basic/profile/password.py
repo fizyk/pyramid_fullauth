@@ -42,11 +42,7 @@ class PasswordResetView(BaseView):
         csrf_token = self.request.session.get_csrf_token()
 
         try:
-            user = (
-                pyramid_basemodel.Session.query(User)
-                .filter(User.email == self.request.POST.get("email", ""))
-                .one()
-            )
+            user = pyramid_basemodel.Session.query(User).filter(User.email == self.request.POST.get("email", "")).one()
         except NoResultFound:
             return {
                 "status": False,
@@ -105,11 +101,7 @@ class PasswordResetContinueView(BaseView):
                         AuthenticationProvider.provider == text_type("email"),
                     ).one()
                 except NoResultFound:
-                    user.providers.append(
-                        AuthenticationProvider(
-                            provider=text_type("email"), provider_id=user.id
-                        )
-                    )
+                    user.providers.append(AuthenticationProvider(provider=text_type("email"), provider_id=user.id))
 
                 pyramid_basemodel.Session.flush()
             except (ValidateError, AttributeError) as ex:
