@@ -18,7 +18,7 @@ from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform, logout, request_user
 
-__version__ = "0.6.0"
+__version__ = "1.0.0"
 
 
 def build_fullauth_config(settings):

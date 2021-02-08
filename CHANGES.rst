@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+1.0.0
 ----------
 
 - [packaging] use setup.cfg to define package metadata nad options
