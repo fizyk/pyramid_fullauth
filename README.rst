@@ -17,10 +17,6 @@ pyramid_fullauth
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Wheel Status
 
-.. image:: https://pypip.in/egg/pyramid_fullauth/badge.png
-    :target: https://pypi.python.org/pypi/pyramid_fullauth/
-    :alt: Egg Status
-
 .. image:: https://img.shields.io/pypi/l/pyramid_fullauth.svg
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: License

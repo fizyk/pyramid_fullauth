@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [packaging] use setup.cfg to define package metadata nad options
 - [cleanup] blackify codebase
 - [enhancement] move CI to github-actions
 - [breaking] removed dependency on tzf.pyramid_yml and pymlconf. All configuration has to be handled within .ini file now.
