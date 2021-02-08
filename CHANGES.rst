@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 unreleased
--------
+----------
 
 - [packaging] use setup.cfg to define package metadata nad options
 - [cleanup] blackify codebase
