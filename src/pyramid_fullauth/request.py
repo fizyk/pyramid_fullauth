@@ -56,9 +56,7 @@ def request_user(request):
         try:
             user = (
                 pyramid_basemodel.Session.query(User)
-                .filter(  # pylint:disable=no-member
-                    User.id == request.unauthenticated_userid
-                )
+                .filter(User.id == request.unauthenticated_userid)  # pylint:disable=no-member
                 .one()
             )
             return user

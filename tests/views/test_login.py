@@ -25,9 +25,7 @@ def test_login_view_secret(extended_app):
     assert "email" in res.form.fields
 
 
-@pytest.mark.parametrize(
-    "email", (DEFAULT_USER["email"].lower(), DEFAULT_USER["email"].upper())
-)
+@pytest.mark.parametrize("email", (DEFAULT_USER["email"].lower(), DEFAULT_USER["email"].upper()))
 @pytest.mark.usefixtures("active_user")
 def test_login_ok(extended_app, email):
     """Actually log in test."""
@@ -79,9 +77,7 @@ def test_login_redirects(extended_app):
     assert res.status_code == 303
 
 
-@pytest.mark.parametrize(
-    "user_kwargs", ({"password": "wrong password"}, {"email": "not@registered.py"})
-)
+@pytest.mark.parametrize("user_kwargs", ({"password": "wrong password"}, {"email": "not@registered.py"}))
 @pytest.mark.usefixtures("active_user")
 def test_login_wrong(user_kwargs, extended_app):
     """Use wrong password during authentication."""
@@ -125,9 +121,7 @@ def test_login_success_xhr(extended_app):
         "csrf_token": res.form["csrf_token"].value,
     }
     extended_app.get("/secret", status=302)
-    res = extended_app.post(
-        "/login?after=%2Fsecret", post_data, xhr=True, expect_errors=True
-    )
+    res = extended_app.post("/login?after=%2Fsecret", post_data, xhr=True, expect_errors=True)
 
     assert res.content_type == "application/json"
     assert res.json["status"] is True
@@ -135,9 +129,7 @@ def test_login_success_xhr(extended_app):
     assert is_user_logged(extended_app) is True
 
     # second call
-    res = extended_app.post(
-        "/login?after=%2Fsecret", post_data, xhr=True, expect_errors=True
-    )
+    res = extended_app.post("/login?after=%2Fsecret", post_data, xhr=True, expect_errors=True)
     assert res.json["status"] is True
     assert res.json["msg"] == "Already logged in!"
 

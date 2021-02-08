@@ -11,9 +11,7 @@ from pyramid_fullauth.views.social import SocialLoginViews
     [
         (
             {
-                "accounts": [
-                    {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-                ],
+                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
                 "displayName": text_type("teddy"),
                 "verifiedEmail": text_type("verified@email.co.uk"),
                 "preferredUsername": text_type("teddy"),
@@ -24,9 +22,7 @@ from pyramid_fullauth.views.social import SocialLoginViews
         ),
         (
             {
-                "accounts": [
-                    {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-                ],
+                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
                 "displayName": text_type("teddy"),
                 "preferredUsername": text_type("teddy"),
                 "emails": [{"value": text_type("aasd@bwwqwe.pl")}],
@@ -36,9 +32,7 @@ from pyramid_fullauth.views.social import SocialLoginViews
         ),
         (
             {
-                "accounts": [
-                    {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-                ],
+                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
                 "displayName": text_type("teddy"),
                 "preferredUsername": text_type("teddy"),
                 "emails": [{}],
@@ -48,9 +42,7 @@ from pyramid_fullauth.views.social import SocialLoginViews
         ),
         (
             {
-                "accounts": [
-                    {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-                ],
+                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
                 "displayName": text_type("teddy"),
                 "preferredUsername": text_type("teddy"),
                 "emails": [],
@@ -60,9 +52,7 @@ from pyramid_fullauth.views.social import SocialLoginViews
         ),
         (
             {
-                "accounts": [
-                    {"domain": text_type("facebook.com"), "userid": text_type("2343")}
-                ],
+                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
                 "displayName": text_type("teddy"),
                 "preferredUsername": text_type("teddy"),
                 "name": text_type("ted"),

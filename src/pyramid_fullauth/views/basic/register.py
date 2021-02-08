@@ -37,9 +37,7 @@ class RegisterView(BaseView):
         """Process registration request."""
         response = {
             "status": False,
-            "msg": self.request._(
-                "You have an error in your registration form", domain="pyramid_fullauth"
-            ),
+            "msg": self.request._("You have an error in your registration form", domain="pyramid_fullauth"),
             "csrf_token": self.request.session.get_csrf_token(),
             "errors": {},
         }
@@ -51,9 +49,7 @@ class RegisterView(BaseView):
 
         if not response["errors"]:
             response["status"] = True
-            response["msg"] = self.request._(
-                "You have successfully registered", domain="pyramid_fullauth"
-            )
+            response["msg"] = self.request._("You have successfully registered", domain="pyramid_fullauth")
 
         try:
             self.request.registry.notify(AfterRegister(self.request, user, response))
@@ -85,20 +81,14 @@ class RegisterView(BaseView):
             response["errors"]["password"] = password_error
 
         try:
-            self.request.registry.notify(
-                BeforeRegister(self.request, user, response["errors"])
-            )
+            self.request.registry.notify(BeforeRegister(self.request, user, response["errors"]))
 
             if not response["errors"]:
                 pyramid_basemodel.Session.add(user)
                 pyramid_basemodel.Session.flush()
 
                 # lets add AuthenticationProvider as email!
-                user.providers.append(
-                    AuthenticationProvider(
-                        provider=text_type("email"), provider_id=user.id
-                    )
-                )
+                user.providers.append(AuthenticationProvider(provider=text_type("email"), provider_id=user.id))
             else:
                 return response
         except AttributeError as ex:
@@ -122,9 +112,7 @@ class RegisterView(BaseView):
             except ValidateError as ex:
                 return text_type(ex)
         else:
-            user.password = tools.password_generator(
-                self.config["register"]["password"]["length_min"]
-            )
+            user.password = tools.password_generator(self.config["register"]["password"]["length_min"])
         return None
 
     def _set_email(self, email, user):
@@ -137,13 +125,8 @@ class RegisterView(BaseView):
         :returns: error or None if no error occured.
         :rtype: str
         """
-        if (
-            pyramid_basemodel.Session.query(User).filter(User.email == email).count()
-            != 0
-        ):
-            return self.request._(
-                "User with given e-mail already exists!", domain="pyramid_fullauth"
-            )
+        if pyramid_basemodel.Session.query(User).filter(User.email == email).count() != 0:
+            return self.request._("User with given e-mail already exists!", domain="pyramid_fullauth")
 
         try:
             user.email = email

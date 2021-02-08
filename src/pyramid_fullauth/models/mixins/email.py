@@ -31,12 +31,8 @@ class UserEmailMixin(object):
 
     __pattern_mail = PATTERN_MAIL
 
-    _email = Column(
-        "email", Unicode(254), unique=True, nullable=False
-    )  # RFC5321 and RFC3696(errata)
-    _new_email = Column(
-        "new_email", Unicode(254), unique=True, nullable=True
-    )  # RFC5321 and RFC3696(errata)
+    _email = Column("email", Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)
+    _new_email = Column("new_email", Unicode(254), unique=True, nullable=True)  # RFC5321 and RFC3696(errata)
     email_change_key = Column(String(255), default=None, unique=True)
 
     def __init__(self, *args, **kwargs):

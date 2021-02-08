@@ -39,9 +39,7 @@ class UserPathHashRoutePredicate(object):
         if passed_hash:
             try:
                 context["match"]["user"] = (
-                    pyramid_basemodel.Session.query(User)
-                    .filter(getattr(User, self.val) == passed_hash)
-                    .one()
+                    pyramid_basemodel.Session.query(User).filter(getattr(User, self.val) == passed_hash).one()
                 )
                 return True
             except NoResultFound:

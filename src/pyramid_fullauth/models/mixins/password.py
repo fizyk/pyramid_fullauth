@@ -47,11 +47,7 @@ class UserPasswordMixin(object):
         :returns: True, if password is same, False if not
         :rtype: bool
         """
-        if (
-            password
-            and self.hash_password(password, self._salt, self._hash_algorithm)
-            == self.password
-        ):
+        if password and self.hash_password(password, self._salt, self._hash_algorithm) == self.password:
             return True
 
         return False
@@ -141,6 +137,4 @@ class UserPasswordMixin(object):
         # storing used hash algorithm
         self._hash_algorithm = hash_algorithm
         self._salt = text_type(salt_value)
-        return text_type(
-            self.__class__.hash_password(password, salt_value, hash_method)
-        )
+        return text_type(self.__class__.hash_password(password, salt_value, hash_method))

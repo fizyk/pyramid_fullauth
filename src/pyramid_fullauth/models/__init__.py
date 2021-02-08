@@ -60,9 +60,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         :rtype: bool
 
         """
-        return not (
-            self.deactivated_at or self.deleted_at or self.activate_key
-        ) and bool(self.activated_at)
+        return not (self.deactivated_at or self.deleted_at or self.activate_key) and bool(self.activated_at)
 
     @is_active.setter
     def is_active(self, value):
@@ -86,9 +84,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
                 self.deactivated_at = datetime.now()
                 self.activated_at = None
         else:
-            raise AttributeError(
-                "User has to be in the persistent state - stored in the DB"
-            )
+            raise AttributeError("User has to be in the persistent state - stored in the DB")
 
     def provider_id(self, provider):
         """
@@ -135,12 +131,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         """
         if self.is_admin and not value:
-            admin_counter = (
-                object_session(self)
-                .query(User)
-                .filter(User.is_admin, User.deleted_at.is_(None))
-                .count()
-            )
+            admin_counter = object_session(self).query(User).filter(User.is_admin, User.deleted_at.is_(None)).count()
             if admin_counter and admin_counter <= 1:
                 raise AttributeError("Can't delete last superadmin!")
         return value
@@ -156,12 +147,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
         """
         if self.is_admin:
-            admin_counter = (
-                object_session(self)
-                .query(User)
-                .filter(User.is_admin, User.deleted_at.is_(None))
-                .count()
-            )
+            admin_counter = object_session(self).query(User).filter(User.is_admin, User.deleted_at.is_(None)).count()
             if admin_counter and admin_counter <= 1:
                 raise exceptions.DeleteException("Can't delete last superadmin!")
 
@@ -185,11 +171,7 @@ class AuthenticationProvider(Base):
 
     __tablename__ = "user_authentication_provider"
 
-    __table_args__ = (
-        UniqueConstraint(
-            "provider", "provider_id", name="user_authentication_methods_provider_id"
-        ),
-    )
+    __table_args__ = (UniqueConstraint("provider", "provider_id", name="user_authentication_methods_provider_id"),)
 
     user_id = Column(Integer, ForeignKey(User.id), primary_key=True)
     provider = Column(Unicode(15), primary_key=True)
