@@ -6,6 +6,7 @@
 
 import os
 import hashlib
+from hashlib import algorithms_guaranteed
 import uuid
 
 from sqlalchemy import Column
@@ -13,9 +14,7 @@ from sqlalchemy import Unicode
 from sqlalchemy import Enum
 from sqlalchemy import String
 from sqlalchemy.orm import validates
-from pyramid.compat import text_type
 from pyramid_fullauth.exceptions import EmptyError
-from pyramid_fullauth.compat import algorithms
 
 
 class UserPasswordMixin(object):
@@ -27,8 +26,8 @@ class UserPasswordMixin(object):
     #: hash_algorithm field
     _hash_algorithm = Column(
         "hash_algorithm",
-        Enum(*algorithms, name="hash_algorithms_enum"),
-        default=text_type("sha256"),
+        Enum(*algorithms_guaranteed, name="hash_algorithms_enum"),
+        default="sha256",
         nullable=False,
     )
 
@@ -73,13 +72,12 @@ class UserPasswordMixin(object):
         if not callable(hash_method):
             hash_method = getattr(hashlib, hash_method)
 
-        # let's convert password to string from unicode
-        if isinstance(password, text_type):
+        # let's convert password to bytest from string
+        if isinstance(password, str):
             password = password.encode("utf-8")
 
-        # it's actually for Python 3, where str is unicode not bytestring,
-        # and haslib methods accepts only bytestr
-        if isinstance(salt, text_type):
+        #  to bytest from string
+        if isinstance(salt, str):
             salt = salt.encode("utf-8")
 
         # generating salted hash
@@ -136,5 +134,5 @@ class UserPasswordMixin(object):
 
         # storing used hash algorithm
         self._hash_algorithm = hash_algorithm
-        self._salt = text_type(salt_value)
-        return text_type(self.__class__.hash_password(password, salt_value, hash_method))
+        self._salt = salt_value
+        return self.__class__.hash_password(password, salt_value, hash_method)

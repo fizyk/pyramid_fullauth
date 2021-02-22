@@ -7,7 +7,6 @@
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.compat import text_type
 from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
 
@@ -98,16 +97,16 @@ class PasswordResetContinueView(BaseView):
                 try:
                     pyramid_basemodel.Session.query(AuthenticationProvider).filter(
                         AuthenticationProvider.user_id == user.id,
-                        AuthenticationProvider.provider == text_type("email"),
+                        AuthenticationProvider.provider == "email",
                     ).one()
                 except NoResultFound:
-                    user.providers.append(AuthenticationProvider(provider=text_type("email"), provider_id=user.id))
+                    user.providers.append(AuthenticationProvider(provider="email", provider_id=user.id))
 
                 pyramid_basemodel.Session.flush()
             except (ValidateError, AttributeError) as ex:
                 return {
                     "status": False,
-                    "msg": text_type(ex),
+                    "msg": str(ex),
                     "csrf_token": self.request.session.get_csrf_token(),
                 }
 

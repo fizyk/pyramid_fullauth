@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+unreleased
+----------
+
+- [cleanup] Removed internal compat (pyramid_fullauth is now python 3 only)
+- [cleanup] Removed references to pyramid.compat (pyramid_fullauth is now python 3 only)
+
 1.0.0
 ----------
 

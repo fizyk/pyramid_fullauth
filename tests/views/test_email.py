@@ -3,7 +3,6 @@ import pytest
 import transaction
 
 from sqlalchemy.orm.exc import NoResultFound
-from pyramid.compat import text_type
 from pyramid_fullauth.models import User
 
 from tests.tools import authenticate, DEFAULT_USER
@@ -117,11 +116,11 @@ def test_empty_email(default_app):
 def test_existing_email(db_session, default_app):
     """Try to change email to existing one email."""
     # add other user
-    existing_email = text_type("existing@email.eg")
+    existing_email = "existing@email.eg"
     db_session.add(
         User(
             email=existing_email,
-            password=text_type("somepassword"),
+            password="somepassword",
             address_ip=DEFAULT_USER["address_ip"],
         )
     )
@@ -147,7 +146,7 @@ def test_email_proceed(db_session, default_app):
     email = DEFAULT_USER["email"]
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = text_type("email2@email.com")
+    new_email = "email2@email.com"
     user.set_new_email(new_email)
     transaction.commit()
 
@@ -173,7 +172,7 @@ def test_email_proceed_wrong_key(db_session, default_app):
     email = DEFAULT_USER["email"]
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = text_type("email2@email.com")
+    new_email = "email2@email.com"
     user.set_new_email(new_email)
     transaction.commit()
 

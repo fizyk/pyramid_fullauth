@@ -4,7 +4,6 @@ from html.parser import unescape
 
 import pytest
 import transaction
-from pyramid.compat import text_type
 from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.models import User
@@ -72,7 +71,7 @@ def test_register_user_exists(db_session, user, default_app):  # pylint:disable=
         ),
         # long, incorect email
         (
-            text_type("email") * 100 + text_type("@wap.pl"),
+            "email" * 100 + "@wap.pl",
             DEFAULT_USER["password"],
             DEFAULT_USER["password"],
             "Incorrect e-mail format",

@@ -7,7 +7,6 @@
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -68,8 +67,8 @@ class RegisterView(BaseView):
         :returns: response
         :rtype: dict
         """
-        email = self.request.POST.get("email", text_type(""))
-        password = self.request.POST.get("password", text_type(""))
+        email = self.request.POST.get("email", "")
+        password = self.request.POST.get("password", "")
         # here if e-mail is already in database
 
         email_error = self._set_email(email, user)
@@ -88,11 +87,11 @@ class RegisterView(BaseView):
                 pyramid_basemodel.Session.flush()
 
                 # lets add AuthenticationProvider as email!
-                user.providers.append(AuthenticationProvider(provider=text_type("email"), provider_id=user.id))
+                user.providers.append(AuthenticationProvider(provider="email", provider_id=user.id))
             else:
                 return response
         except AttributeError as ex:
-            response["errors"]["msg"] = text_type(ex)
+            response["errors"]["msg"] = str(ex)
 
         return response
 
@@ -110,7 +109,7 @@ class RegisterView(BaseView):
             try:
                 tools.validate_passsword(self.request, password, user)
             except ValidateError as ex:
-                return text_type(ex)
+                return str(ex)
         else:
             user.password = tools.password_generator(self.config["register"]["password"]["length_min"])
         return None
@@ -132,5 +131,5 @@ class RegisterView(BaseView):
             user.email = email
         except ValidateError as ex:
             # do not overwrite existing error
-            return text_type(ex)
+            return str(ex)
         return None

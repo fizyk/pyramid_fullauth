@@ -3,7 +3,6 @@ import pytest
 import transaction
 from mock import MagicMock
 from pyramid import testing
-from pyramid.compat import text_type
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.orm.exc import NoResultFound
@@ -295,7 +294,7 @@ def test_afteremailchangeactivation(db_session, afteremailchange_app):  # pylint
     email = DEFAULT_USER["email"]
     user = db_session.query(User).filter(User.email == email).one()
 
-    new_email = text_type("email2@email.com")
+    new_email = "email2@email.com"
     user.set_new_email(new_email)
     transaction.commit()
 
@@ -404,20 +403,20 @@ aftersocialregister_app = factories.pyramid_app("aftersocialregister_config")  #
 def test_aftersocialregister(aftersocialregister_config, db_session):  # pylint:disable=redefined-outer-name
     """Register fresh user and logs him in and check response if redirect from AfterSocialRegister."""
     profile = {
-        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-        "displayName": text_type("teddy"),
-        "verifiedEmail": text_type("we@po.pl"),
-        "preferredUsername": text_type("teddy"),
-        "emails": [{"value": text_type("aasd@bwwqwe.pl")}],
-        "name": text_type("ted"),
+        "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+        "displayName": "teddy",
+        "verifiedEmail": "we@po.pl",
+        "preferredUsername": "teddy",
+        "emails": [{"value": "aasd@bwwqwe.pl"}],
+        "name": "ted",
     }
     credentials = {"oauthAccessToken": "7897048593434"}
-    provider_name = text_type("facebook")
-    provider_type = text_type("facebook")
+    provider_name = "facebook"
+    provider_type = "facebook"
     request = testing.DummyRequest()
     request.user = None
     request.registry = aftersocialregister_config.registry
-    request.remote_addr = text_type("127.0.0.123")
+    request.remote_addr = "127.0.0.123"
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     request.login_perform = MagicMock(name="login_perform")
@@ -430,7 +429,7 @@ def test_aftersocialregister(aftersocialregister_config, db_session):  # pylint:
     # read first new account
     user = db_session.query(User).one()
     assert user.is_active
-    assert user.provider_id(text_type("facebook")) == profile["accounts"][0]["userid"]
+    assert user.provider_id("facebook") == profile["accounts"][0]["userid"]
 
 
 @pytest.fixture
@@ -449,20 +448,20 @@ aftersociallogin_app = factories.pyramid_app("aftersociallogin_config")  # pylin
 def test_aftersociallogin(aftersociallogin_config, db_session):  # pylint:disable=redefined-outer-name
     """Register fresh user and logs him in and check response if redirect from AfterSocialLogIn."""
     profile = {
-        "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-        "displayName": text_type("teddy"),
-        "verifiedEmail": text_type("we@po.pl"),
-        "preferredUsername": text_type("teddy"),
-        "emails": [{"value": text_type("aasd@bwwqwe.pl")}],
-        "name": text_type("ted"),
+        "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+        "displayName": "teddy",
+        "verifiedEmail": "we@po.pl",
+        "preferredUsername": "teddy",
+        "emails": [{"value": "aasd@bwwqwe.pl"}],
+        "name": "ted",
     }
     credentials = {"oauthAccessToken": "7897048593434"}
-    provider_name = text_type("facebook")
-    provider_type = text_type("facebook")
+    provider_name = "facebook"
+    provider_type = "facebook"
     request = testing.DummyRequest()
     request.user = None
     request.registry = aftersociallogin_config.registry
-    request.remote_addr = text_type("127.0.0.123")
+    request.remote_addr = "127.0.0.123"
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
 
     def login_perform(*_, **kwargs):
@@ -501,9 +500,9 @@ def test_alreadyconnected(alreadyconnected_config, facebook_user, db_session):  
     """
     # this user will be logged and trying to connect facebook's user account.
     fresh_user = User(
-        email=text_type("new@user.pl"),
-        password=text_type("somepassword"),
-        address_ip=text_type("127.0.0.1"),
+        email="new@user.pl",
+        password="somepassword",
+        address_ip="127.0.0.1",
     )
     db_session.add(fresh_user)
     transaction.commit()
@@ -514,22 +513,22 @@ def test_alreadyconnected(alreadyconnected_config, facebook_user, db_session):  
     profile = {
         "accounts": [
             {
-                "domain": text_type("facebook.com"),
+                "domain": "facebook.com",
                 "userid": user.provider_id("facebook"),
             }
         ],
-        "displayName": text_type("teddy"),
-        "preferredUsername": text_type("teddy"),
-        "emails": [{"value": text_type("aasd@basd.pl")}],
-        "name": text_type("ted"),
+        "displayName": "teddy",
+        "preferredUsername": "teddy",
+        "emails": [{"value": "aasd@basd.pl"}],
+        "name": "ted",
     }
     credentials = {"oauthAccessToken": "7897048593434"}
-    provider_name = text_type("facebook")
-    provider_type = text_type("facebook")
+    provider_name = "facebook"
+    provider_type = "facebook"
     request = testing.DummyRequest()
     request.user = fresh_user
     request.registry = alreadyconnected_config.registry
-    request.remote_addr = text_type("127.0.0.123")
+    request.remote_addr = "127.0.0.123"
     request.context = AuthenticationComplete(profile, credentials, provider_name, provider_type)
     request._ = mock_translate
 
@@ -541,7 +540,7 @@ def test_alreadyconnected(alreadyconnected_config, facebook_user, db_session):  
     assert out.location == EVENT_PATH.format(SocialAccountAlreadyConnected)
     transaction.begin()
     fresh_user = db_session.merge(fresh_user)
-    assert fresh_user.provider_id(text_type("facebook")) is None
+    assert fresh_user.provider_id("facebook") is None
 
 
 @pytest.fixture
