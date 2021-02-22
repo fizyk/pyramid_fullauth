@@ -8,7 +8,6 @@
 
 from sqlalchemy import func
 from sqlalchemy.ext.hybrid import Comparator
-from pyramid.compat import string_types
 
 
 class CaseInsensitive(Comparator):  # pylint:disable=abstract-method
@@ -16,7 +15,7 @@ class CaseInsensitive(Comparator):  # pylint:disable=abstract-method
 
     def __init__(self, word):  # pylint:disable=super-init-not-called
         """Initialise comparator object."""
-        if isinstance(word, string_types):
+        if isinstance(word, str):
             self.word = word.lower()
         elif isinstance(word, CaseInsensitive):
             self.word = word.word

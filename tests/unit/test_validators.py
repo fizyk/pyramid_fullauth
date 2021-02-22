@@ -1,7 +1,6 @@
 """Test various validators present on User class."""
 import pytest
 import transaction
-from pyramid.compat import text_type
 
 from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
@@ -10,14 +9,14 @@ from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
 @pytest.mark.parametrize(
     "email",
     [
-        text_type("very.common@example.com"),
-        text_type("a.little.lengthy.but.fine@dept.example.com"),
-        text_type("disposable.style.email.with+symbol@example.com"),
-        text_type('"very.unusual.@.unusual.com"@example.com'),
-        text_type("!#$%&'*+-/=?^_`{}|~@example.org"),
-        text_type('""@example.org'),
-        text_type('"much.more unusual"@example.com'),
-        text_type('"()<>[]:,;@\\"!#$%&\'*+-/=?^_`{}| ~  ? ^_`{}|~.a"@example.org'),
+        "very.common@example.com",
+        "a.little.lengthy.but.fine@dept.example.com",
+        "disposable.style.email.with+symbol@example.com",
+        '"very.unusual.@.unusual.com"@example.com',
+        "!#$%&'*+-/=?^_`{}|~@example.org",
+        '""@example.org',
+        '"much.more unusual"@example.com',
+        '"()<>[]:,;@\\"!#$%&\'*+-/=?^_`{}| ~  ? ^_`{}|~.a"@example.org',
     ],
 )
 def test_email_valid_formats(db_session, user, email):
@@ -27,14 +26,14 @@ def test_email_valid_formats(db_session, user, email):
     user.email = email
     transaction.commit()
 
-    user = db_session.query(User).filter(User.username == text_type("u1")).one()
+    user = db_session.query(User).filter(User.username == "u1").one()
     assert user.email == email
 
 
 def test_email_empty(user):
     """Test reaction of email validator for empty email."""
     with pytest.raises(EmptyError):
-        user.email = text_type("")
+        user.email = ""
 
 
 def test_email_invalid_formats(db_session, user, invalid_email):

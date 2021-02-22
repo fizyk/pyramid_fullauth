@@ -8,7 +8,6 @@ import logging
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.compat import text_type
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 import pyramid_basemodel
@@ -206,9 +205,7 @@ class SocialLoginViews(BaseView):
         if "emails" in context.profile and context.profile["emails"] and "value" in context.profile["emails"][0]:
             return context.profile["emails"][0]["value"]
         # generating some random email address based on social userid and provider domain
-        return text_type(
-            "{0}@{1}".format(
-                context.profile["accounts"][0]["userid"],
-                context.profile["accounts"][0]["domain"],
-            )
+        return "{0}@{1}".format(
+            context.profile["accounts"][0]["userid"],
+            context.profile["accounts"][0]["domain"],
         )

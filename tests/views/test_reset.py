@@ -3,7 +3,6 @@
 from html.parser import unescape
 
 import transaction
-from pyramid.compat import text_type
 
 from pyramid_fullauth.models import User
 
@@ -36,7 +35,7 @@ def test_reset_email_not_exists(user, db_session, default_app):
     user = db_session.merge(user)
 
     res = default_app.get("/password/reset")
-    res.form["email"] = text_type("wrong@example.com")
+    res.form["email"] = "wrong@example.com"
     res = res.form.submit()
     assert "Error! User does not exist" in res
 

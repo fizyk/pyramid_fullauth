@@ -1,7 +1,6 @@
 """Unittest for social login view."""
 import pytest
 import mock
-from pyramid.compat import text_type
 
 from pyramid_fullauth.views.social import SocialLoginViews
 
@@ -11,51 +10,51 @@ from pyramid_fullauth.views.social import SocialLoginViews
     [
         (
             {
-                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-                "displayName": text_type("teddy"),
-                "verifiedEmail": text_type("verified@email.co.uk"),
-                "preferredUsername": text_type("teddy"),
-                "emails": [{"value": text_type("aasd@bwwqwe.pl")}],
-                "name": text_type("ted"),
+                "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+                "displayName": "teddy",
+                "verifiedEmail": "verified@email.co.uk",
+                "preferredUsername": "teddy",
+                "emails": [{"value": "aasd@bwwqwe.pl"}],
+                "name": "ted",
             },
             "verified@email.co.uk",
         ),
         (
             {
-                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-                "displayName": text_type("teddy"),
-                "preferredUsername": text_type("teddy"),
-                "emails": [{"value": text_type("aasd@bwwqwe.pl")}],
-                "name": text_type("ted"),
+                "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+                "displayName": "teddy",
+                "preferredUsername": "teddy",
+                "emails": [{"value": "aasd@bwwqwe.pl"}],
+                "name": "ted",
             },
             "aasd@bwwqwe.pl",
         ),
         (
             {
-                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-                "displayName": text_type("teddy"),
-                "preferredUsername": text_type("teddy"),
+                "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+                "displayName": "teddy",
+                "preferredUsername": "teddy",
                 "emails": [{}],
-                "name": text_type("ted"),
+                "name": "ted",
             },
             "2343@facebook.com",
         ),
         (
             {
-                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-                "displayName": text_type("teddy"),
-                "preferredUsername": text_type("teddy"),
+                "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+                "displayName": "teddy",
+                "preferredUsername": "teddy",
                 "emails": [],
-                "name": text_type("ted"),
+                "name": "ted",
             },
             "2343@facebook.com",
         ),
         (
             {
-                "accounts": [{"domain": text_type("facebook.com"), "userid": text_type("2343")}],
-                "displayName": text_type("teddy"),
-                "preferredUsername": text_type("teddy"),
-                "name": text_type("ted"),
+                "accounts": [{"domain": "facebook.com", "userid": "2343"}],
+                "displayName": "teddy",
+                "preferredUsername": "teddy",
+                "name": "ted",
             },
             "2343@facebook.com",
         ),
@@ -68,8 +67,8 @@ def test_email_from_context(profile, email):
     context = AuthenticationComplete(
         profile,
         {"oauthAccessToken": "7897048593434"},
-        text_type("facebook"),
-        text_type("facebook"),
+        "facebook",
+        "facebook",
     )
     view = SocialLoginViews(mock.MagicMock())
     assert view._email_from_context(context) == email

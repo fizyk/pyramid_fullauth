@@ -24,7 +24,6 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.orm.session import object_session
 from sqlalchemy.orm.util import has_identity
-from pyramid.compat import text_type
 from pyramid_basemodel import Base
 
 from pyramid_fullauth import exceptions
@@ -110,7 +109,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
             return self.username
         if self.email:
             return self.email.split("@")[0] + "@..."
-        return text_type(self.id)
+        return str(self.id)
 
     def __str__(self):  # pragma: no cover
         """Stringified user representation."""

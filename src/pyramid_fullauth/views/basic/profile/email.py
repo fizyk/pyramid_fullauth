@@ -8,7 +8,6 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
 
-from pyramid.compat import text_type
 import pyramid_basemodel
 
 from pyramid_fullauth.views import BaseView
@@ -72,7 +71,7 @@ class EmailChangeViews(BaseView):
         :rtype: dict
         """
         csrf_token = self.request.session.get_csrf_token()
-        email = self.request.POST.get("email", text_type(""))
+        email = self.request.POST.get("email", "")
         if pyramid_basemodel.Session.query(User).filter(User.email == email).first():
             return {
                 "status": False,
@@ -83,7 +82,7 @@ class EmailChangeViews(BaseView):
         try:
             self.request.registry.notify(BeforeEmailChange(self.request, user))
         except AttributeError as ex:
-            return {"status": False, "msg": text_type(ex), "csrf_token": csrf_token}
+            return {"status": False, "msg": str(ex), "csrf_token": csrf_token}
 
         try:
             user.set_new_email(email)

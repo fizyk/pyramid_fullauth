@@ -1,5 +1,4 @@
 """Test provider related user methods."""
-from pyramid.compat import text_type
 import transaction
 
 from pyramid_fullauth.models import User
@@ -14,7 +13,7 @@ def test_user_provider_id(db_session, user):
     assert not user.provider_id("email")
 
     provider = AuthenticationProvider()
-    provider.provider = text_type("email")
+    provider.provider = "email"
     provider.provider_id = email
     user.providers.append(provider)
     transaction.commit()

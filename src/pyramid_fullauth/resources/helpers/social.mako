@@ -9,7 +9,7 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
 <%def name="social_auth_uri(name, **kw)">
 <%
     from velruse import login_url
-    from pyramid_fullauth.compat import urlencode
+    from urllib.parse import urlencode
 %>
 % if name in request.registry["fullauth"]["social"]:
 ${login_url(request, name) + ('?{0}'.format(urlencode(kw)) if kw else '')}

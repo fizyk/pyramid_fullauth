@@ -8,7 +8,6 @@ from pyramid.view import view_config
 from pyramid.view import view_defaults
 from pyramid.httpexceptions import HTTPSeeOther, HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.compat import text_type
 
 from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
@@ -92,7 +91,7 @@ class LoginViewPost(BaseLoginView):
             self.response["msg"] = self.request._("Wrong e-mail or password.", domain="pyramid_fullauth")
             return self.response
         except AttributeError as ex:
-            self.response["msg"] = text_type(ex)
+            self.response["msg"] = str(ex)
             return self.response
 
         if not user.check_password(password):
@@ -104,7 +103,7 @@ class LoginViewPost(BaseLoginView):
             # if remember in POST set cookie timeout to one month
             self.request.registry.notify(AfterLogIn(self.request, user))
         except AttributeError as ex:
-            self.response["msg"] = text_type(ex)
+            self.response["msg"] = str(ex)
             return self.response
         except HTTPRedirection as redirect:
             login_kwargs["location"] = redirect.location
