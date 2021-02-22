@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+1.0.1
 ----------
 
 - [cleanup] Removed internal compat (pyramid_fullauth is now python 3 only)
