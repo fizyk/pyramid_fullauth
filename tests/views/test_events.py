@@ -46,7 +46,7 @@ def unregister_subscriber(config, event):
 
 
 evented_config = factories.pyramid_config(
-    {  # pylint:disable=invalid-name
+    settings={  # pylint:disable=invalid-name
         "env": "login",
         "fullauth.authtkt.timeout": 2,
         "fullauth.authtkt.reissue_time": 0.2,

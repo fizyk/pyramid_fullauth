@@ -11,7 +11,7 @@ velruse==1.1.1
 sqlalchemy==1.3.23
 mock==4.0.3
 pytest==6.2.2
-pytest-pyramid==0.3.3
+pytest-pyramid==1.0.0
 pytest-cov==2.11.1
 pytest-mysql==2.0.3
 pytest-postgresql==2.6.1
