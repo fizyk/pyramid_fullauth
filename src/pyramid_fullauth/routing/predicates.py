@@ -5,8 +5,6 @@
 """Routing predicate definitions."""
 
 from sqlalchemy.orm.exc import NoResultFound
-from pyramid.predicates import CheckCSRFTokenPredicate
-from pyramid.httpexceptions import HTTPUnauthorized
 import pyramid_basemodel
 
 from pyramid_fullauth.models import User
@@ -45,34 +43,3 @@ class UserPathHashRoutePredicate(object):
             except NoResultFound:
                 pass
         return False
-
-
-class CSRFCheckPredicate(CheckCSRFTokenPredicate):
-    """
-    Run csrf check dependant on configuration.
-
-    .. note::
-
-        Raises HTTPUnauthorized exception if check fails.
-
-    :raises: pyramid.httpexceptions.HTTPUnauthorized
-
-    :returns: True if check succeeds or turned off.
-    :rtype: bool
-
-    """
-
-    def __call__(self, context, request):
-        """
-        Run predicate check.
-
-        :param context:
-        :param pyramid.request.Request request:
-
-        """
-        if request.registry["fullauth"]["check_csrf"]:
-            result = CheckCSRFTokenPredicate.__call__(self, context, request)
-            if not result:
-                raise HTTPUnauthorized
-
-        return True

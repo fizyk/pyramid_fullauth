@@ -106,7 +106,9 @@ def invalid_email(request):
 
 
 # pylint:disable=invalid-name
-default_config = factories.pyramid_config(settings={"pyramid.includes": ["pyramid_tm", "pyramid_fullauth"]})
+default_config = factories.pyramid_config(
+    settings={"pyramid.includes": ["pyramid_tm", "pyramid_fullauth", "tests.tools.csrf"]}
+)
 
 
 default_app = factories.pyramid_app("default_config")
@@ -118,6 +120,7 @@ extended_config = factories.pyramid_config(
             "pyramid_tm",
             "pyramid_fullauth",
             "tests.tools.include_views",
+            "tests.tools.csrf",
         ]
     }
 )

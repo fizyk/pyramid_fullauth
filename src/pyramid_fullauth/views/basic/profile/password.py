@@ -35,7 +35,7 @@ class PasswordResetView(BaseView):
 
         return {"status": True, "csrf_token": csrf_token}
 
-    @view_config(request_method="POST", require_csrf=True)
+    @view_config(request_method="POST")
     def post(self):
         """View processing requests to reset password."""
         csrf_token = self.request.session.get_csrf_token()
@@ -80,7 +80,7 @@ class PasswordResetContinueView(BaseView):
         self.request.logout()
         return {"status": True, "csrf_token": self.request.session.get_csrf_token()}
 
-    @view_config(request_method="POST", require_csrf=True)
+    @view_config(request_method="POST")
     def post(self):
         """Validate and possibly accept new email."""
         user = self.request.matchdict.get("user")

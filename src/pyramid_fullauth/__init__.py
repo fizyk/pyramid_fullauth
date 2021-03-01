@@ -34,7 +34,6 @@ def build_fullauth_config(settings):
         },
         "register": {"password": {"require": True, "length_min": 6, "confirm": True}},
         "redirects": {"logout": False},
-        "check_csrf": True,
         "login": {"cookie_max_age": 2592000},  # 30 days
     }
     fullauth_settings = {s: settings[s] for s in settings if s.startswith("fullauth")}
@@ -43,9 +42,7 @@ def build_fullauth_config(settings):
         key_parts = setting_key.split(".")
         key_length = len(key_parts)
 
-        if setting_key == "fullauth.check_csrf":
-            fullauth_config["check_csrf"] = setting_value
-        elif key_parts[1] == "register" and key_length == 4:
+        if key_parts[1] == "register" and key_length == 4:
             if key_parts[2] == "password":
                 fullauth_config["register"]["password"][key_parts[3]] = setting_value
         elif key_parts[1] == "authtkt" and key_length == 3:
@@ -109,7 +106,6 @@ def includeme(configurator: Configurator) -> None:
         configurator.set_session_factory(session_factory(**session_settings))
 
     # add predicates
-    configurator.add_view_predicate("check_csrf", predicates.CSRFCheckPredicate)
     configurator.add_route_predicate("user_path_hash", predicates.UserPathHashRoutePredicate)
 
     # add routes
