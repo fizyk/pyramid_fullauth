@@ -106,14 +106,14 @@ def invalid_email(request):
 
 
 # pylint:disable=invalid-name
-default_config = factories.pyramid_config({"pyramid.includes": ["pyramid_tm", "pyramid_fullauth"]})
+default_config = factories.pyramid_config(settings={"pyramid.includes": ["pyramid_tm", "pyramid_fullauth"]})
 
 
 default_app = factories.pyramid_app("default_config")
 
 
 extended_config = factories.pyramid_config(
-    {
+    settings={
         "pyramid.includes": [
             "pyramid_tm",
             "pyramid_fullauth",
@@ -127,7 +127,7 @@ extended_app = factories.pyramid_app("extended_config")
 
 
 short_config = factories.pyramid_config(
-    {
+    settings={
         "fullauth.authtkt.timeout": 2,
         "fullauth.authtkt.reissue_time": 0.2,
         "pyramid.includes": [
@@ -143,7 +143,7 @@ short_app = factories.pyramid_app("short_config")
 
 
 social_config = factories.pyramid_config(
-    {
+    settings={
         "fullauth.social.facebook.consumer_key": "173883269419608",
         "fullauth.social.facebook.consumer_secret": "f8421ff0856d742fc10aa764537be181",
         "fullauth.social.facebook.scope": "email,offline_access",
@@ -160,7 +160,7 @@ social_app = factories.pyramid_app("social_config")
 
 
 authable_config = factories.pyramid_config(
-    {
+    settings={
         "env": "login",
         "pyramid.includes": [
             "pyramid_tm",
@@ -175,7 +175,7 @@ authable_app = factories.pyramid_app("authable_config")
 
 
 nopassconfirm_config = factories.pyramid_config(
-    {
+    settings={
         "fullauth.register.password.require": True,
         "fullauth.register.password.confirm": False,
         "env": "login",
@@ -192,7 +192,7 @@ nopassconfirm_app = factories.pyramid_app("nopassconfirm_config")
 
 
 nopassregister_config = factories.pyramid_config(
-    {
+    settings={
         "fullauth.register.password.require": False,
         "env": "login",
         "pyramid.includes": [
