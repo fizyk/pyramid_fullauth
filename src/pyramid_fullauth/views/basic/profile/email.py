@@ -32,8 +32,8 @@ class EmailChangeViews(BaseView):
         """Display email change request form."""
         return {"status": True, "csrf_token": self.request.session.get_csrf_token()}
 
-    @view_config(request_method="POST", require_csrf=True)
-    @view_config(request_method="POST", require_csrf=True, xhr=True, renderer="json")
+    @view_config(request_method="POST")
+    @view_config(request_method="POST", xhr=True, renderer="json")
     def post(self):
         """Process email change request."""
         user = self.request.user

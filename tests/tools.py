@@ -1,4 +1,5 @@
 """Tools used for fullauth tests."""
+from pyramid.config import Configurator
 from pyramid.view import view_config
 
 DEFAULT_USER = {
@@ -49,6 +50,11 @@ def include_views(config):
     """Pyramid 'plugin' adding dummy secret view."""
     config.add_route("secret", "/secret")
     config.scan("tests.tools")
+
+
+def csrf(config: Configurator):
+    """This turns on CSRF for tests."""
+    config.set_default_csrf_options(require_csrf=True)
 
 
 @view_config(route_name="secret", permission="super_high", renderer="json")

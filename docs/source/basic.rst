@@ -67,7 +67,6 @@ Plugin, by default works on these assumptions:
     fullauth.register.password.length_min = 6
     fullauth.register.password.confirm = True
     fullauth.redirects.logout = False
-    fullauth.check_csrf = True
     fullauth.login.cookie_max_age = 2592000  # 30 days
 
 .. note::
@@ -106,7 +105,6 @@ Request object gets these methods:
 CSRF Check
 ----------
 
-CSRF can be turned on/off for fullauth views by modifying *fullauth.check_csrf* key. It's turned on by default.
-
-pyramid_fullauth extends pyrmid's check_csrf predicate in that way, that you can turn it on and off, and when check fails, it raises :class:`~pyramid.httpexceptions.HTTPUnauthorized` exception instead of returning False, which gives usually 404 Not Found error
+To guard your site against csrf, please follow up
+`official pyramid's documentation settings <https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/security.html#checking-csrf-tokens-automatically>
 
