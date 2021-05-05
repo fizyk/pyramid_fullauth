@@ -2,5 +2,5 @@
 pycodestyle==2.7.0
 pydocstyle==6.0.0
 pylint==2.8.2
-black==21.4b2
+black==21.5b0
 -r requirements-test.txt
