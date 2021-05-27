@@ -14,5 +14,5 @@ pytest==6.2.4
 pytest-pyramid==1.0.0
 pytest-cov==2.12.0
 pytest-mysql==2.0.3
-pytest-postgresql==3.0.1
+pytest-postgresql==3.0.2
 -e .[tests]
