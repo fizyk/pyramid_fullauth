@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 ----------
 
+- [dropped] UserEmailMixin.__pattern_mail which was unused.
 - [dropped] Dropped custom csrf check option. It wasn't tested internally,
   wasn't actually used for views, and overshadowed official pyramid's predicate,
   that was dropped in pyramid 2.0, and was deprecated since pyramid 1.7.

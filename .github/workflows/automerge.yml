@@ -1,41 +1,38 @@
-name: Automerge Pull Requests
+name: Merge me test dependencies!
+
 on:
-  pull_request:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-      - unlocked
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
+  workflow_run:
     types:
       - completed
-  status: {}
+    workflows:
+      # List all required workflow names here.
+      - 'Run tests'
+      - 'MySQL tests'
+      - 'PostgreSQL tests'
+      - 'Test build package'
 
 jobs:
-  automerge:
-    name: Automerge Dependabot
+  merge-me:
+    name: Merge me!
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
     steps:
-      - name: 'Wait for status checks'
-        id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@v1.2"
+      - # It is often a desired behavior to merge only when a workflow execution
+        # succeeds. This can be changed as needed.
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        name: Merge me!
+        uses: ridedott/merge-me-action@v2
         with:
-          ignoreActions: Automerge Dependabot
-          checkInterval: 13
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Merge pull requests
-        uses: pascalgn/automerge-action@v0.12.0
-        if: steps.waitforstatuschecks.outputs.status == 'success'
-        env:
-          MERGE_METHOD: "squash"
-          MERGE_LABELS: ""
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          # Depending on branch protection rules, a  manually populated
+          # `GITHUB_TOKEN_WORKAROUND` secret with permissions to push to
+          # a protected branch must be used. This secret can have an arbitrary
+          # name, as an example, this repository uses `DOTTBOTT_TOKEN`.
+          #
+          # When using a custom token, it is recommended to leave the following
+          # comment for other developers to be aware of the reasoning behind it:
+          #
+          # This must be used as GitHub Actions token does not support pushing
+          # to protected branches.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: MERGE
+          PRESET: DEPENDABOT_MINOR
+          ENABLED_FOR_MANUAL_CHANGES: 'true'
