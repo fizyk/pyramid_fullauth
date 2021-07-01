@@ -10,6 +10,7 @@ on:
       - 'MySQL tests'
       - 'PostgreSQL tests'
       - 'Test build package'
+      - 'Run linters'
 
 jobs:
   merge-me:
