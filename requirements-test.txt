@@ -2,7 +2,7 @@
 pyramid==2.0
 pyramid_localize==1.0.1
 pyramid-basemodel==0.5.0; python_version>='3.7'
-zope.sqlalchemy==1.5
+zope.sqlalchemy==1.6
 pyramid-mako==1.1.0
 pyramid-tm==2.4
 transaction==3.0.1
