@@ -18,7 +18,7 @@ class UserPathHashRoutePredicate(object):
 
     def text(self):
         """Predicate's representation."""
-        return "user_path_hash = %s" % (self.val,)
+        return f"user_path_hash = {self.val}"
 
     phash = text
 
