@@ -101,7 +101,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
     def __repr__(self):
         """Object representation."""
-        return "<User ('{0}')>".format(self.id)
+        return f"<User ('{self.id}')>"
 
     def __unicode__(self):
         """Unicode cast rules."""

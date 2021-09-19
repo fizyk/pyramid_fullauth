@@ -143,7 +143,7 @@ def includeme(configurator: Configurator) -> None:
                 provider = "google_oauth2"
 
             configurator.include("velruse.providers." + provider)
-            getattr(configurator, "add_{0}_login".format(provider))(**provider_settings)
+            getattr(configurator, f"add_{provider}_login")(**provider_settings)
 
     # we'll add some request methods:
     configurator.add_request_method(login_perform, name="login_perform")
