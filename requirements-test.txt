@@ -8,11 +8,11 @@ pyramid-tm==2.4
 transaction==3.0.1
 requests==2.26.0
 velruse==1.1.1
-sqlalchemy==1.4.26
+sqlalchemy==1.4.29
 mock==4.0.3
 pytest==6.2.5
 pytest-pyramid==1.0.1
 pytest-cov==3.0.0
-pytest-mysql==2.1.0
+pytest-mysql==2.2.0
 pytest-postgresql==4.0.0
 -e .[tests]
