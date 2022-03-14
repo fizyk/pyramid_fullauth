@@ -4,7 +4,7 @@ pyramid_localize==1.0.1
 pyramid-basemodel==0.5.1; python_version>='3.7'
 zope.sqlalchemy==1.6
 pyramid-mako==1.1.0
-pyramid-tm==2.4
+pyramid-tm==2.5
 transaction==3.0.1
 requests==2.27.1
 velruse==1.1.1
