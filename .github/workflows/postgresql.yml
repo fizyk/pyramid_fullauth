@@ -31,7 +31,7 @@ jobs:
       run: |
         py.test -v --cov pyramid_fullauth tests/ --cov-report=xml -k postgresql
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3.0.0
+      uses: codecov/codecov-action@v3.1.0
       with:
         file: ./coverage.xml
         flags: unittests
