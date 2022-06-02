@@ -81,7 +81,7 @@ class UserEmailMixin(object):
         return CaseInsensitive(cls._new_email)
 
     @validates("_email", "_new_email")
-    def validate_email(self, _, address):  # pylint:disable=no-self-use
+    def validate_email(self, _, address):
         """
         Validate email addresses.
 
