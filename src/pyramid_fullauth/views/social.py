@@ -32,7 +32,7 @@ LOG = logging.getLogger(__name__)
 class SocialLoginViews(BaseView):
     """Social login views definition."""
 
-    def set_provider(self, user, provider_name, user_provider_id):  # pylint:disable=no-self-use
+    def set_provider(self, user, provider_name, user_provider_id):
         """
         Set authentication provider on user.
 
@@ -192,7 +192,7 @@ class SocialLoginViews(BaseView):
             user.is_active = True
         return user
 
-    def _email_from_context(self, context):  # pylint:disable=no-self-use
+    def _email_from_context(self, context):
         """
         Extract or generate email from context values.
 
