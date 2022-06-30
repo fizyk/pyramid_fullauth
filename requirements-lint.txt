@@ -1,6 +1,6 @@
 # linters
 pycodestyle==2.8.0
 pydocstyle==6.1.1
-pylint==2.14.3
+pylint==2.14.4
 black==22.6.0
 -r requirements-test.txt
