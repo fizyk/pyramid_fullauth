@@ -1,0 +1,2 @@
+Use shared automerge action for merging dependabot PRs automatically.
+It's based on github actions.
