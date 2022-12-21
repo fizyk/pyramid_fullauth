@@ -25,13 +25,13 @@ def test_password_change(db_session, user, password):
 
     user = db_session.merge(user)
     old_password = user.password
-    old_salt = user._salt
+    old_salt = user._salt  # pylint:disable=protected-access
     user.password = new_password
     transaction.commit()
 
     user = db_session.query(User).filter(User.username == "u1").one()
     assert not user.password == old_password
-    assert not user._salt == old_salt
+    assert not user._salt == old_salt  # pylint:disable=protected-access
     assert user.check_password(new_password)
 
 

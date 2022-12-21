@@ -1,2 +1,4 @@
 [run]
-source = pyramid_fullauth
+include =
+    pyramid_fullauth/*
+    tests/*
