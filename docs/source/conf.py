@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Documentation configuration."""
 
 # Copyright (c) 2013 - 2016 by pyramid_fullauth authors and contributors <see AUTHORS file>
 #
