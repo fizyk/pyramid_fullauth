@@ -1,7 +1,7 @@
 """Test groupfinder."""
 import pytest
 
-from pyramid_fullauth.auth import groupfinder
+from pyramid_fullauth import groupfinder
 
 
 @pytest.mark.parametrize(

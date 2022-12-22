@@ -1,6 +1,7 @@
 """Unittest for social login view."""
 import pytest
 import mock
+from velruse import AuthenticationComplete
 
 from pyramid_fullauth.views.social import SocialLoginViews
 
@@ -62,7 +63,6 @@ from pyramid_fullauth.views.social import SocialLoginViews
 )
 def test_email_from_context(profile, email):
     """Test email_from_context email getting method."""
-    from velruse import AuthenticationComplete
 
     context = AuthenticationComplete(
         profile,
@@ -71,4 +71,4 @@ def test_email_from_context(profile, email):
         "facebook",
     )
     view = SocialLoginViews(mock.MagicMock())
-    assert view._email_from_context(context) == email
+    assert view._email_from_context(context) == email  # pylint:disable=protected-access
