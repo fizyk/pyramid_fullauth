@@ -7,8 +7,6 @@ on:
     workflows:
       # List all required workflow names here.
       - 'Run tests'
-      - 'MySQL tests'
-      - 'PostgreSQL tests'
       - 'Test build package'
       - 'Run linters'
 
