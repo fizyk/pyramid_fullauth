@@ -24,17 +24,12 @@ pyramid_fullauth
 Pyramid fullauth's provides full user registration and management functionality for
 `pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_ based web applications.
 
-Package resources
------------------
 
-* Bug tracker: https://github.com/fizyk/pyramid_fullauth/issues
-* Documentation: http://pyramid-fullauth.readthedocs.org/
-* PyPI: https://pypi.python.org/pypi/pyramid_fullauth
+Release
+=======
 
+Install pipenv and --dev dependencies first, Then run:
 
-Tests
------
+.. code-block::
 
-You'll need: packages defined in extra_requires[tests] to run tests, and then:
-
-``py.test``
+    pipenv run tbump [NEW_VERSION]
