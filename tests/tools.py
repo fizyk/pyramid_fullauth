@@ -52,8 +52,8 @@ def include_views(config):
     config.scan("tests.tools")
 
 
-def csrf(config: Configurator):
-    """This turns on CSRF for tests."""
+def csrf(config: Configurator) -> None:
+    """Turn on CSRF for tests."""
     config.set_default_csrf_options(require_csrf=True)
 
 

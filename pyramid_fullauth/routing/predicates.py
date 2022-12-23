@@ -14,6 +14,7 @@ class UserPathHashRoutePredicate(object):
     """Check reset hash from url."""
 
     def __init__(self, val, _):
+        """Initialise predicate."""
         self.val = val
 
     def text(self):
