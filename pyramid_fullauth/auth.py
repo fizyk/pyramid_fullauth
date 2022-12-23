@@ -4,7 +4,7 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Auth related methods and classes."""
 
-from pyramid.security import Allow, Everyone, ALL_PERMISSIONS
+from pyramid.authorization import Allow, Everyone, ALL_PERMISSIONS
 
 
 def groupfinder(userid, request):

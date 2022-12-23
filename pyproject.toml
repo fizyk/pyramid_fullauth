@@ -28,7 +28,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "pyramid >= 1.10",
+    "pyramid >= 2",
     "pyramid_basemodel >= 0.3",
     "pyramid_mako",
     "pyramid_localize",

@@ -60,7 +60,7 @@ class LoginView(BaseLoginView):
 
     def __call__(self):
         """Display login page."""
-        if self.request.authenticated_userid:
+        if self.request.user:
             return self._redirect_authenticated_user()
 
         self.request.registry.notify(BeforeLogIn(self.request, None))

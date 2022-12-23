@@ -1,0 +1,3 @@
+Migrated pyramid_fullauth to the pyramid 2.0 Security policy from legacy authentication and authorization policies.
+
+You'll have to migrate as well when upgrading pyramid_fullauth. See more at `Upgrading Authentication/Authorization <https://docs.pylonsproject.org/projects/pyramid/en/latest/whatsnew-2.0.html#upgrading-authentication-authorization>`_

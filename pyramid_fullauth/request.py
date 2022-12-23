@@ -5,6 +5,7 @@
 """These method gets added to each ``pyramid.request.Request`` object."""
 
 from pyramid.httpexceptions import HTTPSeeOther
+from pyramid.request import Request
 from pyramid.security import remember, forget
 from sqlalchemy.sql.expression import func
 from sqlalchemy.orm.exc import NoResultFound
@@ -42,21 +43,21 @@ def login_perform(request, user, location=None, remember_me=False):
     return HTTPSeeOther(location=location, headers=request.response.headers)
 
 
-def request_user(request):
+def request_user(request: Request):
     """
     Return user object.
 
     When called for the first time, it queries for user, which is later available as a pure property
     overriding this method. See :meth:`pyramid_fullauth.includeme` for logic behind property.
 
-    :returns: logged in user object, or None
+    :returns: logged-in user object, or None
     :rtype: pyramid_fullauth.models.User
     """
-    if request.unauthenticated_userid:
+    if request.authenticated_userid:
         try:
             user = (
                 pyramid_basemodel.Session.query(User)
-                .filter(User.id == request.unauthenticated_userid)  # pylint:disable=no-member
+                .filter(User.id == request.authenticated_userid)  # pylint:disable=no-member
                 .one()
             )
             return user
