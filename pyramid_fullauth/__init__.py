@@ -11,6 +11,7 @@ from pyramid.interfaces import (
     IAuthenticationPolicy,
     IRootFactory,
     ISessionFactory,
+    ISecurityPolicy,
 )
 from pyramid.session import JSONSerializer
 
@@ -19,6 +20,8 @@ from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform, logout, request_user
 
 __version__ = "1.0.1"
+
+from pyramid_fullauth.security import FullAuthSecurityPolicy
 
 
 def build_fullauth_config(settings):
@@ -75,14 +78,8 @@ def includeme(configurator: Configurator) -> None:
     fullauth_settings = build_fullauth_config(configurator.get_settings())
     configurator.registry["fullauth"] = fullauth_settings
 
-    if configurator.registry.queryUtility(IAuthorizationPolicy) is None:
-        configurator.set_authorization_policy(ACLAuthorizationPolicy())
-
-    # register authentication policy, only if not set already
-    if configurator.registry.queryUtility(IAuthenticationPolicy) is None:
-        configurator.set_authentication_policy(
-            AuthTktAuthenticationPolicy(callback=groupfinder, **fullauth_settings["authtkt"])
-        )
+    if configurator.registry.queryUtility(ISecurityPolicy) is None:
+        configurator.set_security_policy(FullAuthSecurityPolicy(fullauth_settings["authtkt"]))
 
     # register root factory, only if not set already
     if configurator.registry.queryUtility(IRootFactory) is None:
