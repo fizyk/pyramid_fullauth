@@ -1,1 +1,0 @@
-pyramid_fullauth no longer supports Authentication and Authorisation legacy policies.

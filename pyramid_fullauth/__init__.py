@@ -19,7 +19,7 @@ from pyramid_fullauth.auth import groupfinder
 from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform, logout, request_user
 
-__version__ = "1.0.1"
+__version__ = "2.0.0"
 
 from pyramid_fullauth.security import FullAuthSecurityPolicy
 

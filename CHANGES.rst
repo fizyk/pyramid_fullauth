@@ -3,6 +3,40 @@ CHANGELOG
 
 .. towncrier release notes start
 
+2.0.0 (2022-12-27)
+==================
+
+Breaking changes
+----------------
+
+- pyramid_fullauth no longer supports Authentication and Authorisation legacy policies. (`#636 <https://https://github.com/fizyk/pyramid_fullauth/issues/636>`_)
+
+
+Features
+--------
+
+- Add Python 3.10 to the supported python versions (`#495 <https://https://github.com/fizyk/pyramid_fullauth/issues/495>`_)
+- Support python 3.11 (`#621 <https://https://github.com/fizyk/pyramid_fullauth/issues/621>`_)
+- Migrated pyramid_fullauth to the pyramid 2.0 Security policy from legacy authentication and authorization policies.
+
+  You'll have to migrate as well when upgrading pyramid_fullauth. See more at `Upgrading Authentication/Authorization <https://docs.pylonsproject.org/projects/pyramid/en/latest/whatsnew-2.0.html#upgrading-authentication-authorization>`_ (`#636 <https://https://github.com/fizyk/pyramid_fullauth/issues/636>`_)
+
+
+Miscellaneus
+------------
+
+- Dropped custom csrf check option. It wasn't tested internally,
+  wasn't actually used for views, and overshadowed official pyramid's predicate,
+  that was dropped in pyramid 2.0, and was deprecated since pyramid 1.7. (`#387 <https://https://github.com/fizyk/pyramid_fullauth/issues/387>`_)
+- Removed UserEmailMixin.__pattern_mail which was unused. (`#436 <https://https://github.com/fizyk/pyramid_fullauth/issues/436>`_)
+- Use towncrier to manage Changelog (`#619 <https://https://github.com/fizyk/pyramid_fullauth/issues/619>`_)
+- Migrate development dependency management to pipenv (`#620 <https://https://github.com/fizyk/pyramid_fullauth/issues/620>`_)
+- Add your info here (`#622 <https://https://github.com/fizyk/pyramid_fullauth/issues/622>`_)
+- Use shared automerge action for merging dependabot PRs automatically.
+  It's based on github actions. (`#623 <https://https://github.com/fizyk/pyramid_fullauth/issues/623>`_)
+- Migrate version management tool to tbump (`#624 <https://https://github.com/fizyk/pyramid_fullauth/issues/624>`_)
+
+
 1.0.1
 ----------
 
