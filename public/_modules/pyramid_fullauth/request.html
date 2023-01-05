@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyramid_fullauth.request &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.request</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyramid_fullauth.request</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2013 - 2016 by pyramid_fullauth authors and contributors &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of pyramid_fullauth and is released under</span>
+<span class="c1"># the MIT License (MIT): http://opensource.org/licenses/MIT</span>
+<span class="sd">&quot;&quot;&quot;These method gets added to each ``pyramid.request.Request`` object.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPSeeOther</span>
+<span class="kn">from</span> <span class="nn">pyramid.request</span> <span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">remember</span><span class="p">,</span> <span class="n">forget</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql.expression</span> <span class="kn">import</span> <span class="n">func</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm.exc</span> <span class="kn">import</span> <span class="n">NoResultFound</span>
+<span class="kn">import</span> <span class="nn">pyramid_basemodel</span>
+
+<span class="kn">from</span> <span class="nn">pyramid_fullauth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+
+<div class="viewcode-block" id="login_perform"><a class="viewcode-back" href="../../api/request.html#pyramid_fullauth.request.login_perform">[docs]</a><span class="k">def</span> <span class="nf">login_perform</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remember_me</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform login action.</span>
+
+<span class="sd">    :param pyramid.request.Request request: a request object</span>
+<span class="sd">    :param pyramid_fullauth.models.User user: a user object</span>
+<span class="sd">    :param str location: where user should be redirected after login</span>
+<span class="sd">    :param bool remember_me: if True set cookie max_age to one month (60 * 60 * 24 * 30 seconds)</span>
+
+<span class="sd">    :returns: redirect exception</span>
+<span class="sd">    :rtype: pyramid.httpexceptions.HTTPSeeOther</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">logged_at</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">remember_me</span><span class="p">:</span>  <span class="c1"># if remember in POST set cookie timeout to one from configure</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">remember</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">max_age</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="s2">&quot;fullauth&quot;</span><span class="p">][</span><span class="s2">&quot;login&quot;</span><span class="p">][</span><span class="s2">&quot;cookie_max_age&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">remember</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">location</span><span class="p">:</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+
+    <span class="c1"># this remembers user immediately, without the need to redirect (see below)</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HTTPSeeOther</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="request_user"><a class="viewcode-back" href="../../api/request.html#pyramid_fullauth.request.request_user">[docs]</a><span class="k">def</span> <span class="nf">request_user</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return user object.</span>
+
+<span class="sd">    When called for the first time, it queries for user, which is later available as a pure property</span>
+<span class="sd">    overriding this method. See :meth:`pyramid_fullauth.includeme` for logic behind property.</span>
+
+<span class="sd">    :returns: logged-in user object, or None</span>
+<span class="sd">    :rtype: pyramid_fullauth.models.User</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">authenticated_userid</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">pyramid_basemodel</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">authenticated_userid</span><span class="p">)</span>  <span class="c1"># pylint:disable=no-member</span>
+                <span class="o">.</span><span class="n">one</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">user</span>
+        <span class="k">except</span> <span class="n">NoResultFound</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="logout"><a class="viewcode-back" href="../../api/request.html#pyramid_fullauth.request.logout">[docs]</a><span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log user out.</span>
+
+<span class="sd">    :param pyramid.request.Request request: a request object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headerlist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="kc">None</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.request</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>

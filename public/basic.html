@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Basics &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced configuration" href="advanced.html" />
+    <link rel="prev" title="pyramid_fullauth" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="pyramid_fullauth"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basics</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basics">
+<h1>Basics<a class="headerlink" href="#basics" title="Permalink to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">pyramid_fullauth</span></code> provides models and actions that allows to register and log in user as well as reset password functionality.
+It does not provide ability to send appropriate emails, that have to be covered by subscribing to appropriate events emitted by plugin.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, all actions are unrestricted (have permissions set to pyramid.security.NO_PERMISSION_REQUIRED, that way setting default permission in your pyramid app would allow the user to log in, register without the need to being logged in to the system</p>
+</div>
+<section id="simple-usage">
+<h2>Simple usage<a class="headerlink" href="#simple-usage" title="Permalink to this heading">¶</a></h2>
+<p>If You have a <code class="docutils literal notranslate"><span class="pre">sqlalchemy.url</span></code> key in the config file In Your pyramid
+application configuration section just add those two lines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s1">&#39;pyramid_basemodel&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s1">&#39;pyramid_fullauth&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And that’s it, this is the most simple usage of this plugin. To register just
+go to the <strong>/register</strong> url and You will see the form with which You can
+register. Login in is performed on <strong>/login</strong> page</p>
+<p><strong>pyramid_fullauth</strong> uses under the hood <strong>pyramid_yml</strong> to include configuration defaults defined in yaml file, and to override them, you’d have to employ pyramid_yml on your own into the project.</p>
+</section>
+<section id="events-and-event-interfaces">
+<h2>Events and event interfaces<a class="headerlink" href="#events-and-event-interfaces" title="Permalink to this heading">¶</a></h2>
+<p>Plugin emits events while handling requests:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>BeforeRegister
+AfterRegister
+AfterActivate
+AfterResetRequest
+AfterReset
+AlreadyLoggedIn
+BeforeLogIn
+AfterLogIn
+</pre></div>
+</div>
+<p>Events can be found in the <a class="reference internal" href="api/events.html#module-pyramid_fullauth.events" title="pyramid_fullauth.events"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyramid_fullauth.events</span></code></a> package.</p>
+<p>Read the <a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/2.0-branch/narr/events.html#events-chapter" title="(in The Pyramid Web Framework v2.0)"><span>Using Events</span></a> chapter of Pyramid’s documentation to see how to add an event subscriber to Your application and handle those events.</p>
+</section>
+<section id="configuration">
+<span id="id1"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Plugins uses <a class="reference external" href="https://tzfpyramid_yml.readthedocs.org/en/latest/">tzf.pyramid_yml</a> for its configuration settings</p>
+</div>
+<p>Plugin, by default works on these assumptions:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">fullauth.authtkt.secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;fullauth_psst&quot;</span>
+<span class="na">fullauth.authtkt.hashalg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sha512&quot;</span>
+<span class="na">fullauth.session.factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pyramid.session.SignedCookieSessionFactory&quot;</span>
+<span class="na">fullauth.session.settings.secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;THATS_NOT_SECRET_ITS_A_SECRET&quot;</span>
+<span class="na">fullauth.register.password.require</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span>
+<span class="na">fullauth.register.password.length_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">6</span>
+<span class="na">fullauth.register.password.confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span>
+<span class="na">fullauth.redirects.logout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">False</span>
+<span class="na">fullauth.login.cookie_max_age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2592000</span><span class="w">  </span><span class="c1"># 30 days</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For alternative values of the settings above look at config.{env}.yml configurations found in tests.config directory.</p>
+</div>
+</section>
+<section id="fullauth-data-models">
+<h2>Fullauth data models<a class="headerlink" href="#fullauth-data-models" title="Permalink to this heading">¶</a></h2>
+<p><strong>pyramid_fullauth</strong> comes with <a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> models to maintain the user data.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/models.html#pyramid_fullauth.models.User" title="pyramid_fullauth.models.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyramid_fullauth.models.User</span></code></a> - is the base model with most relevant user data</p></li>
+<li><p><a class="reference internal" href="api/models.html#pyramid_fullauth.models.Group" title="pyramid_fullauth.models.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyramid_fullauth.models.Group</span></code></a> - allows grouping user in permission groups</p></li>
+<li><p><a class="reference internal" href="api/models.html#pyramid_fullauth.models.AuthenticationProvider" title="pyramid_fullauth.models.AuthenticationProvider"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyramid_fullauth.models.AuthenticationProvider</span></code></a> - is where the 3rd party authentication system identifiers for different providers lives</p></li>
+</ul>
+<p>Fullauth models are based on declarative_base defined in <a class="reference external" href="https://github.com/thruflo/pyramid_basemodel">pyramid_basemodel</a> and functionality uses Session object provided
+by basemodel.</p>
+<p>To connect fullauth’s models to your database, it is required to base your own models on the same
+declarative_base. It can be achieved by either using those provided by pyramid_basemodel or patching
+them with your own.</p>
+<p>Last thing is updating the database. If you’re using alembic for that, remember to import fullauth
+models in alembic’s env,py or in common place for your model. If models won’t be imported while
+running alembic commands, they won’t be seen by alembic.</p>
+</section>
+<section id="request-object-additional-methods">
+<h2>Request object additional methods<a class="headerlink" href="#request-object-additional-methods" title="Permalink to this heading">¶</a></h2>
+<p>Request object gets these methods:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/request.html#pyramid_fullauth.request.login_perform" title="pyramid_fullauth.request.login_perform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">login_perform()</span></code></a> - performs login action</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">user()</span></code> - returns logged in user or None</p></li>
+<li><p><a class="reference internal" href="api/request.html#pyramid_fullauth.request.logout" title="pyramid_fullauth.request.logout"><code class="xref py py-meth docutils literal notranslate"><span class="pre">logout()</span></code></a> - logs user out</p></li>
+</ul>
+</section>
+<section id="csrf-check">
+<h2>CSRF Check<a class="headerlink" href="#csrf-check" title="Permalink to this heading">¶</a></h2>
+<p>To guard your site against csrf, please follow up
+<a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/security.html#checking-csrf-tokens-automatically">official pyramid’s documentation settings</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Basics</a><ul>
+<li><a class="reference internal" href="#simple-usage">Simple usage</a></li>
+<li><a class="reference internal" href="#events-and-event-interfaces">Events and event interfaces</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#fullauth-data-models">Fullauth data models</a></li>
+<li><a class="reference internal" href="#request-object-additional-methods">Request object additional methods</a></li>
+<li><a class="reference internal" href="#csrf-check">CSRF Check</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">pyramid_fullauth</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="advanced.html"
+                          title="next chapter">Advanced configuration</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/basic.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="pyramid_fullauth"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basics</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>

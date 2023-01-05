@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyramid_fullauth.tools &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.tools</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyramid_fullauth.tools</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2013 - 2016 by pyramid_fullauth authors and contributors &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of pyramid_fullauth and is released under</span>
+<span class="c1"># the MIT License (MIT): http://opensource.org/licenses/MIT</span>
+<span class="sd">&quot;&quot;&quot;Additional tools used in pyramid_fullauth.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+
+<span class="kn">from</span> <span class="nn">pyramid_fullauth.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EmptyError</span><span class="p">,</span>
+    <span class="n">ShortPasswordError</span><span class="p">,</span>
+    <span class="n">PasswordConfirmMismatchError</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="password_generator"><a class="viewcode-back" href="../../api/tools.html#pyramid_fullauth.tools.password_generator">[docs]</a><span class="k">def</span> <span class="nf">password_generator</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate random password.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        TODO: tests!</span>
+
+<span class="sd">    :param int length: length of a password to Generates</span>
+<span class="sd">    :param list chars: list of characters from which to choose</span>
+<span class="sd">    :returns: password</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">choice</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="validate_passsword"><a class="viewcode-back" href="../../api/tools.html#pyramid_fullauth.tools.validate_passsword">[docs]</a><span class="k">def</span> <span class="nf">validate_passsword</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate password properly.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        If no user provided, password is just validated</span>
+
+<span class="sd">    :param pyramid.request.Request request: request object</span>
+<span class="sd">    :param str password: password to be set</span>
+<span class="sd">    :param pyramid_fullauth.models.User user: user object</span>
+
+<span class="sd">    :raises: pyramid_fullauth.exceptions.ValidateError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">password_config</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="s2">&quot;fullauth&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">EmptyError</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Please enter your password&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;pyramid_fullauth&quot;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">password_config</span><span class="p">[</span><span class="s2">&quot;length_min&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">password_config</span><span class="p">[</span><span class="s2">&quot;length_min&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">ShortPasswordError</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Password is too short&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;pyramid_fullauth&quot;</span><span class="p">))</span>
+
+    <span class="c1"># here if password doesn&#39;t match</span>
+    <span class="k">if</span> <span class="n">password_config</span><span class="p">[</span><span class="s2">&quot;confirm&quot;</span><span class="p">]:</span>
+        <span class="n">confirm_password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;confirm_password&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">password</span> <span class="o">!=</span> <span class="n">confirm_password</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PasswordConfirmMismatchError</span><span class="p">(</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">_</span><span class="p">(</span>
+                    <span class="s2">&quot;password-mismatch&quot;</span><span class="p">,</span>
+                    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Passwords don&#39;t match&quot;</span><span class="p">,</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;pyramid_fullauth&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.tools</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>

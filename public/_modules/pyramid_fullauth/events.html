@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyramid_fullauth.events &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.events</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyramid_fullauth.events</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2013 - 2016 by pyramid_fullauth authors and contributors &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of pyramid_fullauth and is released under</span>
+<span class="c1"># the MIT License (MIT): http://opensource.org/licenses/MIT</span>
+
+<span class="sd">&quot;&quot;&quot;pyramid_fullauth emits these events during whole cycle.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">_BaseRegisterEvent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base fullauth event.</span>
+
+<span class="sd">    most of the fullauth&#39;s event will provide both request and user</span>
+<span class="sd">    object with some additional data (these will be described then).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize event.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        :param pyramid_fullauth.models.User user: user object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+
+
+<div class="viewcode-block" id="BeforeRegister"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.BeforeRegister">[docs]</a><span class="k">class</span> <span class="nc">BeforeRegister</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute custom code at the start of registration process.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        User object is not yet in session.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">errors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize event.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        :param pyramid_fullauth.models.User user: user object</span>
+<span class="sd">        :param dict errors: a dictionary with wrong/not submitted fields</span>
+<span class="sd">            with format - fields for which error occured: error message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_BaseRegisterEvent</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span></div>
+
+
+<div class="viewcode-block" id="AfterRegister"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterRegister">[docs]</a><span class="k">class</span> <span class="nc">AfterRegister</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add custom post-processing code in registration process.</span>
+
+<span class="sd">    Can be used to add e.g. e-mail sending with registration links.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        User object is already in a session.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        If HTTPRedirection is risen from event listener, then response_values</span>
+<span class="sd">        will not be used!</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">response_values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize event.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        :param pyramid_fullauth.models.User user: user object</span>
+<span class="sd">        :param dict response_values: a dictionary with response values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_BaseRegisterEvent</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_values</span> <span class="o">=</span> <span class="n">response_values</span></div>
+
+
+<div class="viewcode-block" id="AfterActivate"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterActivate">[docs]</a><span class="k">class</span> <span class="nc">AfterActivate</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add custom post-processing logic after user gets activated.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="AfterResetRequest"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterResetRequest">[docs]</a><span class="k">class</span> <span class="nc">AfterResetRequest</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add custom post-processing after user sends request to reset password.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="k">class</span> <span class="nc">BeforeReset</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add custom pre-processing before the actual reset-password process.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="AfterReset"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterReset">[docs]</a><span class="k">class</span> <span class="nc">AfterReset</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add custom post-processing after the actual reset-password process.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="AlreadyLoggedIn"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AlreadyLoggedIn">[docs]</a><span class="k">class</span> <span class="nc">AlreadyLoggedIn</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Allow execute custom logic, when logged in user tries to log in again.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize event.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span></div>
+
+
+<div class="viewcode-block" id="BeforeLogIn"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.BeforeLogIn">[docs]</a><span class="k">class</span> <span class="nc">BeforeLogIn</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add custom logic before user gets logged in.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all AttributeError that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">        User param set to None when user is not found or request method is GET.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="AfterLogIn"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterLogIn">[docs]</a><span class="k">class</span> <span class="nc">AfterLogIn</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add custom logic after user logs in.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Social events</span>
+<span class="k">class</span> <span class="nc">_BaseSocialRegister</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base for all social requests.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize base events.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        :param pyramid_fullauth.models.User user: user object</span>
+<span class="sd">        :param dict profile: a dictionary with profile data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_BaseRegisterEvent</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">profile</span>
+
+
+<div class="viewcode-block" id="BeforeSocialRegister"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.BeforeSocialRegister">[docs]</a><span class="k">class</span> <span class="nc">BeforeSocialRegister</span><span class="p">(</span><span class="n">_BaseSocialRegister</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds custom logic before the social login process start.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="AfterSocialRegister"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterSocialRegister">[docs]</a><span class="k">class</span> <span class="nc">AfterSocialRegister</span><span class="p">(</span><span class="n">_BaseSocialRegister</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add custom logic after user registers through social network.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">response_values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize event.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        :param pyramid_fullauth.models.User user: user object</span>
+<span class="sd">        :param dict profile: a dictionary with profile data</span>
+<span class="sd">        :param dict response_values: a dictionary with response values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_BaseSocialRegister</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_values</span> <span class="o">=</span> <span class="n">response_values</span></div>
+
+
+<div class="viewcode-block" id="AfterSocialLogIn"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.AfterSocialLogIn">[docs]</a><span class="k">class</span> <span class="nc">AfterSocialLogIn</span><span class="p">(</span><span class="n">_BaseSocialRegister</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom logic after user logs in through social network.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SocialAccountAlreadyConnected"><a class="viewcode-back" href="../../api/events.html#pyramid_fullauth.events.SocialAccountAlreadyConnected">[docs]</a><span class="k">class</span> <span class="nc">SocialAccountAlreadyConnected</span><span class="p">(</span><span class="n">_BaseSocialRegister</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Event raised when social account is already connected to some other user.</span>
+
+<span class="sd">    Allow to add custom logic, when someone tries to connect social account to</span>
+<span class="sd">    second user in application.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Action emitting this event, should catch all HTTPRedirection that might</span>
+<span class="sd">        be risen in event listener.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">response_values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize event.</span>
+
+<span class="sd">        :param pyramid.request.Request request: request object</span>
+<span class="sd">        :param pyramid_fullauth.models.User user: user object</span>
+<span class="sd">        :param dict profile: a dictionary with profile data</span>
+<span class="sd">        :param dict response_values: a dictionary with response values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_BaseSocialRegister</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_values</span> <span class="o">=</span> <span class="n">response_values</span></div>
+
+
+<span class="c1"># Email change events.</span>
+
+
+<span class="k">class</span> <span class="nc">BeforeEmailChange</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow to add custom validation (like checking password) before email change process.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">AfterEmailChange</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow to add some custom post-processing, like e-mail sending, after email change process.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">AfterEmailChangeActivation</span><span class="p">(</span><span class="n">_BaseRegisterEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow to add custom logic, after changed email had been activated.&quot;&quot;&quot;</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.events</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>

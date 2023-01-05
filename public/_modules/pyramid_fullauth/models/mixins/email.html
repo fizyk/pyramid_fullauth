@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyramid_fullauth.models.mixins.email &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css" />
+    
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../models.html" accesskey="U">pyramid_fullauth.models</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.models.mixins.email</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyramid_fullauth.models.mixins.email</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2013 - 2016 by pyramid_fullauth authors and contributors &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of pyramid_fullauth and is released under</span>
+<span class="c1"># the MIT License (MIT): http://opensource.org/licenses/MIT</span>
+<span class="sd">&quot;&quot;&quot;Email mixin related module.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">validates</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.hybrid</span> <span class="kn">import</span> <span class="n">hybrid_property</span>
+
+
+<span class="kn">from</span> <span class="nn">pyramid_fullauth.exceptions</span> <span class="kn">import</span> <span class="n">EmptyError</span><span class="p">,</span> <span class="n">EmailValidationError</span>
+<span class="kn">from</span> <span class="nn">pyramid_fullauth.models.extensions</span> <span class="kn">import</span> <span class="n">CaseInsensitive</span>
+
+<span class="n">PATTERN_MAIL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;(^[-!#$%&amp;&#39;*+/=?^_`</span><span class="si">{}</span><span class="s2">|~0-9A-Z]{0,256}(\.[-!#$%&amp;&#39;*+/=?^_`</span><span class="si">{}</span><span class="s2">|~0-9A-Z]+){0,256}&quot;</span>  <span class="c1"># dot-atom</span>
+    <span class="c1"># quoted-string, see also http://tools.ietf.org/html/rfc2822#section-3.2.5</span>
+    <span class="sa">r</span><span class="s1">&#39;|^&quot;([\001-\010\013\014\016-\037!#-\[\]-\177 ]|</span><span class="se">\\</span><span class="s1">[\001-\011\013\014\016-\177 ]){0,256}&quot;&#39;</span>
+    <span class="sa">r</span><span class="s2">&quot;)@((?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]</span><span class="si">{2}</span><span class="s2">\.?)$)&quot;</span>  <span class="c1"># domain</span>
+    <span class="c1"># literal form, ipv4 address (SMTP 4.1.3)</span>
+    <span class="sa">r</span><span class="s2">&quot;|\[(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d))</span><span class="si">{3}</span><span class="s2">\]$&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="UserEmailMixin"><a class="viewcode-back" href="../../../../api/models.html#pyramid_fullauth.models.mixins.UserEmailMixin">[docs]</a><span class="k">class</span> <span class="nc">UserEmailMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;User email fields and functionality.&quot;&quot;&quot;</span>
+
+    <span class="n">_email</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">254</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># RFC5321 and RFC3696(errata)</span>
+    <span class="n">_new_email</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;new_email&quot;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">254</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># RFC5321 and RFC3696(errata)</span>
+    <span class="n">email_change_key</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Switch possible email and new_email kwarg into new column attribute names.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;email&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;new_email&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;_new_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;new_email&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@hybrid_property</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Email field getter.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_email</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_email</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_email</span>
+
+    <span class="nd">@email</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Email field setter.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_email</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@email</span><span class="o">.</span><span class="n">comparator</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># pylint:disable=no-self-argument,method-hidden</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Email field comparator.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CaseInsensitive</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_email</span><span class="p">)</span>
+
+    <span class="nd">@hybrid_property</span>
+    <span class="k">def</span> <span class="nf">new_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Email field getter.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_email</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_email</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_email</span>
+
+    <span class="nd">@new_email</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">new_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Email field setter.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_new_email</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@new_email</span><span class="o">.</span><span class="n">comparator</span>
+    <span class="k">def</span> <span class="nf">new_email</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># pylint:disable=no-self-argument,method-hidden</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Email field comparator.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CaseInsensitive</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_new_email</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UserEmailMixin.validate_email"><a class="viewcode-back" href="../../../../api/models.html#pyramid_fullauth.models.mixins.UserEmailMixin.validate_email">[docs]</a>    <span class="nd">@validates</span><span class="p">(</span><span class="s2">&quot;_email&quot;</span><span class="p">,</span> <span class="s2">&quot;_new_email&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate email addresses.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            See pyramid docs about</span>
+<span class="sd">            `simple validators &lt;http://docs.sqlalchemy.org/en/latest/orm/mapper_config.html#simple-validators&gt;`_</span>
+
+<span class="sd">        :param str key: field key</span>
+<span class="sd">        :param str address: email address</span>
+
+<span class="sd">        :raises EmailValidationError:</span>
+<span class="sd">        :raises EmptyError:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">address</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">PATTERN_MAIL</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">address</span>
+
+            <span class="k">raise</span> <span class="n">EmailValidationError</span><span class="p">(</span><span class="s2">&quot;Incorrect e-mail format&quot;</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">EmptyError</span><span class="p">(</span><span class="s2">&quot;E-mail is empty&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UserEmailMixin.set_new_email"><a class="viewcode-back" href="../../../../api/models.html#pyramid_fullauth.models.mixins.UserEmailMixin.set_new_email">[docs]</a>    <span class="k">def</span> <span class="nf">set_new_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email_new</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set new email and generate new email change hash.</span>
+
+<span class="sd">        :param str email_new: email address</span>
+
+<span class="sd">        :returns: generated email_change_key</span>
+<span class="sd">        :trype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_email</span> <span class="o">=</span> <span class="n">email_new</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_change_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">email_change_key</span></div>
+
+<div class="viewcode-block" id="UserEmailMixin.change_email"><a class="viewcode-back" href="../../../../api/models.html#pyramid_fullauth.models.mixins.UserEmailMixin.change_email">[docs]</a>    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change email after activation.</span>
+
+<span class="sd">        We don&#39;t clear new email field because of validator of email which won&#39;t allow to None value.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_change_key</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../models.html" >pyramid_fullauth.models</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyramid_fullauth.models.mixins.email</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>

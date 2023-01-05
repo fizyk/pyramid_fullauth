@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>exceptions &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="routing.predicates" href="predicates.html" />
+    <link rel="prev" title="events" href="events.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="predicates.html" title="routing.predicates"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="events.html" title="events"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" accesskey="U">Api</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">exceptions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-pyramid_fullauth.exceptions">
+<span id="exceptions"></span><h1>exceptions<a class="headerlink" href="#module-pyramid_fullauth.exceptions" title="Permalink to this heading">¶</a></h1>
+<p>Fullauth’s exceptions definition.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyramid_fullauth.exceptions.DeleteException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyramid_fullauth.exceptions.</span></span><span class="sig-name descname"><span class="pre">DeleteException</span></span><a class="reference internal" href="../_modules/pyramid_fullauth/exceptions.html#DeleteException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyramid_fullauth.exceptions.DeleteException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception risen when the user can’t be deleted.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyramid_fullauth.exceptions.EmailValidationError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyramid_fullauth.exceptions.</span></span><span class="sig-name descname"><span class="pre">EmailValidationError</span></span><a class="reference internal" href="../_modules/pyramid_fullauth/exceptions.html#EmailValidationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyramid_fullauth.exceptions.EmailValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception thrown, when there’s incorrect email provided.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyramid_fullauth.exceptions.EmptyError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyramid_fullauth.exceptions.</span></span><span class="sig-name descname"><span class="pre">EmptyError</span></span><a class="reference internal" href="../_modules/pyramid_fullauth/exceptions.html#EmptyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyramid_fullauth.exceptions.EmptyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown whenever user is trying to set empty value.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyramid_fullauth.exceptions.PasswordConfirmMismatchError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyramid_fullauth.exceptions.</span></span><span class="sig-name descname"><span class="pre">PasswordConfirmMismatchError</span></span><a class="reference internal" href="../_modules/pyramid_fullauth/exceptions.html#PasswordConfirmMismatchError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyramid_fullauth.exceptions.PasswordConfirmMismatchError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown when there’s a mismatch with cpassword_confirm.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyramid_fullauth.exceptions.ShortPasswordError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyramid_fullauth.exceptions.</span></span><span class="sig-name descname"><span class="pre">ShortPasswordError</span></span><a class="reference internal" href="../_modules/pyramid_fullauth/exceptions.html#ShortPasswordError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyramid_fullauth.exceptions.ShortPasswordError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown when password doesn’t meet the length requirement.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyramid_fullauth.exceptions.ValidateError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyramid_fullauth.exceptions.</span></span><span class="sig-name descname"><span class="pre">ValidateError</span></span><a class="reference internal" href="../_modules/pyramid_fullauth/exceptions.html#ValidateError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyramid_fullauth.exceptions.ValidateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base of every validate error in pyramid_fullauth.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">exceptions</a><ul>
+<li><a class="reference internal" href="#pyramid_fullauth.exceptions.DeleteException"><code class="docutils literal notranslate"><span class="pre">DeleteException</span></code></a></li>
+<li><a class="reference internal" href="#pyramid_fullauth.exceptions.EmailValidationError"><code class="docutils literal notranslate"><span class="pre">EmailValidationError</span></code></a></li>
+<li><a class="reference internal" href="#pyramid_fullauth.exceptions.EmptyError"><code class="docutils literal notranslate"><span class="pre">EmptyError</span></code></a></li>
+<li><a class="reference internal" href="#pyramid_fullauth.exceptions.PasswordConfirmMismatchError"><code class="docutils literal notranslate"><span class="pre">PasswordConfirmMismatchError</span></code></a></li>
+<li><a class="reference internal" href="#pyramid_fullauth.exceptions.ShortPasswordError"><code class="docutils literal notranslate"><span class="pre">ShortPasswordError</span></code></a></li>
+<li><a class="reference internal" href="#pyramid_fullauth.exceptions.ValidateError"><code class="docutils literal notranslate"><span class="pre">ValidateError</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="events.html"
+                          title="previous chapter">events</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="predicates.html"
+                          title="next chapter">routing.predicates</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/exceptions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="predicates.html" title="routing.predicates"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="events.html" title="events"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >Api</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">exceptions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Social register and login &#8212; pyramid_fullauth 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Narrative" href="narrative.html" />
+    <link rel="prev" title="Advanced configuration" href="advanced.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="narrative.html" title="Narrative"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced configuration"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Social register and login</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="social-register-and-login">
+<h1>Social register and login<a class="headerlink" href="#social-register-and-login" title="Permalink to this heading">¶</a></h1>
+<p>Module provides register and login funcion using social sites such as facebook or twitter.
+Those actions use velruse library for unification of different authentication providers.
+Now only facebook and twitter were tested, but this library offers many more.</p>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<p>Plugin creates login/register views for auth providers provided in config file.
+Below is example for facebook, you can check required configuration for other providers here: <a class="reference external" href="https://velruse.readthedocs.org/en/latest/">https://velruse.readthedocs.org/en/latest/</a></p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">fullauth.social.facebook.consumer_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">some_key</span>
+<span class="na">fullauth.social.facebook.consumer_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">some_secret</span>
+<span class="na">fullauth.social.facebook.scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">mail,offline_access</span>
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<p>In default views for register and login there are links in <strong>Social login</strong> section. If you want to show those buttons somewhere else you can
+do this by
+importing function for creating urls:</p>
+<div class="highlight-mako notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;social&quot;</span> <span class="na">file=</span><span class="s">&quot;pyramid_fullauth:resources/helpers/social.mako&quot;</span> <span class="na">import=</span><span class="s">&quot;social_auth_uri&quot;</span><span class="cp">/&gt;</span>
+</pre></div>
+</div>
+<p>and puting one of those links in your templates:</p>
+<div class="highlight-mako notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;a href=&quot;</span><span class="cp">${</span><span class="n">social</span><span class="o">.</span><span class="n">social_auth_uri</span><span class="p">(</span><span class="s1">&#39;facebook&#39;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="s2">&quot;fullauth&quot;</span><span class="p">][</span><span class="s2">&quot;social&quot;</span><span class="p">][</span><span class="s2">&quot;facebook&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">])</span><span class="cp">}</span><span class="x">&quot;&gt;Connect with facebook&lt;/a&gt;</span>
+<span class="x">&lt;a href=&quot;</span><span class="cp">${</span><span class="n">social</span><span class="o">.</span><span class="n">social_auth_uri</span><span class="p">(</span><span class="s1">&#39;twitter&#39;</span><span class="p">)</span><span class="cp">}</span><span class="x">&quot;&gt;Connect with twitter&lt;/a&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this heading">¶</a></h2>
+<p>Plugin emits three events only for social login: <a class="reference internal" href="api/events.html"><span class="doc">events</span></a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Social register and login</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#events">Events</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="advanced.html"
+                          title="previous chapter">Advanced configuration</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="narrative.html"
+                          title="next chapter">Narrative</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/social.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="narrative.html" title="Narrative"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced configuration"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pyramid_fullauth 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Social register and login</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Grzegorz Śliwiński.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    </div>
+  </body>
+</html>
