@@ -42,7 +42,7 @@ requires-python = ">= 3.8"
 "Source" = "https://github.com/fizyk/pyramid_fullauth/"
 "Bug Tracker" = "https://github.com/fizyk/pyramid_fullauth/issues"
 "Changelog" = "https://github.com/fizyk/pyramid_fullauth/blob/v2.0.0/CHANGES.rst"
-"Documentation" = "https://pyramid-fullauth.readthedocs.org/"
+"Documentation" = "https://fizyk.dev/pyramid_fullauth/"
 
 [project.optional-dependencies]
 docs = ["sphinx"]
