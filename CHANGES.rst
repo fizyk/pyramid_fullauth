@@ -3,6 +3,15 @@ CHANGELOG
 
 .. towncrier release notes start
 
+2.0.1 (2023-01-05)
+==================
+
+Miscellaneus
+------------
+
+- Deploy documentation to github pages and change package uri to the new place documentation is being published on. (`#638 <https://https://github.com/fizyk/pyramid_fullauth/issues/638>`_)
+
+
 2.0.0 (2022-12-27)
 ==================
 

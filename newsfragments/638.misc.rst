@@ -1,1 +1,0 @@
-Deploy documentation to github pages and change package uri to the new place documentation is being published on.

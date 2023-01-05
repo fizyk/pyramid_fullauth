@@ -1,6 +1,6 @@
 [project]
 name = "pyramid_fullauth"
-version = "2.0.0"
+version = "2.0.1"
 description = "pyramid_fullauth provides full authentication / authorisation implementation for pyramid applications"
 readme = "README.rst"
 keywords = ["pyramid", "authentication", "authorisation", "user"]
@@ -41,7 +41,7 @@ requires-python = ">= 3.8"
 [project.urls]
 "Source" = "https://github.com/fizyk/pyramid_fullauth/"
 "Bug Tracker" = "https://github.com/fizyk/pyramid_fullauth/issues"
-"Changelog" = "https://github.com/fizyk/pyramid_fullauth/blob/v2.0.0/CHANGES.rst"
+"Changelog" = "https://github.com/fizyk/pyramid_fullauth/blob/v2.0.1/CHANGES.rst"
 "Documentation" = "https://fizyk.dev/pyramid_fullauth/"
 
 [project.optional-dependencies]
@@ -101,7 +101,7 @@ include = '.*\.pyi?$'
 # github_url = "https://github.com/<user or organization>/<project>/"
 
 [tool.tbump.version]
-current = "2.0.0"
+current = "2.0.1"
 
 # Example of a semver regexp.
 # Make sure this matches current_version before
