@@ -19,7 +19,11 @@
 
 import sys
 import os
+import pathlib
 
+# Add project's root to path.
+p = pathlib.Path(os.getcwd())
+sys.path.append(str(p.parent.parent))
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -301,6 +305,6 @@ autoclass_content = "both"
 # Intersphinx configuration
 intersphinx_mapping = {
     "python": ("http://docs.python.org/", None),
-    "pyramid": ("http://docs.pylonsproject.org/projects/pyramid/en/1.10-branch/", None),
-    "sqlalchemy": ("http://docs.sqlalchemy.org/en/13/", None),
+    "pyramid": ("http://docs.pylonsproject.org/projects/pyramid/en/2.0-branch/", None),
+    "sqlalchemy": ("http://docs.sqlalchemy.org/en/14/", None),
 }
