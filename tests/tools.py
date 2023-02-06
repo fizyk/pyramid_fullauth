@@ -38,7 +38,6 @@ def is_user_logged(app):
     """Check for auth_tkt cookies beeing set to see if user is logged in."""
     cookies = app.cookies
     if "auth_tkt" in cookies and cookies["auth_tkt"]:
-
         return True
     return False
 

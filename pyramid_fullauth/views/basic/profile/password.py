@@ -88,7 +88,6 @@ class PasswordResetContinueView(BaseView):
         password = self.request.POST.get("password", None)
         password_confirm = self.request.POST.get("confirm_password", None)
         if password == password_confirm:
-
             try:
                 self.request.registry.notify(BeforeReset(self.request, user))
                 validate_passsword(self.request, password, user)
