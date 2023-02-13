@@ -7,7 +7,7 @@
 from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.request import Request
 from pyramid.security import remember, forget
-from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.functions import func
 from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
 
@@ -26,7 +26,7 @@ def login_perform(request, user, location=None, remember_me=False):
     :returns: redirect exception
     :rtype: pyramid.httpexceptions.HTTPSeeOther
     """
-    user.logged_at = func.now()
+    user.logged_at = func.now()  # pylint:disable=not-callable
     if remember_me:  # if remember in POST set cookie timeout to one from configure
         headers = remember(
             request,
