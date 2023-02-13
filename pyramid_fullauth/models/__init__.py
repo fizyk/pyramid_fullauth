@@ -42,8 +42,8 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
     activate_key = Column(String(255), default=lambda: str(uuid.uuid4()), unique=True)
     address_ip = Column(String(15), nullable=False)
 
-    registered_at = Column(DateTime, default=func.now(), nullable=False)
-    logged_at = Column(DateTime, default=func.now(), nullable=False)
+    registered_at = Column(DateTime, default=func.now(), nullable=False)  # pylint:disable=not-callable
+    logged_at = Column(DateTime, default=func.now(), nullable=False)  # pylint:disable=not-callable
     activated_at = Column(DateTime, nullable=True)
     deactivated_at = Column(DateTime, nullable=True)
     deleted_at = Column(DateTime, nullable=True)
