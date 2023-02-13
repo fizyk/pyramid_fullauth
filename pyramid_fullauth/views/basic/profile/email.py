@@ -56,10 +56,9 @@ class EmailChangeViews(BaseView):
                 response_values["url"] = redirect.location
                 return response_values
             return redirect
-        else:
-            if self.request.is_xhr:
-                return response_values
-            return HTTPSeeOther(location="/")
+        if self.request.is_xhr:
+            return response_values
+        return HTTPSeeOther(location="/")
 
     def validate_email(self, user):
         """

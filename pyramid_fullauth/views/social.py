@@ -114,8 +114,7 @@ class SocialLoginViews(BaseView):
         except HTTPRedirection as redirect:
             # it's a redirect, let's follow it!
             return self.request.login_perform(user, location=redirect.location)
-        else:
-            return self.request.login_perform(user)
+        return self.request.login_perform(user)
 
     def _connect_user(self, response_values):
         """
