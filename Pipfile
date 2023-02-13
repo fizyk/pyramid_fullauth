@@ -8,7 +8,7 @@ pyramid = "==2"
 pyramid-localize = "==1.0.4"
 pyramid-basemodel = "==0.5.3"
 pyramid-mako = "==1.1.0"
-sqlalchemy = "==1.4.45"
+sqlalchemy = "==1.4.46"
 velruse = "==1.1.1"
 
 [dev-packages]
