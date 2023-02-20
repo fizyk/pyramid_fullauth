@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 pyramid = "==2.0.1"
 pyramid-localize = "==1.0.4"
-pyramid-basemodel = "==0.5.3"
+pyramid-basemodel = "==0.6.0"
 pyramid-mako = "==1.1.0"
 sqlalchemy = "==2.0.4"
 velruse = "==1.1.1"
