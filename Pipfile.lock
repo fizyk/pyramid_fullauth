@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "30ab02ef788c51414b655098247217c0922d8f94d36ca77ef9bae103ab180264"
+            "sha256": "f3b20125bab54f77954754d5379830517398774a028d9feebd23fa3bdfe01742"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -1249,11 +1249,11 @@
         },
         "pytest-mysql": {
             "hashes": [
-                "sha256:a62bfd317d34f7ac21c1f28decb6c3f1dbb8aa445622316b2317378baa90249f",
-                "sha256:c66f5e76fcf17d189086d310b5febf3a8057bdc0106d18b2fd59a361ce64d42f"
+                "sha256:69c334def686d0085072ad2ec26265a12f42180bb0a6af20a86a016c6d447b5e",
+                "sha256:78a175715523b8521d9f536eb233946d528ac2c5b7e50bfdbaf98a26fe979fec"
             ],
             "index": "pypi",
-            "version": "==2.3.1"
+            "version": "==2.4.0"
         },
         "pytest-postgresql": {
             "hashes": [
