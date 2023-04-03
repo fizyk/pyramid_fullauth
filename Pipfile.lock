@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e750e48b2489ecf31d6faba9441484b33f6fa765ac3a1f7ca8ef960c4482639c"
+            "sha256": "24f2741fe8ec31bfb964fb84df722001f01093a2b6d39404fa4e70afd650aa5b"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -758,7 +758,7 @@
                 "sha256:2f67e50cf474e76ad160c3e660bbad98bf8b8dfb8d847765f3a261b7e13c05fa",
                 "sha256:6a1ebdbbcd83a0fa06b2f63f4434082a3ba8664aebedd91f1ff86b9e4289d53e"
             ],
-            "markers": "python_version >= '3.7' and python_version < '4.0'",
+            "markers": "python_version >= '3.7' and python_version < '4'",
             "version": "==0.17.2"
         },
         "click": {
@@ -1245,11 +1245,11 @@
         },
         "pytest-mysql": {
             "hashes": [
-                "sha256:0f3a6d7e44b7941064119a8de69a08c4bd7c6f8835675f7145d0851390183a3f",
-                "sha256:fce821a981ad37a8daeef7118eb69c840de309b955835bb16ca7c3cc31c39882"
+                "sha256:05467c47b9414bc88094741a7c397d46a7cf74e8b0d837396dc642d42938d97a",
+                "sha256:e5e78fd736b62b2ff941f4675bc399f258dce0cdc81ae447d3861a8b2e8308ce"
             ],
             "index": "pypi",
-            "version": "==2.4.1"
+            "version": "==2.4.2"
         },
         "pytest-postgresql": {
             "hashes": [
@@ -1454,7 +1454,7 @@
                 "sha256:2a001a9efa40d2a7e5d9cd8d1527c75f41814eb6afce2c3d207402547b1e5ead",
                 "sha256:54bd969725838d9861a9fa27f8d971f79d275d94ae255f5c501f53bb6d9929eb"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4.0'",
+            "markers": "python_version >= '3.6' and python_version < '4'",
             "version": "==3.0.0"
         },
         "wmctrl": {
