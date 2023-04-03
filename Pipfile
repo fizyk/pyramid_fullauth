@@ -13,7 +13,7 @@ velruse = "==1.1.1"
 
 [dev-packages]
 towncrier = "==22.12.0"
-black = "==23.1.0"
+black = "==23.3.0"
 pydocstyle = {version = "==6.3.0", extras = ["toml"]}
 pycodestyle = "==2.10.0"
 pylint = "==2.17.1"
