@@ -10,7 +10,6 @@ jobs:
   basic_linters:
     uses: fizyk/actions-reuse/.github/workflows/linters-python.yml@v2.2.1
     with:
-      pipenv-install-options: "--skip-lock"
       pylint: true
       black: true
       pycodestyle: true
