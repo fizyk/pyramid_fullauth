@@ -23,7 +23,7 @@ mock = "==5.1.0"
 pytest-mysql = "==2.4.2"
 pytest-postgresql = "==5.0.0"
 pytest-pyramid = "==1.0.2"
-tbump = "==6.10.0"
+tbump = "==6.11.0"
 pdbpp = "==0.10.3"
 sphinx = {version = "==7.2.4", markers="python_version > '3.8'"}
 psycopg = "==3.1.10"
