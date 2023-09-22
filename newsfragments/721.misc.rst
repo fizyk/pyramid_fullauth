@@ -1,0 +1,7 @@
+For postgresql tests use the ability of pytest-postgresql to create database
+and fill in it's contents once per full test runs.
+
+This ought to speed up the full test suite as instead of creating database
+and filling up with test data each test it'll be done only once,
+and each tests postgresql will clone the template database with data
+into a test database.
