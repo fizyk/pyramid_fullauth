@@ -4,8 +4,8 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Forbidden views."""
 
-from pyramid.view import forbidden_view_config
 from pyramid.httpexceptions import HTTPFound
+from pyramid.view import forbidden_view_config
 
 from pyramid_fullauth.views import BaseView
 

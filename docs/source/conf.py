@@ -17,9 +17,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
 import pathlib
+import sys
 
 # Add project's root to path.
 p = pathlib.Path(os.getcwd())

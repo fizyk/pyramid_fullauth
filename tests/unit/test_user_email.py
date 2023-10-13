@@ -5,8 +5,7 @@ NEW_EMAIL = "new@example.com"
 
 
 def test_set_new_email():
-    """
-    Test User.set_new_email method.
+    """Test User.set_new_email method.
 
     setting new email should result in setting new_email field,
     and key used to activate the change.
@@ -21,8 +20,7 @@ def test_set_new_email():
 
 
 def test_change_email():
-    """
-    Test User.change_email method.
+    """Test User.change_email method.
 
     Calling it should copy new email set by set_new_email method
     into regular email field.

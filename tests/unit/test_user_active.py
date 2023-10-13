@@ -12,8 +12,7 @@ def test_is_active_error():
 
 
 def test_is_active(db_session, user):
-    """
-    Test is_active attribute.
+    """Test is_active attribute.
 
     Setting is_active to True, should result in change of activated_at date being set
     Setting to false, should set deactivated_at.

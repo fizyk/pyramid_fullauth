@@ -1,8 +1,7 @@
 """Test provider related user methods."""
 import transaction
 
-from pyramid_fullauth.models import User
-from pyramid_fullauth.models import AuthenticationProvider
+from pyramid_fullauth.models import AuthenticationProvider, User
 
 
 def test_user_provider_id(db_session, user):

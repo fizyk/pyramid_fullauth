@@ -1,5 +1,4 @@
-"""
-Test for recognizing default settings.
+"""Test for recognizing default settings.
 
 Also helps to keeping them in line.
 """

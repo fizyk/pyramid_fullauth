@@ -2,8 +2,8 @@
 import pytest
 import transaction
 
-from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import EmptyError
+from pyramid_fullauth.models import User
 
 
 def test_hash_checkout(db_session, user):

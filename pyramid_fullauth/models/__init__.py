@@ -8,26 +8,26 @@ import sys
 import uuid
 from datetime import datetime
 
+from pyramid_basemodel import Base
 from sqlalchemy import (
-    Column,
-    Unicode,
-    String,
-    Integer,
     Boolean,
-    Sequence,
+    Column,
     DateTime,
-    Table,
     ForeignKey,
+    Integer,
+    Sequence,
+    String,
+    Table,
+    Unicode,
     UniqueConstraint,
 )
-from sqlalchemy.sql import func
-from sqlalchemy.orm import validates, relationship
+from sqlalchemy.orm import relationship, validates
 from sqlalchemy.orm.session import object_session
 from sqlalchemy.orm.util import has_identity
-from pyramid_basemodel import Base
+from sqlalchemy.sql import func
 
 from pyramid_fullauth import exceptions
-from pyramid_fullauth.models.mixins import UserPasswordMixin, UserEmailMixin
+from pyramid_fullauth.models.mixins import UserEmailMixin, UserPasswordMixin
 
 
 class User(UserPasswordMixin, UserEmailMixin, Base):
@@ -52,8 +52,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
     @property
     def is_active(self):
-        """
-        Check if user is active.
+        """Check if user is active.
 
         :returns: Returns False if user account is not active (or deleted).
         :rtype: bool
@@ -63,8 +62,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
     @is_active.setter
     def is_active(self, value):
-        """
-        Set user as active/inactive.
+        """Set user as active/inactive.
 
         :param bood value:
             True - removes deactivated_at, deleted_at, activate_key and set activated_at to datetime now
@@ -86,8 +84,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
             raise AttributeError("User has to be in the persistent state - stored in the DB")
 
     def provider_id(self, provider):
-        """
-        Return provider identification for give user.
+        """Return provider identification for give user.
 
         :param str provider: provider name
         :returns: provider identification
@@ -119,8 +116,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
 
     @validates("is_admin")
     def validate_is_admin(self, _, value):
-        """
-        Validate is_admin value, we forbid the deletion of the last superadmin.
+        """Validate is_admin value, we forbid the deletion of the last superadmin.
 
         .. note::
 
@@ -136,8 +132,7 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
         return value
 
     def delete(self):
-        """
-        Perform soft delete action. along with checking if it's super admin, or not.
+        """Perform soft delete action. along with checking if it's super admin, or not.
 
         :rises pyramid_fullauth.exceptions.DeleteException: if you try to delete last super admin.
 

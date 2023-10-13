@@ -2,8 +2,8 @@
 import pytest
 import transaction
 
-from pyramid_fullauth.models import User
 from pyramid_fullauth.exceptions import DeleteException
+from pyramid_fullauth.models import User
 
 
 def test_regular_user_not_admin(db_session, user):
@@ -15,8 +15,7 @@ def test_regular_user_not_admin(db_session, user):
 
 
 def test_remove_last_admin(db_session, user):
-    """
-    Admin user is_admin flag test.
+    """Admin user is_admin flag test.
 
     At least one admin needed.
     """

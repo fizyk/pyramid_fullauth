@@ -3,21 +3,16 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Fullauth's configuration module."""
-from pyramid.authorization import ACLAuthorizationPolicy
-from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.config import Configurator
 from pyramid.interfaces import (
-    IAuthorizationPolicy,
-    IAuthenticationPolicy,
     IRootFactory,
-    ISessionFactory,
     ISecurityPolicy,
+    ISessionFactory,
 )
 from pyramid.session import JSONSerializer
 
-from pyramid_fullauth.auth import groupfinder
-from pyramid_fullauth.routing import predicates
 from pyramid_fullauth.request import login_perform, logout, request_user
+from pyramid_fullauth.routing import predicates
 
 __version__ = "2.0.1"
 
@@ -45,19 +40,19 @@ def build_fullauth_config(settings):
         key_parts = setting_key.split(".")
         key_length = len(key_parts)
 
-        if key_parts[1] == "register" and key_length == 4:
+        if key_parts[1] == "register" and key_length == 4:  # noqa: PLR2004
             if key_parts[2] == "password":
                 fullauth_config["register"]["password"][key_parts[3]] = setting_value
-        elif key_parts[1] == "authtkt" and key_length == 3:
+        elif key_parts[1] == "authtkt" and key_length == 3:  # noqa: PLR2004
             fullauth_config["authtkt"][key_parts[2]] = setting_value
-        elif key_parts[1] == "login" and key_length == 3:
+        elif key_parts[1] == "login" and key_length == 3:  # noqa: PLR2004
             fullauth_config["login"][key_parts[2]] = setting_value
         elif key_parts[1] == "session":
-            if key_parts[2] == "factory" and key_length == 3:
+            if key_parts[2] == "factory" and key_length == 3:  # noqa: PLR2004
                 fullauth_config["session"]["factory"] = setting_value
-            elif key_parts[2] == "settings" and key_length == 4:
+            elif key_parts[2] == "settings" and key_length == 4:  # noqa: PLR2004
                 fullauth_config["session"]["settings"] = setting_value
-        elif key_parts[1] == "social" and key_length == 4:
+        elif key_parts[1] == "social" and key_length == 4:  # noqa: PLR2004
             if "social" not in fullauth_config:
                 fullauth_config["social"] = {}
             if key_parts[2] not in fullauth_config["social"]:
@@ -68,8 +63,7 @@ def build_fullauth_config(settings):
 
 
 def includeme(configurator: Configurator) -> None:
-    """
-    Configure pyramid_fullauth on application.
+    """Configure pyramid_fullauth on application.
 
     :param pyramid.configurator.Configurator configurator: pyramid's configurator object
     """
@@ -136,11 +130,12 @@ def includeme(configurator: Configurator) -> None:
         for provider in providers:
             # Ugly hack for using google oauth2, not OpenID + Oauth2 from google
             provider_settings = fullauth_settings["social"][provider]
+            provider_current = provider
             if provider == "google":  # pragma: no cover
-                provider = "google_oauth2"
+                provider_current = "google_oauth2"
 
-            configurator.include("velruse.providers." + provider)
-            getattr(configurator, f"add_{provider}_login")(**provider_settings)
+            configurator.include("velruse.providers." + provider_current)
+            getattr(configurator, f"add_{provider_current}_login")(**provider_settings)
 
     # we'll add some request methods:
     configurator.add_request_method(login_perform, name="login_perform")

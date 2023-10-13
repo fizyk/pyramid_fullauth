@@ -1,15 +1,13 @@
 """Most of the fixtures needed."""
-from mock import Mock
+import pyramid_basemodel
 import pytest
-
 import transaction
+from mock import Mock
+from pytest_pyramid import factories
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import NullPool
 from zope.sqlalchemy import register
-
-from pytest_pyramid import factories
-import pyramid_basemodel
 
 
 @pytest.fixture

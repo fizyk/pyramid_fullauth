@@ -1,15 +1,13 @@
 """Social network login test."""
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 
 import transaction
-from pyramid import testing
 from mock import MagicMock
-
+from pyramid import testing
 from velruse import AuthenticationComplete
-from pyramid_fullauth.views.social import SocialLoginViews
 
 from pyramid_fullauth.models import User
-
+from pyramid_fullauth.views.social import SocialLoginViews
 from tests.views.conftest import mock_translate
 
 
@@ -65,8 +63,7 @@ def test_social_login_register(social_config, db_session):
 
 
 def test_login_different_social_account(social_config, db_session, facebook_user):  # pylint:disable=unused-argument
-    """
-    Login with different social account than connected from same provider.
+    """Login with different social account than connected from same provider.
 
     System should let user in, but not change connection.
     """

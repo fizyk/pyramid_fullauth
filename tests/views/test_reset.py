@@ -1,5 +1,5 @@
 """Reset password views."""
-
+import http
 from html.parser import unescape
 
 import transaction
@@ -67,7 +67,7 @@ def test_reset_proceed_wrong_reset_key(user, db_session, default_app):
 
     user = db_session.merge(user)
     res = default_app.get("/password/reset/" + user.reset_key + "randomchars", status=404)
-    assert res.status_code == 404
+    assert res.status_code == http.HTTPStatus.NOT_FOUND
 
 
 def test_reset_proceed_wrong_confirm(user, db_session, default_app):
@@ -98,4 +98,4 @@ def test_reset_proceed_wrong_csrf(user, db_session, default_app):
     res.form["password"] = NEW_PASSWORD
     res.form["confirm_password"] = NEW_PASSWORD
     res.form["csrf_token"] = "sadasere723612dassdgaSDs7a"
-    res.form.submit(status=400)
+    res.form.submit(status=http.HTTPStatus.BAD_REQUEST)

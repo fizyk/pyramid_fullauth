@@ -4,7 +4,7 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Mixin's main module."""
 
-from pyramid_fullauth.models.mixins.password import UserPasswordMixin
 from pyramid_fullauth.models.mixins.email import UserEmailMixin
+from pyramid_fullauth.models.mixins.password import UserPasswordMixin
 
 __all__ = ("UserPasswordMixin", "UserEmailMixin")

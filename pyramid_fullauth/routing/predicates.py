@@ -4,8 +4,8 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Routing predicate definitions."""
 
-from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
+from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.models import User
 
@@ -24,8 +24,7 @@ class UserPathHashRoutePredicate(object):
     phash = text
 
     def __call__(self, context, _):
-        """
-        Check whether hash is correct and fits configured user attribute.
+        """Check whether hash is correct and fits configured user attribute.
 
         :param dict context: pyramid info dict with path fragments and info
         :param pyramid.request.Request _: request object

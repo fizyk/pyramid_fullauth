@@ -7,12 +7,11 @@
 import re
 import uuid
 
-from sqlalchemy import Column, Unicode, String
-from sqlalchemy.orm import validates
+from sqlalchemy import Column, String, Unicode
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
 
-
-from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
+from pyramid_fullauth.exceptions import EmailValidationError, EmptyError
 from pyramid_fullauth.models.extensions import CaseInsensitive
 
 PATTERN_MAIL = re.compile(
@@ -82,8 +81,7 @@ class UserEmailMixin(object):
 
     @validates("_email", "_new_email")
     def validate_email(self, _, address):
-        """
-        Validate email addresses.
+        """Validate email addresses.
 
         .. note::
 
@@ -105,8 +103,7 @@ class UserEmailMixin(object):
         raise EmptyError("E-mail is empty")
 
     def set_new_email(self, email_new):
-        """
-        Set new email and generate new email change hash.
+        """Set new email and generate new email change hash.
 
         :param str email_new: email address
 
@@ -119,8 +116,7 @@ class UserEmailMixin(object):
         return self.email_change_key
 
     def change_email(self):
-        """
-        Change email after activation.
+        """Change email after activation.
 
         We don't clear new email field because of validator of email which won't allow to None value.
 

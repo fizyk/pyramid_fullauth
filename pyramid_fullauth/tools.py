@@ -9,14 +9,13 @@ from random import choice
 
 from pyramid_fullauth.exceptions import (
     EmptyError,
-    ShortPasswordError,
     PasswordConfirmMismatchError,
+    ShortPasswordError,
 )
 
 
 def password_generator(length, chars=string.ascii_letters + string.digits + string.punctuation):
-    """
-    Generate random password.
+    """Generate random password.
 
     .. warning::
 
@@ -31,8 +30,7 @@ def password_generator(length, chars=string.ascii_letters + string.digits + stri
 
 
 def validate_passsword(request, password, user=None):
-    """
-    Validate password properly.
+    """Validate password properly.
 
     .. note::
 

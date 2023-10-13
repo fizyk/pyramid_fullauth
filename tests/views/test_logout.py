@@ -1,4 +1,5 @@
 """Logout related tests."""
+import http
 import time
 
 from tests.tools import authenticate, is_user_logged
@@ -9,10 +10,10 @@ def test_logout(active_user, extended_app):  # pylint:disable=unused-argument
     authenticate(extended_app)
     assert is_user_logged(extended_app) is True
 
-    extended_app.get("/logout", status=303)
+    extended_app.get("/logout", status=http.HTTPStatus.SEE_OTHER)
     assert is_user_logged(extended_app) is False
-    res = extended_app.get("/secret", status=302)
-    assert res.status_code == 302
+    res = extended_app.get("/secret", status=http.HTTPStatus.FOUND)
+    assert res.status_code == http.HTTPStatus.FOUND
 
 
 def test_logout_login(active_user, extended_config, extended_app):  # pylint:disable=unused-argument
@@ -21,12 +22,12 @@ def test_logout_login(active_user, extended_config, extended_app):  # pylint:dis
     authenticate(extended_app)
     assert is_user_logged(extended_app) is True
 
-    res = extended_app.get("/logout", status=303)
+    res = extended_app.get("/logout", status=http.HTTPStatus.SEE_OTHER)
     assert is_user_logged(extended_app) is False
     # redirection should be done to login page.
     assert "/login" in res.location
-    res = extended_app.get("/secret", status=302)
-    assert res.status_code == 302
+    res = extended_app.get("/secret", status=http.HTTPStatus.FOUND)
+    assert res.status_code == http.HTTPStatus.FOUND
 
 
 def test_automatic_logout(active_user, short_config, short_app):  # pylint:disable=unused-argument

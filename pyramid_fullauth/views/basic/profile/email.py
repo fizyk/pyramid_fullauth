@@ -4,19 +4,15 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Email related views."""
 
-from pyramid.view import view_config, view_defaults
+import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.view import view_config, view_defaults
 
-import pyramid_basemodel
-
-from pyramid_fullauth.views import BaseView
+from pyramid_fullauth.events import AfterEmailChange, AfterEmailChangeActivation, BeforeEmailChange
+from pyramid_fullauth.exceptions import EmailValidationError, EmptyError
 from pyramid_fullauth.models import User
-
-from pyramid_fullauth.events import BeforeEmailChange
-from pyramid_fullauth.events import AfterEmailChange
-from pyramid_fullauth.events import AfterEmailChangeActivation
-from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
+from pyramid_fullauth.views import BaseView
 
 
 @view_defaults(
@@ -61,8 +57,7 @@ class EmailChangeViews(BaseView):
         return HTTPSeeOther(location="/")
 
     def validate_email(self, user):
-        """
-        Validate and set email on a user object.
+        """Validate and set email on a user object.
 
         :param pyramid_fullauth.models.User user: user to set an email passed on POST arguments.
 
