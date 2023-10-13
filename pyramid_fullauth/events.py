@@ -7,16 +7,14 @@
 
 
 class _BaseRegisterEvent(object):
-    """
-    Base fullauth event.
+    """Base fullauth event.
 
     most of the fullauth's event will provide both request and user
     object with some additional data (these will be described then).
     """
 
     def __init__(self, request, user):
-        """
-        Initialize event.
+        """Initialize event.
 
         :param pyramid.request.Request request: request object
         :param pyramid_fullauth.models.User user: user object
@@ -26,8 +24,7 @@ class _BaseRegisterEvent(object):
 
 
 class BeforeRegister(_BaseRegisterEvent):
-    """
-    Execute custom code at the start of registration process.
+    """Execute custom code at the start of registration process.
 
     .. note::
 
@@ -35,8 +32,7 @@ class BeforeRegister(_BaseRegisterEvent):
     """
 
     def __init__(self, request, user, errors):
-        """
-        Initialize event.
+        """Initialize event.
 
         :param pyramid.request.Request request: request object
         :param pyramid_fullauth.models.User user: user object
@@ -48,8 +44,7 @@ class BeforeRegister(_BaseRegisterEvent):
 
 
 class AfterRegister(_BaseRegisterEvent):
-    """
-    Add custom post-processing code in registration process.
+    """Add custom post-processing code in registration process.
 
     Can be used to add e.g. e-mail sending with registration links.
 
@@ -67,8 +62,7 @@ class AfterRegister(_BaseRegisterEvent):
     """
 
     def __init__(self, request, user, response_values):
-        """
-        Initialize event.
+        """Initialize event.
 
         :param pyramid.request.Request request: request object
         :param pyramid_fullauth.models.User user: user object
@@ -79,8 +73,7 @@ class AfterRegister(_BaseRegisterEvent):
 
 
 class AfterActivate(_BaseRegisterEvent):
-    """
-    Add custom post-processing logic after user gets activated.
+    """Add custom post-processing logic after user gets activated.
 
     .. note::
         Action emitting this event, should catch all HTTPRedirection that might
@@ -89,8 +82,7 @@ class AfterActivate(_BaseRegisterEvent):
 
 
 class AfterResetRequest(_BaseRegisterEvent):
-    """
-    Add custom post-processing after user sends request to reset password.
+    """Add custom post-processing after user sends request to reset password.
 
     .. note::
         Action emitting this event, should catch all HTTPRedirection that might
@@ -103,8 +95,7 @@ class BeforeReset(_BaseRegisterEvent):
 
 
 class AfterReset(_BaseRegisterEvent):
-    """
-    Add custom post-processing after the actual reset-password process.
+    """Add custom post-processing after the actual reset-password process.
 
     .. note::
         Action emitting this event, should catch all HTTPRedirection that might
@@ -113,8 +104,7 @@ class AfterReset(_BaseRegisterEvent):
 
 
 class AlreadyLoggedIn(object):
-    """
-    Allow execute custom logic, when logged in user tries to log in again.
+    """Allow execute custom logic, when logged in user tries to log in again.
 
     .. note::
         Action emitting this event, should catch all HTTPRedirection that might
@@ -123,8 +113,7 @@ class AlreadyLoggedIn(object):
     """
 
     def __init__(self, request):
-        """
-        Initialize event.
+        """Initialize event.
 
         :param pyramid.request.Request request: request object
         """
@@ -132,8 +121,7 @@ class AlreadyLoggedIn(object):
 
 
 class BeforeLogIn(_BaseRegisterEvent):
-    """
-    Add custom logic before user gets logged in.
+    """Add custom logic before user gets logged in.
 
     .. note::
         Action emitting this event, should catch all AttributeError that might
@@ -151,8 +139,7 @@ class _BaseSocialRegister(_BaseRegisterEvent):
     """Base for all social requests."""
 
     def __init__(self, request, user, profile):
-        """
-        Initialize base events.
+        """Initialize base events.
 
         :param pyramid.request.Request request: request object
         :param pyramid_fullauth.models.User user: user object
@@ -167,8 +154,7 @@ class BeforeSocialRegister(_BaseSocialRegister):
 
 
 class AfterSocialRegister(_BaseSocialRegister):
-    """
-    Add custom logic after user registers through social network.
+    """Add custom logic after user registers through social network.
 
     .. note::
         Action emitting this event, should catch all HTTPRedirection that might
@@ -176,8 +162,7 @@ class AfterSocialRegister(_BaseSocialRegister):
     """
 
     def __init__(self, request, user, profile, response_values):
-        """
-        Initialize event.
+        """Initialize event.
 
         :param pyramid.request.Request request: request object
         :param pyramid_fullauth.models.User user: user object
@@ -189,8 +174,7 @@ class AfterSocialRegister(_BaseSocialRegister):
 
 
 class AfterSocialLogIn(_BaseSocialRegister):
-    """
-    Custom logic after user logs in through social network.
+    """Custom logic after user logs in through social network.
 
     .. note::
         Action emitting this event, should catch all HTTPRedirection that might
@@ -199,8 +183,7 @@ class AfterSocialLogIn(_BaseSocialRegister):
 
 
 class SocialAccountAlreadyConnected(_BaseSocialRegister):
-    """
-    Event raised when social account is already connected to some other user.
+    """Event raised when social account is already connected to some other user.
 
     Allow to add custom logic, when someone tries to connect social account to
     second user in application.
@@ -211,8 +194,7 @@ class SocialAccountAlreadyConnected(_BaseSocialRegister):
     """
 
     def __init__(self, request, user, profile, response_values):
-        """
-        Initialize event.
+        """Initialize event.
 
         :param pyramid.request.Request request: request object
         :param pyramid_fullauth.models.User user: user object

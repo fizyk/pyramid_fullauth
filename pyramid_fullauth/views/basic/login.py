@@ -4,19 +4,15 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Authorisation related views."""
 
-from pyramid.view import view_config
-from pyramid.view import view_defaults
-from pyramid.httpexceptions import HTTPSeeOther, HTTPRedirection
-from pyramid.security import NO_PERMISSION_REQUIRED
-
-from sqlalchemy.orm.exc import NoResultFound
 import pyramid_basemodel
+from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
+from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.view import view_config, view_defaults
+from sqlalchemy.orm.exc import NoResultFound
 
-from pyramid_fullauth.views import BaseView
+from pyramid_fullauth.events import AfterLogIn, AlreadyLoggedIn, BeforeLogIn
 from pyramid_fullauth.models import User
-from pyramid_fullauth.events import BeforeLogIn
-from pyramid_fullauth.events import AfterLogIn
-from pyramid_fullauth.events import AlreadyLoggedIn
+from pyramid_fullauth.views import BaseView
 
 
 @view_defaults(

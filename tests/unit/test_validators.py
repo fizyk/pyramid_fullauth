@@ -2,8 +2,8 @@
 import pytest
 import transaction
 
+from pyramid_fullauth.exceptions import EmailValidationError, EmptyError
 from pyramid_fullauth.models import User
-from pyramid_fullauth.exceptions import EmptyError, EmailValidationError
 
 
 @pytest.mark.parametrize(

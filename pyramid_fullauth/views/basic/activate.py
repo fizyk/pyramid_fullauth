@@ -4,16 +4,15 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Registration related views."""
 
-from pyramid.view import view_config
+import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-
+from pyramid.view import view_config
 from sqlalchemy.orm.exc import NoResultFound
-import pyramid_basemodel
 
-from pyramid_fullauth.views import BaseView
-from pyramid_fullauth.models import User
 from pyramid_fullauth.events import AfterActivate
+from pyramid_fullauth.models import User
+from pyramid_fullauth.views import BaseView
 
 
 @view_config(

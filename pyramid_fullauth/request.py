@@ -4,19 +4,18 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """These method gets added to each ``pyramid.request.Request`` object."""
 
+import pyramid_basemodel
 from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.request import Request
-from pyramid.security import remember, forget
-from sqlalchemy.sql.functions import func
+from pyramid.security import forget, remember
 from sqlalchemy.orm.exc import NoResultFound
-import pyramid_basemodel
+from sqlalchemy.sql.functions import func
 
 from pyramid_fullauth.models import User
 
 
 def login_perform(request, user, location=None, remember_me=False):
-    """
-    Perform login action.
+    """Perform login action.
 
     :param pyramid.request.Request request: a request object
     :param pyramid_fullauth.models.User user: a user object
@@ -44,8 +43,7 @@ def login_perform(request, user, location=None, remember_me=False):
 
 
 def request_user(request: Request):
-    """
-    Return user object.
+    """Return user object.
 
     When called for the first time, it queries for user, which is later available as a pure property
     overriding this method. See :meth:`pyramid_fullauth.includeme` for logic behind property.
@@ -67,8 +65,7 @@ def request_user(request: Request):
 
 
 def logout(request):
-    """
-    Log user out.
+    """Log user out.
 
     :param pyramid.request.Request request: a request object
     """

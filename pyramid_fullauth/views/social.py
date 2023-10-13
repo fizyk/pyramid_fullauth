@@ -5,21 +5,22 @@
 """Social login/registration view."""
 import logging
 
-from pyramid.view import view_config
+import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-from sqlalchemy.orm.exc import NoResultFound
+from pyramid.view import view_config
 from sqlalchemy.exc import IntegrityError
-import pyramid_basemodel
+from sqlalchemy.orm.exc import NoResultFound
 
-from pyramid_fullauth.views import BaseView
-from pyramid_fullauth.models import User
-from pyramid_fullauth.models import AuthenticationProvider
-from pyramid_fullauth.events import BeforeSocialRegister
-from pyramid_fullauth.events import AfterSocialRegister
-from pyramid_fullauth.events import AfterSocialLogIn
-from pyramid_fullauth.events import SocialAccountAlreadyConnected
 from pyramid_fullauth import tools
+from pyramid_fullauth.events import (
+    AfterSocialLogIn,
+    AfterSocialRegister,
+    BeforeSocialRegister,
+    SocialAccountAlreadyConnected,
+)
+from pyramid_fullauth.models import AuthenticationProvider, User
+from pyramid_fullauth.views import BaseView
 
 LOG = logging.getLogger(__name__)
 
@@ -33,8 +34,7 @@ class SocialLoginViews(BaseView):
     """Social login views definition."""
 
     def set_provider(self, user, provider_name, user_provider_id):
-        """
-        Set authentication provider on user.
+        """Set authentication provider on user.
 
         This method will connect given provider with given user,
         unless provider_id has already been used on another user.
@@ -68,8 +68,7 @@ class SocialLoginViews(BaseView):
         return True
 
     def __call__(self):
-        """
-        Authorize user in a social network.
+        """Authorize user in a social network.
 
         When authorization with facebook or twitter is done successfully
         action tries to find existing user in database,
@@ -117,8 +116,7 @@ class SocialLoginViews(BaseView):
         return self.request.login_perform(user)
 
     def _connect_user(self, response_values):
-        """
-        Connect user to social account.
+        """Connect user to social account.
 
         :param dict response_values:
 
@@ -192,8 +190,7 @@ class SocialLoginViews(BaseView):
         return user
 
     def _email_from_context(self, context):
-        """
-        Extract or generate email from context values.
+        """Extract or generate email from context values.
 
         :param velruse.AuthenticationComplete context: velruse context
         """

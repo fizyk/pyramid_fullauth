@@ -4,20 +4,17 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Profile related views."""
 
-from pyramid.view import view_config, view_defaults
+import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm.exc import NoResultFound
-import pyramid_basemodel
 
-from pyramid_fullauth.views import BaseView
-from pyramid_fullauth.models import User, AuthenticationProvider
-
-from pyramid_fullauth.events import BeforeReset
-from pyramid_fullauth.events import AfterResetRequest
-from pyramid_fullauth.events import AfterReset
+from pyramid_fullauth.events import AfterReset, AfterResetRequest, BeforeReset
 from pyramid_fullauth.exceptions import ValidateError
+from pyramid_fullauth.models import AuthenticationProvider, User
 from pyramid_fullauth.tools import validate_passsword
+from pyramid_fullauth.views import BaseView
 
 
 @view_defaults(
@@ -68,8 +65,7 @@ class PasswordResetView(BaseView):
     renderer="pyramid_fullauth:resources/templates/reset.proceed.mako",
 )
 class PasswordResetContinueView(BaseView):
-    """
-    Password reset views.
+    """Password reset views.
 
     These views display actual reset password views.
     """

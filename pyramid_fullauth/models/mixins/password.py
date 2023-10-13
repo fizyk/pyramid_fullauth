@@ -4,16 +4,14 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Password mixin related module."""
 
-import os
 import hashlib
-from hashlib import algorithms_guaranteed
+import os
 import uuid
+from hashlib import algorithms_guaranteed
 
-from sqlalchemy import Column
-from sqlalchemy import Unicode
-from sqlalchemy import Enum
-from sqlalchemy import String
+from sqlalchemy import Column, Enum, String, Unicode
 from sqlalchemy.orm import validates
+
 from pyramid_fullauth.exceptions import EmptyError
 
 
@@ -38,8 +36,7 @@ class UserPasswordMixin(object):
     reset_key = Column(String(255), unique=True)
 
     def check_password(self, password):
-        """
-        Check if password correspond to the saved one.
+        """Check if password correspond to the saved one.
 
         :param str password: password to compare
 
@@ -57,8 +54,7 @@ class UserPasswordMixin(object):
 
     @classmethod
     def hash_password(cls, password, salt, hash_method):
-        """
-        Produce hash out of a password.
+        """Produce hash out of a password.
 
         :param str password: password string, not hashed
         :param str salt: salt
@@ -85,8 +81,7 @@ class UserPasswordMixin(object):
 
     @validates("password")
     def password_validator(self, _, password):
-        """
-        Validate password.
+        """Validate password.
 
         Password validator keeps new password hashed.
         Rises Value error on empty password

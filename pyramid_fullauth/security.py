@@ -40,8 +40,7 @@ class FullAuthSecurityPolicy:
         return identity["userid"]  # identical to the deprecated request.unauthenticated_userid
 
     def permits(self, request: Request, context, permission):
-        """
-        Build a list of principals.
+        """Build a list of principals.
 
         Pass them to the ACLHelper to determine allowed/denied
         """

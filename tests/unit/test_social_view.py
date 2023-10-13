@@ -1,6 +1,6 @@
 """Unittest for social login view."""
-import pytest
 import mock
+import pytest
 from velruse import AuthenticationComplete
 
 from pyramid_fullauth.views.social import SocialLoginViews
@@ -63,7 +63,6 @@ from pyramid_fullauth.views.social import SocialLoginViews
 )
 def test_email_from_context(profile, email):
     """Test email_from_context email getting method."""
-
     context = AuthenticationComplete(
         profile,
         {"oauthAccessToken": "7897048593434"},

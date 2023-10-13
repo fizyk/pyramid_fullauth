@@ -1,35 +1,36 @@
 """All events related tests."""
+import http
+
 import pytest
 import transaction
 from mock import MagicMock
 from pyramid import testing
-from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
-from sqlalchemy.orm.exc import NoResultFound
+from pyramid.view import view_config
 from pytest_pyramid import factories
+from sqlalchemy.orm.exc import NoResultFound
 from velruse import AuthenticationComplete
 
-
-from pyramid_fullauth.models import User
-from pyramid_fullauth.views.social import SocialLoginViews
 from pyramid_fullauth.events import (
-    BeforeLogIn,
-    AfterLogIn,
-    AlreadyLoggedIn,
-    BeforeEmailChange,
+    AfterActivate,
     AfterEmailChange,
     AfterEmailChangeActivation,
-    BeforeReset,
-    AfterResetRequest,
-    AfterReset,
-    AfterSocialRegister,
-    AfterSocialLogIn,
-    SocialAccountAlreadyConnected,
-    AfterActivate,
-    BeforeRegister,
+    AfterLogIn,
     AfterRegister,
+    AfterReset,
+    AfterResetRequest,
+    AfterSocialLogIn,
+    AfterSocialRegister,
+    AlreadyLoggedIn,
+    BeforeEmailChange,
+    BeforeLogIn,
+    BeforeRegister,
+    BeforeReset,
+    SocialAccountAlreadyConnected,
 )
-from tests.tools import authenticate, is_user_logged, DEFAULT_USER
+from pyramid_fullauth.models import User
+from pyramid_fullauth.views.social import SocialLoginViews
+from tests.tools import DEFAULT_USER, authenticate, is_user_logged
 from tests.views.conftest import mock_translate
 
 EVENT_PATH = "/event?event={0.__name__}"
@@ -104,7 +105,7 @@ def test_default_login_redirect_from_event(
 ):  # pylint:disable=redefined-outer-name
     """After successful login, access to login page should result in redirect."""
     authenticate(alreadyloggedin_app)
-    res = alreadyloggedin_app.get("/login", status=302)
+    res = alreadyloggedin_app.get("/login", status=http.HTTPStatus.FOUND)
     assert res.location == EVENT_URL.format(AlreadyLoggedIn)
 
 
@@ -300,7 +301,7 @@ def test_afteremailchangeactivation(db_session, afteremailchange_app):  # pylint
 
     user = db_session.merge(user)
     res = app.get("/email/change/" + user.email_change_key)
-    assert res.status_code == 302
+    assert res.status_code == http.HTTPStatus.FOUND
     assert res.location == EVENT_URL.format(AfterEmailChangeActivation)
 
     with pytest.raises(NoResultFound):
@@ -493,8 +494,7 @@ alreadyconnected_app = factories.pyramid_app("alreadyconnected_config")  # pylin
 
 @pytest.mark.usefixtures("alreadyconnected_app")
 def test_alreadyconnected(alreadyconnected_config, facebook_user, db_session):  # pylint:disable=redefined-outer-name
-    """
-    Try to connect facebook account to logged in user used by other users facebook account.
+    """Try to connect facebook account to logged in user used by other users facebook account.
 
     Check redirect from SocialAccountAlreadyConnected.
     """

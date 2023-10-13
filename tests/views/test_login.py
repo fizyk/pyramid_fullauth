@@ -1,8 +1,10 @@
 """Log in related test."""
+import http
+
 import pytest
 import transaction
 
-from tests.tools import authenticate, is_user_logged, DEFAULT_USER
+from tests.tools import DEFAULT_USER, authenticate, is_user_logged
 
 
 def test_login_view(default_app):
@@ -16,7 +18,7 @@ def test_login_view(default_app):
 
 def test_login_view_secret(extended_app):
     """Login:Form displayed after redirect from protected view."""
-    res = extended_app.get("/secret", status=302)
+    res = extended_app.get("/secret", status=http.HTTPStatus.FOUND)
     # check if redirect is correct
     assert res.headers["Location"] == "http://localhost/login?after=%2Fsecret"
     # redirecting
@@ -29,7 +31,7 @@ def test_login_view_secret(extended_app):
 @pytest.mark.usefixtures("active_user")
 def test_login_ok(extended_app, email):
     """Actually log in test."""
-    res = extended_app.get("/secret", status=302)
+    res = extended_app.get("/secret", status=http.HTTPStatus.FOUND)
     res = res.follow()
     res = extended_app.get("/login?after=%2Fsecret")
 
@@ -66,22 +68,22 @@ def test_login_inactive(extended_app):
 @pytest.mark.usefixtures("active_user")
 def test_login_redirects(extended_app):
     """Login with redirects."""
-    res = extended_app.get("/secret", status=302)
-    assert res.status_code == 302
+    res = extended_app.get("/secret", status=http.HTTPStatus.FOUND)
+    assert res.status_code == http.HTTPStatus.FOUND
     res = res.follow()
     res.form["email"] = DEFAULT_USER["email"]
     res.form["password"] = DEFAULT_USER["password"]
     res = res.form.submit()
 
     assert is_user_logged(extended_app) is True
-    assert res.status_code == 303
+    assert res.status_code == http.HTTPStatus.SEE_OTHER
 
 
 @pytest.mark.parametrize("user_kwargs", ({"password": "wrong password"}, {"email": "not@registered.py"}))
 @pytest.mark.usefixtures("active_user")
 def test_login_wrong(user_kwargs, extended_app):
     """Use wrong password during authentication."""
-    res = authenticate(extended_app, response_code=200, **user_kwargs)
+    res = authenticate(extended_app, response_code=http.HTTPStatus.OK, **user_kwargs)
 
     assert "Error! Wrong e-mail or password." in res
     assert res
@@ -104,9 +106,9 @@ def test_login_wrong(user_kwargs, extended_app):
 @pytest.mark.usefixtures("active_user")
 def test_login_csrf_error(extended_app, post_data):
     """Try to log in with erroneus csrf token."""
-    res = extended_app.get("/login", status=200)
+    res = extended_app.get("/login", status=http.HTTPStatus.OK)
     assert res
-    res = extended_app.post("/login", post_data, status=400)
+    _ = extended_app.post("/login", post_data, status=http.HTTPStatus.BAD_REQUEST)
 
     assert is_user_logged(extended_app) is False
 
@@ -120,7 +122,7 @@ def test_login_success_xhr(extended_app):
         "password": DEFAULT_USER["password"],
         "csrf_token": res.form["csrf_token"].value,
     }
-    extended_app.get("/secret", status=302)
+    extended_app.get("/secret", status=http.HTTPStatus.FOUND)
     res = extended_app.post("/login?after=%2Fsecret", post_data, xhr=True, expect_errors=True)
 
     assert res.content_type == "application/json"
@@ -137,13 +139,13 @@ def test_login_success_xhr(extended_app):
 @pytest.mark.usefixtures("active_user")
 def test_default_login_forbidden(authable_app):
     """After successful login, user should get 403 on secret page."""
-    authable_app.get("/secret", status=302)
-    forbidden = authable_app.get("/secret", xhr=True, status=403)
+    authable_app.get("/secret", status=http.HTTPStatus.FOUND)
+    forbidden = authable_app.get("/secret", xhr=True, status=http.HTTPStatus.FORBIDDEN)
     assert forbidden.json["status"] is False
     authenticate(authable_app)
-    authable_app.get("/secret", status=403)
+    authable_app.get("/secret", status=http.HTTPStatus.FORBIDDEN)
     # go back to secret page
-    forbidden = authable_app.get("/secret", xhr=True, status=403)
+    forbidden = authable_app.get("/secret", xhr=True, status=http.HTTPStatus.FORBIDDEN)
     # no permission, but logged.
     assert forbidden.json["status"] is False
     assert "login_url" not in forbidden.json
@@ -153,7 +155,7 @@ def test_default_login_forbidden(authable_app):
 def test_default_login_redirectaway(authable_app):
     """After successful login, access to login page should result in redirect."""
     authenticate(authable_app)
-    res = authable_app.get("/login", status=303)
+    res = authable_app.get("/login", status=http.HTTPStatus.SEE_OTHER)
     assert res.location == "http://localhost/"
 
 
@@ -169,4 +171,4 @@ def test_login_invalid_cookie(db_session, active_user, extended_app):
 
     # will rise Attribute error
     res = extended_app.get("/login")
-    assert res.status_code == 200, "Should stay since user is no longer valid!"
+    assert res.status_code == http.HTTPStatus.OK, "Should stay since user is no longer valid!"

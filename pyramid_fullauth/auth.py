@@ -4,12 +4,11 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Auth related methods and classes."""
 
-from pyramid.authorization import Allow, Everyone, ALL_PERMISSIONS
+from pyramid.authorization import ALL_PERMISSIONS, Allow, Everyone
 
 
 def groupfinder(userid, request):
-    """
-    Read all user's groups.
+    """Read all user's groups.
 
     .. note::
 
@@ -44,8 +43,7 @@ def groupfinder(userid, request):
 
 
 class BaseACLRootFactoryMixin(object):
-    """
-    ACL list factory Mixin.
+    """ACL list factory Mixin.
 
     __acl__ is the attribute which stores the list.
 

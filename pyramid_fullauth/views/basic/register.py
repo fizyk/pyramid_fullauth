@@ -4,16 +4,16 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Registration related views."""
 
-from pyramid.view import view_config, view_defaults
+import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-import pyramid_basemodel
+from pyramid.view import view_config, view_defaults
 
-from pyramid_fullauth.views import BaseView
-from pyramid_fullauth.models import User, AuthenticationProvider
-from pyramid_fullauth.events import BeforeRegister, AfterRegister
 from pyramid_fullauth import tools
+from pyramid_fullauth.events import AfterRegister, BeforeRegister
 from pyramid_fullauth.exceptions import ValidateError
+from pyramid_fullauth.models import AuthenticationProvider, User
+from pyramid_fullauth.views import BaseView
 
 
 @view_defaults(
@@ -58,8 +58,7 @@ class RegisterView(BaseView):
         return response
 
     def _fillin_user(self, response, user):
-        """
-        Fill new user object in, with sent data.
+        """Fill new user object in, with sent data.
 
         :param dict response: response to return from register view
         :param pyramid_fullauth.models.User user: new user object
@@ -96,8 +95,7 @@ class RegisterView(BaseView):
         return response
 
     def _set_password(self, password, user):
-        """
-        Set password on a User object.
+        """Set password on a User object.
 
         :param str password: email address
         :param pyramid_fullauth.models.User user: user object
@@ -115,8 +113,7 @@ class RegisterView(BaseView):
         return None
 
     def _set_email(self, email, user):
-        """
-        Set email on a User object.
+        """Set email on a User object.
 
         :param str email: email address
         :param pyramid_fullauth.models.User user: user object

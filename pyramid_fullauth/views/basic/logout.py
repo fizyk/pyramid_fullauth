@@ -4,9 +4,9 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """De-authentication related view."""
 
-from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.view import view_config
 
 from pyramid_fullauth.views import BaseView
 

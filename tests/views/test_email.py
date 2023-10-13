@@ -1,18 +1,19 @@
 """Email change views."""
+import http
+
 import pytest
 import transaction
-
 from sqlalchemy.orm.exc import NoResultFound
-from pyramid_fullauth.models import User
 
-from tests.tools import authenticate, DEFAULT_USER
+from pyramid_fullauth.models import User
+from tests.tools import DEFAULT_USER, authenticate
 
 
 def test_email_view_not_logged(default_app):
     """Try to access email change view anonymously."""
     app = default_app
     res = app.get("/email/change")
-    assert res.status_code == 302
+    assert res.status_code == http.HTTPStatus.FOUND
     assert res.location == "http://localhost/login?after=%2Femail%2Fchange"
 
 
@@ -27,7 +28,7 @@ def test_email_view_logged(db_session, default_app):
     authenticate(app)
 
     res = app.get("/email/change")
-    assert res.status_code == 200
+    assert res.status_code == http.HTTPStatus.OK
     assert res.form
     assert res.form["email"]
 
@@ -152,7 +153,7 @@ def test_email_proceed(db_session, default_app):
 
     user = db_session.merge(user)
     res = app.get("/email/change/" + user.email_change_key)
-    assert res.status_code == 303
+    assert res.status_code == http.HTTPStatus.SEE_OTHER
 
     with pytest.raises(NoResultFound):
         # there is no user with old email
@@ -178,4 +179,4 @@ def test_email_proceed_wrong_key(db_session, default_app):
 
     user = db_session.merge(user)
     res = app.get("/email/change/" + user.email_change_key + "randomchars", status=404)
-    assert res.status_code == 404
+    assert res.status_code == http.HTTPStatus.NOT_FOUND

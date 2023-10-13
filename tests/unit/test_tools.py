@@ -1,12 +1,12 @@
 """Test fullauth's tools."""
 import pytest
 
-from pyramid_fullauth.tools import validate_passsword, password_generator
 from pyramid_fullauth.exceptions import (
     EmptyError,
-    ShortPasswordError,
     PasswordConfirmMismatchError,
+    ShortPasswordError,
 )
+from pyramid_fullauth.tools import password_generator, validate_passsword
 
 
 @pytest.mark.parametrize(
