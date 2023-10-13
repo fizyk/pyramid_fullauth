@@ -29,7 +29,7 @@ jobs:
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
     - uses: fizyk/actions-reuse/.github/actions/pipenv@v2.4.2
       with:
-        python-version: "3.11"
+        python-version: "3.12"
         command: "sphinx-build -b html docs/source build/html"
     - name: Setup Pages
       uses: actions/configure-pages@v3
