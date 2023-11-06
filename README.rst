@@ -5,8 +5,8 @@ pyramid_fullauth
     :target: https://pypi.python.org/pypi/pyramid_fullauth/
     :alt: Latest PyPI version
 
-.. image:: https://readthedocs.org/projects/pyramid_fullauth/badge/?version=v2.0.1
-    :target: https://readthedocs.org/projects/pyramid_fullauth/?badge=v2.0.1
+.. image:: https://readthedocs.org/projects/pyramid_fullauth/badge/?version=v2.0.2
+    :target: https://readthedocs.org/projects/pyramid_fullauth/?badge=v2.0.2
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/pypi/dm/pyramid_fullauth.svg

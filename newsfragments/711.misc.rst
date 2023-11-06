@@ -1,2 +1,0 @@
-Remove Pipfile.lock from repository and drop --skip-lock flag when installing with Pipenv
-

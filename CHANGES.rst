@@ -3,6 +3,21 @@ CHANGELOG
 
 .. towncrier release notes start
 
+2.0.2 (2023-11-06)
+==================
+
+Features
+--------
+
+- Add support for python 3.12 (`#724 <https://https://github.com/fizyk/pyramid_fullauth/issues/724>`_)
+
+
+Miscellaneus
+------------
+
+- `#649 <https://https://github.com/fizyk/pyramid_fullauth/issues/649>`_, `#650 <https://https://github.com/fizyk/pyramid_fullauth/issues/650>`_, `#654 <https://https://github.com/fizyk/pyramid_fullauth/issues/654>`_, `#686 <https://https://github.com/fizyk/pyramid_fullauth/issues/686>`_, `#690 <https://https://github.com/fizyk/pyramid_fullauth/issues/690>`_, `#711 <https://https://github.com/fizyk/pyramid_fullauth/issues/711>`_
+
+
 2.0.1 (2023-01-05)
 ==================
 
