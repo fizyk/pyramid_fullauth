@@ -1,0 +1,1 @@
+Update pytest-postgresql in test to 5.1.0 which is compatible with pytest 8
