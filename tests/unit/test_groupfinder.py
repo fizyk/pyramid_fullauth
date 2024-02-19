@@ -1,4 +1,5 @@
 """Test groupfinder."""
+
 import pytest
 
 from pyramid_fullauth.auth import groupfinder

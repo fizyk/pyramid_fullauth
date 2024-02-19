@@ -1,4 +1,5 @@
 """All events related tests."""
+
 import http
 
 import pytest

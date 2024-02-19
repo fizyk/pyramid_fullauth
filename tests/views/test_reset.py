@@ -1,4 +1,5 @@
 """Reset password views."""
+
 import http
 from html.parser import unescape
 

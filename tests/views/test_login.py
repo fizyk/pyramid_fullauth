@@ -1,4 +1,5 @@
 """Log in related test."""
+
 import http
 
 import pytest

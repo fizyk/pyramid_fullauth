@@ -1,4 +1,5 @@
 """Password related user model behaviour."""
+
 import pytest
 import transaction
 

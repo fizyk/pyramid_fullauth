@@ -1,4 +1,5 @@
 """Test various validators present on User class."""
+
 import pytest
 import transaction
 

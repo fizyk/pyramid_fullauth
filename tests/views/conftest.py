@@ -1,4 +1,5 @@
 """General view fixtures."""
+
 import pytest
 import transaction
 
