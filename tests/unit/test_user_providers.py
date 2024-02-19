@@ -1,4 +1,5 @@
 """Test provider related user methods."""
+
 import transaction
 
 from pyramid_fullauth.models import AuthenticationProvider, User

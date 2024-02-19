@@ -1,4 +1,5 @@
 """Test admin related behaviour on user model."""
+
 import pytest
 import transaction
 

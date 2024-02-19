@@ -1,4 +1,5 @@
 """User active method tests."""
+
 import pytest
 
 from pyramid_fullauth.models import User

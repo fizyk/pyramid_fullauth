@@ -1,4 +1,5 @@
 """Test fullauth's tools."""
+
 import pytest
 
 from pyramid_fullauth.exceptions import (

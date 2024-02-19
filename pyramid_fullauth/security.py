@@ -1,4 +1,5 @@
 """Fullauth Security Policy."""
+
 # Based on: https://docs.pylonsproject.org/projects/pyramid/en/latest/whatsnew-2.0.html#upgrading-from-built-in-policies
 from typing import Dict, Optional
 

@@ -1,4 +1,5 @@
 """Email change views."""
+
 import http
 
 import pytest

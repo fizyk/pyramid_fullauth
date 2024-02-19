@@ -1,4 +1,5 @@
 """Test email related User methods."""
+
 from pyramid_fullauth.models import User
 
 NEW_EMAIL = "new@example.com"

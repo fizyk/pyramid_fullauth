@@ -1,4 +1,5 @@
 """Logout related tests."""
+
 import http
 import time
 

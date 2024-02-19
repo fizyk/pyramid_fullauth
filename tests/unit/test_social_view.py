@@ -1,4 +1,5 @@
 """Unittest for social login view."""
+
 import mock
 import pytest
 from velruse import AuthenticationComplete

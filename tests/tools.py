@@ -1,4 +1,5 @@
 """Tools used for fullauth tests."""
+
 from pyramid.config import Configurator
 from pyramid.view import view_config
 
