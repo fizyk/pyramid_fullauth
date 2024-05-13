@@ -23,5 +23,5 @@ pytest-pyramid = "==1.0.3"
 tbump = "==6.11.0"
 pdbpp = "==0.10.3"
 sphinx = {version = "==7.3.7", markers="python_version > '3.8'"}
-psycopg = "==3.1.18"
+psycopg = "==3.1.19"
 ruff = "==0.3.7"
