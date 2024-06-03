@@ -34,11 +34,12 @@ def db_session(request):
     """Session for SQLAlchemy."""
     from pyramid_fullauth.models import Base  # pylint:disable=import-outside-toplevel
 
+    connection = ""
     if request.param == "sqlite":
         connection = "sqlite:///fullauth.sqlite"
     elif request.param == "mysql":
         request.getfixturevalue("mysql")  # takes care of creating database
-        connection = "mysql+mysqldb://root:@127.0.0.1:3307/tests?charset=utf8"
+        connection = "mysql+pymysql://root:@127.0.0.1:3307/tests?charset=utf8"
     elif request.param == "postgresql":
         request.getfixturevalue("postgresql")  # takes care of creating database
         connection = "postgresql+psycopg://postgres:@127.0.0.1:5433/tests"
