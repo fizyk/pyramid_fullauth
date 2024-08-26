@@ -24,4 +24,4 @@ tbump = "==6.11.0"
 pdbpp = "==0.10.3"
 sphinx = {version = "==8.0.2", markers="python_version > '3.9'"}
 psycopg = "==3.2.1"
-ruff = "==0.5.2"
+ruff = "==0.6.2"
