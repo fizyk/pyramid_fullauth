@@ -3,6 +3,27 @@ CHANGELOG
 
 .. towncrier release notes start
 
+2.1.0 (2024-10-25)
+==================
+
+Breaking changes
+----------------
+
+- Drop support for Python 3.8 (Already Reached EOL)
+
+
+Features
+--------
+
+- Declare Support for Python 3.13
+
+
+Miscellaneus
+------------
+
+- `#741 <https://https://github.com/fizyk/pyramid_fullauth/issues/741>`_, `#744 <https://https://github.com/fizyk/pyramid_fullauth/issues/744>`_, `#765 <https://https://github.com/fizyk/pyramid_fullauth/issues/765>`_, `#775 <https://https://github.com/fizyk/pyramid_fullauth/issues/775>`_
+
+
 2.0.2 (2023-11-06)
 ==================
 

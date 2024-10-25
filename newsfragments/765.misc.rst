@@ -1,1 +1,0 @@
-Adjust tests for updated pytest-mysql using pymysql instead of mysqlclient.
