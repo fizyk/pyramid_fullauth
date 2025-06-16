@@ -18,7 +18,7 @@ pytest = "==8.4.0"
 pytest-cov = "==6.1.1"
 mock = "==5.2.0"
 pytest-mysql = "==3.1.0"
-pytest-postgresql = "==7.0.1"
+pytest-postgresql = "==7.0.2"
 pytest-pyramid = "==1.0.4"
 tbump = "==6.11.0"
 sphinx = {version = "==8.2.3", markers="python_version >= '3.11'"}
