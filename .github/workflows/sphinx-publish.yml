@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-python@v5
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 0 # otherwise, will fail to push refs to dest repo
     - uses: fizyk/actions-reuse/.github/actions/pipenv@v3.1.1
