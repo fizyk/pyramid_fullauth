@@ -8,7 +8,7 @@ on:
 
 jobs:
   basic_linters:
-    uses: fizyk/actions-reuse/.github/workflows/shared-linters-python.yml@v3.1.1
+    uses: fizyk/actions-reuse/.github/workflows/shared-linters-python.yml@v4.0.1
     with:
       black: true
       ruff: true
