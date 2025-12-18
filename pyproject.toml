@@ -88,13 +88,11 @@ postgresql_port=5433
 mysql_port=3307
 mysql_dbname="tests"
 
-[tool.black]
-line-length = 120
-target-version = ['py39']
-include = '.*\.pyi?$'
-
 [tool.ruff]
 line-length = 120
+target-version = 'py310'
+
+[tool.ruff.lint]
 select = [
     "E",   # pycodestyle
     "F",   # pyflakes
@@ -103,11 +101,15 @@ select = [
     "PL",  # pylint
 ]
 
-[tool.ruff.pylint]
+[tool.ruff.lint.pylint]
 max-args = 6
 max-returns = 7
 
-
+[tool.rstcheck]
+report_level = "warning"
+ignore_directives = [
+    "automodule"
+]
 
 [tool.tbump]
 # Uncomment this if your project is hosted on GitHub:

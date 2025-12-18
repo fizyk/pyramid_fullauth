@@ -10,10 +10,10 @@ from sqlalchemy import func
 from sqlalchemy.ext.hybrid import Comparator
 
 
-class CaseInsensitive(Comparator):  # pylint:disable=abstract-method
+class CaseInsensitive(Comparator):
     """Hybrid value representing a lower case representation."""
 
-    def __init__(self, word):  # pylint:disable=super-init-not-called
+    def __init__(self, word):
         """Initialise comparator object."""
         if isinstance(word, str):
             self.word = word.lower()
@@ -22,7 +22,7 @@ class CaseInsensitive(Comparator):  # pylint:disable=abstract-method
         else:
             self.word = func.lower(word)
 
-    def operate(self, op, other):  # pylint:disable=arguments-differ
+    def operate(self, op, other):
         """Operate."""
         if not isinstance(other, CaseInsensitive):
             other = CaseInsensitive(other)

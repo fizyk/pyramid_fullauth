@@ -25,7 +25,7 @@ def login_perform(request, user, location=None, remember_me=False):
     :returns: redirect exception
     :rtype: pyramid.httpexceptions.HTTPSeeOther
     """
-    user.logged_at = func.now()  # pylint:disable=not-callable
+    user.logged_at = func.now()
     if remember_me:  # if remember in POST set cookie timeout to one from configure
         headers = remember(
             request,
@@ -53,11 +53,7 @@ def request_user(request: Request):
     """
     if request.authenticated_userid:
         try:
-            user = (
-                pyramid_basemodel.Session.query(User)
-                .filter(User.id == request.authenticated_userid)  # pylint:disable=no-member
-                .one()
-            )
+            user = pyramid_basemodel.Session.query(User).filter(User.id == request.authenticated_userid).one()
             return user
         except NoResultFound:  # pragma: no cover
             pass

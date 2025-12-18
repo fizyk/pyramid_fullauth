@@ -38,4 +38,3 @@ the MIT License (MIT): http://opensource.org/licenses/MIT
     </div>
     <div class="span2"></div>
 </div>
-
