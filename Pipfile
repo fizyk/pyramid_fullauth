@@ -12,7 +12,7 @@ sqlalchemy = "==2.0.43"
 velruse = "==1.1.1"
 
 [dev-packages]
-towncrier = "==24.8.0"
+towncrier = "==25.8.0"
 black = "==25.1.0"
 pytest = "==8.4.1"
 pytest-cov = "==6.2.1"
