@@ -50,6 +50,8 @@ def load_database(**kwargs):
         )
     )
     session.commit()
+    session.close()
+    engine.dispose()
 
 
 # Create a process fixture referencing the load_database
