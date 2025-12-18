@@ -3,6 +3,31 @@ CHANGELOG
 
 .. towncrier release notes start
 
+pyramid_fullauth 2.2.0 (2025-12-18)
+===================================
+
+Breaking changes
+----------------
+
+- Drop support for Python 3.9
+
+
+Features
+--------
+
+- Add support for Python 3.14
+
+
+Miscellaneus
+------------
+
+- `#721 <https://https://github.com/fizyk/pyramid_fullauth/issues/721>`_
+- Add pre-commit.
+- Adjust workflows for actions-reuse 3
+- Do not install sphinx on python 3.10
+- Drop pdbpp from requirements
+
+
 2.1.0 (2024-10-25)
 ==================
 

@@ -15,7 +15,7 @@ from pyramid.session import JSONSerializer
 from pyramid_fullauth.request import login_perform, logout, request_user
 from pyramid_fullauth.routing import predicates
 
-__version__ = "2.1.0"
+__version__ = "2.2.0"
 
 from pyramid_fullauth.security import FullAuthSecurityPolicy
 
