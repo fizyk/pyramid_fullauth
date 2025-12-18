@@ -43,7 +43,7 @@ def test_register_success(db_session, default_app, email, password):
     assert user.check_password(password)
 
 
-def test_register_user_exists(db_session, user, default_app):  # pylint:disable=unused-argument
+def test_register_user_exists(db_session, user, default_app):
     """Trying to register existing user."""
     res = default_app.get("/register")
     res.form["email"] = DEFAULT_USER["email"]

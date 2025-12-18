@@ -63,7 +63,7 @@ def test_social_login_register(social_config, db_session):
     assert user.provider_id("facebook") == profile["accounts"][0]["userid"]
 
 
-def test_login_different_social_account(social_config, db_session, facebook_user):  # pylint:disable=unused-argument
+def test_login_different_social_account(social_config, db_session, facebook_user):
     """Login with different social account than connected from same provider.
 
     System should let user in, but not change connection.

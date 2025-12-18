@@ -71,4 +71,4 @@ def test_email_from_context(profile, email):
         "facebook",
     )
     view = SocialLoginViews(mock.MagicMock())
-    assert view._email_from_context(context) == email  # pylint:disable=protected-access
+    assert view._email_from_context(context) == email

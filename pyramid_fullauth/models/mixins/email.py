@@ -56,7 +56,7 @@ class UserEmailMixin(object):
         self._email = value
 
     @email.comparator
-    def email(cls):  # pylint:disable=no-self-argument,method-hidden
+    def email(cls):
         """Email field comparator."""
         return CaseInsensitive(cls._email)
 
@@ -75,7 +75,7 @@ class UserEmailMixin(object):
         self._new_email = value
 
     @new_email.comparator
-    def new_email(cls):  # pylint:disable=no-self-argument,method-hidden
+    def new_email(cls):
         """Email field comparator."""
         return CaseInsensitive(cls._new_email)
 

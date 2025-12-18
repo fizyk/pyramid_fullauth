@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Account activation related tests."""
+
 try:
     from urllib import quote
 
@@ -54,8 +55,8 @@ def test_account_activation_key_with_trash_chars(user, db_session, default_app):
     res = default_app.get(
         "/register/activate/"
         + quote(
-            # ąśðłĸęł¶→łęóħó³→←śðđ[]}³½ĸżćŋðń→↓ŧ¶ħ→ĸł¼²³↓←ħ@ĸđśðĸ@ł¼ęłśħđó[³²½łðśđħ - already decoded
             (
+                # ąśðłĸęł¶→łęóħó³→←śðđ[]}³½ĸżćŋðń→↓ŧ¶ħ→ĸł¼²³↓←ħ@ĸđśðĸ@ł¼ęłśħđó[³²½łðśđħ - already decoded
                 "\xc4\x85\xc5\x9b\xc3\xb0\xc5\x82\xc4\xb8\xc4\x99\xc5\x82\xc2\xb6\xe2\x86\x92\xc5\x82\xc4\x99\xc3\xb3"
                 "\xc4\xa7\xc3\xb3\xc2\xb3\xe2\x86\x92\xe2\x86\x90\xc5\x9b\xc3\xb0\xc4\x91[]}\xc2\xb3\xc2\xbd\xc4\xb8"
                 "\xc5\xbc\xc4\x87\xc5\x8b\xc3\xb0\xc5\x84\xe2\x86\x92\xe2\x86\x93\xc5\xa7\xc2\xb6\xc4\xa7\xe2\x86\x92"

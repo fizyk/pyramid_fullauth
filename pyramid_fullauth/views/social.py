@@ -3,6 +3,7 @@
 # This module is part of pyramid_fullauth and is released under
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Social login/registration view."""
+
 import logging
 
 import pyramid_basemodel

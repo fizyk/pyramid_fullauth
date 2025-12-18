@@ -42,8 +42,8 @@ class User(UserPasswordMixin, UserEmailMixin, Base):
     activate_key = Column(String(255), default=lambda: str(uuid.uuid4()), unique=True)
     address_ip = Column(String(15), nullable=False)
 
-    registered_at = Column(DateTime, default=func.now(), nullable=False)  # pylint:disable=not-callable
-    logged_at = Column(DateTime, default=func.now(), nullable=False)  # pylint:disable=not-callable
+    registered_at = Column(DateTime, default=func.now(), nullable=False)
+    logged_at = Column(DateTime, default=func.now(), nullable=False)
     activated_at = Column(DateTime, nullable=True)
     deactivated_at = Column(DateTime, nullable=True)
     deleted_at = Column(DateTime, nullable=True)
@@ -175,7 +175,7 @@ class AuthenticationProvider(Base):
 
 
 #: Association table between User and Group models.
-user_group = Table(  # pylint:disable=invalid-name
+user_group = Table(
     "users_groups",
     Base.metadata,
     Column("user_id", Integer, ForeignKey(User.id), primary_key=True),

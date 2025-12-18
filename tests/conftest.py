@@ -1,5 +1,7 @@
 """Most of the fixtures needed."""
 
+# ruff: noqa: PLC0415
+
 import pyramid_basemodel
 import pytest
 import transaction
@@ -32,7 +34,7 @@ def web_request():
 @pytest.fixture(scope="function", params=["sqlite", "mysql", "postgresql"])
 def db_session(request):
     """Session for SQLAlchemy."""
-    from pyramid_fullauth.models import Base  # pylint:disable=import-outside-toplevel
+    from pyramid_fullauth.models import Base
 
     connection = ""
     if request.param == "sqlite":
@@ -59,10 +61,10 @@ def db_session(request):
 
 
 @pytest.fixture
-def user(db_session):  # pylint:disable=redefined-outer-name
+def user(db_session):
     """Test user fixture."""
-    from pyramid_fullauth.models import User  # pylint:disable=import-outside-toplevel
-    from tests.tools import DEFAULT_USER  # pylint:disable=import-outside-toplevel
+    from pyramid_fullauth.models import User
+    from tests.tools import DEFAULT_USER
 
     new_user = User(**DEFAULT_USER)
     db_session.add(new_user)
@@ -71,7 +73,7 @@ def user(db_session):  # pylint:disable=redefined-outer-name
 
 
 @pytest.fixture
-def active_user(user, db_session):  # pylint:disable=redefined-outer-name
+def active_user(user, db_session):
     """Active user."""
     user = db_session.merge(user)
     user.is_active = True
@@ -105,7 +107,6 @@ def invalid_email(request):
     return request.param
 
 
-# pylint:disable=invalid-name
 default_config = factories.pyramid_config(
     settings={"pyramid.includes": ["pyramid_tm", "pyramid_fullauth", "tests.tools.csrf"]}
 )
@@ -208,4 +209,3 @@ nopassregister_config = factories.pyramid_config(
 
 
 nopassregister_app = factories.pyramid_app("nopassregister_config")
-# pylint:enable=invalid-name
