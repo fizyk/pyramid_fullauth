@@ -33,25 +33,27 @@ def web_request():
 
 
 def load_database(**kwargs):
-    """Pre-load database with data and structure."""
+    """Preload database with data and structure."""
     from pyramid_fullauth.models import Base, Group  # pylint:disable=import-outside-toplevel
 
     connection = f"postgresql+psycopg://{kwargs['user']}:@{kwargs['host']}:{kwargs['port']}/{kwargs['dbname']}"
     engine = create_engine(connection)
-    Base.metadata.create_all(engine)
-    session = scoped_session(sessionmaker())
-    session.configure(bind=engine)
-    # This group will always be present in each test even though after each test the test database is dropped.
-    # That's because it lives in temporary database which
-    # for postgresql based tests is used to recreate a test database.
-    session.add(
-        Group(
-            name="Added in pre-init stage",
+    try:
+        Base.metadata.create_all(engine)
+        session = scoped_session(sessionmaker())
+        session.configure(bind=engine)
+        # This group will always be present in each test even though after each test the test database is dropped.
+        # That's because it lives in a temporary database which
+        # for postgresql based tests is used to recreate a test database.
+        session.add(
+            Group(
+                name="Added in pre-init stage",
+            )
         )
-    )
-    session.commit()
-    session.close()
-    engine.dispose()
+        session.commit()
+        session.close()
+    finally:
+        engine.dispose()
 
 
 # Create a process fixture referencing the load_database
