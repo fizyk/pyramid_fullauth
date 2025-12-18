@@ -107,4 +107,3 @@ CSRF Check
 
 To guard your site against csrf, please follow up
 `official pyramid's documentation settings <https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/security.html#checking-csrf-tokens-automatically>`_
-
