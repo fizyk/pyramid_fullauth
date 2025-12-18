@@ -6,6 +6,7 @@ import pyramid_basemodel
 import pytest
 import transaction
 from mock import Mock
+from pytest_postgresql.factories import postgresql_proc as postgresql_proc_factory
 from pytest_pyramid import factories
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -31,6 +32,34 @@ def web_request():
     return request
 
 
+def load_database(**kwargs):
+    """Pre-load database with data and structure."""
+    from pyramid_fullauth.models import Base, Group  # pylint:disable=import-outside-toplevel
+
+    connection = f"postgresql+psycopg://{kwargs['user']}:@{kwargs['host']}:{kwargs['port']}/{kwargs['dbname']}"
+    engine = create_engine(connection)
+    Base.metadata.create_all(engine)
+    session = scoped_session(sessionmaker())
+    session.configure(bind=engine)
+    # This group will always be present in each test even though after each test the test database is dropped.
+    # That's because it lives in temporary database which
+    # for postgresql based tests is used to recreate a test database.
+    session.add(
+        Group(
+            name="Added in pre-init stage",
+        )
+    )
+    session.commit()
+    session.close()
+    engine.dispose()
+
+
+# Create a process fixture referencing the load_database
+postgresql_proc = postgresql_proc_factory(
+    load=[load_database],
+)
+
+
 @pytest.fixture(scope="function", params=["sqlite", "mysql", "postgresql"])
 def db_session(request):
     """Session for SQLAlchemy."""
@@ -49,15 +78,15 @@ def db_session(request):
     engine = create_engine(connection, echo=False, poolclass=NullPool)
     pyramid_basemodel.Session = scoped_session(sessionmaker())
     register(pyramid_basemodel.Session)
-    pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_create=True, should_drop=True)
+    if request.param == "postgresql":
+        pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_create=False, should_drop=False)
+    else:
+        pyramid_basemodel.bind_engine(engine, pyramid_basemodel.Session, should_create=True, should_drop=True)
 
-    def destroy():
-        transaction.commit()
-        Base.metadata.drop_all(engine)
+    yield pyramid_basemodel.Session
 
-    request.addfinalizer(destroy)
-
-    return pyramid_basemodel.Session
+    transaction.commit()
+    Base.metadata.drop_all(engine)
 
 
 @pytest.fixture
