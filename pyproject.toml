@@ -82,10 +82,10 @@ showcontent = true
 name = "Miscellaneus"
 showcontent = false
 
-[tool.pytest.ini_options]
+[tool.pytest]
 xfail_strict=true
-postgresql_port=5433
-mysql_port=3307
+postgresql_port="5433"
+mysql_port="3307"
 mysql_dbname="tests"
 
 [tool.ruff]
