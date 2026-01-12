@@ -22,5 +22,5 @@ pytest-postgresql = "==7.0.2"
 pytest-pyramid = "==1.0.4"
 tbump = "==6.11.0"
 sphinx = {version = "==8.2.3", markers="python_version >= '3.11'"}
-psycopg = "==3.2.10"
+psycopg = "==3.3.2"
 ruff = "==0.14.10"
