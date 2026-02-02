@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    uses: fizyk/actions-reuse/.github/workflows/shared-tests-pytests.yml@v4.1.1
+    uses: fizyk/actions-reuse/.github/workflows/shared-tests-pytests.yml@v4.2.1
     with:
       python-versions: '["3.10", "3.11", "3.12", "3.13", "3.14"]'
       pytest_opts: '-k "not mysql and not postgresql"'
@@ -16,7 +16,7 @@ jobs:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
   postgresql:
     needs: tests
-    uses: fizyk/actions-reuse/.github/workflows/shared-tests-pytests.yml@v4.1.1
+    uses: fizyk/actions-reuse/.github/workflows/shared-tests-pytests.yml@v4.2.1
     with:
       python-versions: '["3.10", "3.11", "3.12", "3.13", "3.14"]'
       pytest_opts: "-k postgresql"
@@ -24,7 +24,7 @@ jobs:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
   mysql:
     needs: tests
-    uses: fizyk/actions-reuse/.github/workflows/shared-tests-pytests.yml@v4.1.1
+    uses: fizyk/actions-reuse/.github/workflows/shared-tests-pytests.yml@v4.2.1
     with:
       python-versions: '["3.10", "3.11", "3.12", "3.13", "3.14"]'
       pytest_opts: "-k mysql"
