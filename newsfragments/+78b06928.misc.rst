@@ -1,0 +1,1 @@
+Pin setuptools to lower than 82. Since pkg_resources is no longer available, but required by pyramid.
