@@ -14,7 +14,6 @@ velruse = "==1.1.1"
 
 [dev-packages]
 towncrier = "==25.8.0"
-black = "==26.1.0"
 pytest = "==9.0.2"
 pytest-cov = "==7.0.0"
 mock = "==5.2.0"
@@ -24,4 +23,3 @@ pytest-pyramid = "==1.0.4"
 tbump = "==6.11.0"
 sphinx = {version = "==8.2.3", markers="python_version >= '3.11'"}
 psycopg = "==3.3.2"
-ruff = "==0.14.10"

@@ -1,0 +1,1 @@
+Drop ``ruff`` (and related ``black`` tooling) from Pipfile dev-dependencies; no code changes.
