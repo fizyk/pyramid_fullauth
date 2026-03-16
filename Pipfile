@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyramid = "==2.0.2"
+pyramid = "==2.1"
 setuptools = "<82.0.0"
 pyramid-localize = "==1.0.8"
 pyramid-basemodel = "==0.7.0"
