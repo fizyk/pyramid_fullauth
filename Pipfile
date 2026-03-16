@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 pyramid = "==2.1"
-setuptools = "<82.0.0"
 pyramid-localize = "==1.0.8"
 pyramid-basemodel = "==0.7.0"
 pyramid-mako = "==1.1.0"
