@@ -13,7 +13,7 @@ velruse = "==1.1.1"
 
 [dev-packages]
 towncrier = "==25.8.0"
-pytest = "==9.1.0"
+pytest = "==9.1.1"
 pytest-cov = "==7.1.0"
 mock = "==5.2.0"
 pytest-mysql = "==4.0.0"
