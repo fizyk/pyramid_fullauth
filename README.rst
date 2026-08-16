@@ -23,13 +23,3 @@ pyramid_fullauth
 
 Pyramid fullauth's provides full user registration and management functionality for
 `pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_ based web applications.
-
-
-Release
-=======
-
-Install pipenv and --dev dependencies first, Then run:
-
-.. code-block::
-
-    pipenv run tbump [NEW_VERSION]

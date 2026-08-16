@@ -1,6 +1,6 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = [ "setuptools>=61.0.0" ]
+build-backend = "uv_build"
+requires = [ "uv-build>=0.12,<0.13" ]
 
 [project]
 name = "pyramid-fullauth"
@@ -8,14 +8,14 @@ version = "2.2.0"
 description = "pyramid_fullauth provides full authentication / authorisation implementation for pyramid applications"
 readme = "README.rst"
 keywords = [ "authentication", "authorisation", "pyramid", "user" ]
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = [ "LICENSE" ]
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Pyramid",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
@@ -53,13 +53,31 @@ Source = "https://github.com/fizyk/pyramid_fullauth/"
 Changelog = "https://github.com/fizyk/pyramid_fullauth/blob/v2.2.0/CHANGES.rst"
 Documentation = "https://fizyk.dev/pyramid_fullauth/"
 
-[tool.setuptools]
-zip-safe = true
+[dependency-groups]
+dev = [
+    "mock==5.2.0",
+    "pyramid==2.1.0",
+    "pyramid-basemodel==0.7.0",
+    "pyramid-localize==1.0.8",
+    "pyramid-mako==1.1.0",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+    "pytest-mysql==4.0.0",
+    "pytest-postgresql==8.1.0",
+    "pytest-pyramid==1.1.0",
+    "sphinx==8.2.3; python_version>='3.11'",
+    "sqlalchemy==2.0.51",
+    "towncrier==25.8.0",
+    "velruse==1.1.1",
+]
+release = [
+    "tbump==6.11.0",
+]
 
-[tool.setuptools.packages.find]
-include = [ "pyramid_fullauth*" ]
-exclude = [ "tests*" ]
-namespaces = false
+[tool.uv.build-backend]
+module-name = "pyramid_fullauth"
+module-root = ""
+source-include = [ "CHANGES.rst" ]
 
 [tool.ruff]
 target-version = "py310"
@@ -96,7 +114,7 @@ xfail_strict = true
 
 [[tool.tbump.before_commit]]
 name = "Build changelog"
-cmd = "pipenv run towncrier build --version {new_version} --yes"
+cmd = "uv run towncrier build --version {new_version} --yes"
 
 [[tool.tbump.field]]
 name = "extra"
@@ -139,7 +157,7 @@ regex = '''
 [tool.towncrier]
 directory = "newsfragments"
 filename = "CHANGES.rst"
-issue_format = "`#{issue} <https://https://github.com/fizyk/pyramid_fullauth/issues/{issue}>`_"
+issue_format = "`#{issue} <https://github.com/fizyk/pyramid_fullauth/issues/{issue}>`_"
 single_file = true
 
 [[tool.towncrier.type]]

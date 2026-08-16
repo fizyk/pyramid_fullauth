@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version to be added'
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: release-schedule
+
+jobs:
+  release:
+    permissions:
+      contents: read
+    uses: fizyk/actions-reuse/.github/workflows/shared-release.yml@3768ca868776ab12e78334cc376094a7aec3d9b6 # v5.3.1
+    with:
+      version: ${{ inputs.version }}
+      dependency-manager: 'uv'
+    secrets:
+      app_id: ${{ secrets.RELEASE_APP_ID }}
+      private_key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
