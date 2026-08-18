@@ -20,3 +20,11 @@ updates:
     fizyk-actions-reuse:
       patterns:
       - "fizyk/actions-reuse/*"
+- package-ecosystem: pre-commit
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:14"
+  open-pull-requests-limit: 1
+  cooldown:
+    default-days: 7
