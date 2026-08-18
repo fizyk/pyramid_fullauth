@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions: {}
+
 jobs:
   pre-commit:
     uses: fizyk/actions-reuse/.github/workflows/shared-pre-commit.yml@bd825c06829614c809e87acac868a1143328a5b4 # v5.3.2
