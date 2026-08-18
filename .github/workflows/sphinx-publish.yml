@@ -27,7 +27,7 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0 # otherwise, will fail to push refs to dest repo
-    - uses: fizyk/actions-reuse/.github/actions/uv@3768ca868776ab12e78334cc376094a7aec3d9b6 # v5.3.1
+    - uses: fizyk/actions-reuse/.github/actions/uv@bd825c06829614c809e87acac868a1143328a5b4 # v5.3.2
       with:
         python-version: "3.14"
         command: "sphinx-build -b html docs/source build/html"
