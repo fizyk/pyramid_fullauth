@@ -85,11 +85,12 @@ line-length = 120
 
 [tool.ruff.lint]
 select = [
-    "E",  # pycodestyle
-    "F",  # pyflakes
-    "I",  # isort
-    "D",  # pydocstyle
-    "PL", # pylint
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # isort
+    "D",   # pydocstyle
+    "PL",  # pylint
+    "FBT", # flake8-boolean-trap
 ]
 
 [tool.ruff.lint.pylint]
