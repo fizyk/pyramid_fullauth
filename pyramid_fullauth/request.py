@@ -14,7 +14,7 @@ from sqlalchemy.sql.functions import func
 from pyramid_fullauth.models import User
 
 
-def login_perform(request, user, location=None, remember_me=False):
+def login_perform(request, user, location=None, *, remember_me=False):
     """Perform login action.
 
     :param pyramid.request.Request request: a request object

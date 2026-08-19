@@ -1,0 +1,1 @@
+`remember_me` parameter on `login_perform` request method is now keyword only.

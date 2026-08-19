@@ -15,6 +15,7 @@ def authenticate(
     app,
     email=DEFAULT_USER["email"],
     password=DEFAULT_USER["password"],
+    *,
     remember=False,
     response_code=303,
 ):
