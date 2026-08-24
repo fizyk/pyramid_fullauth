@@ -57,7 +57,7 @@ Documentation = "https://fizyk.dev/pyramid_fullauth/"
 dev = [
     "mock==5.2.0",
     "pyramid==2.1.0",
-    "pyramid-basemodel==0.7.0",
+    "pyramid-basemodel==0.7.1",
     "pyramid-localize==1.0.8",
     "pyramid-mako==1.1.0",
     "pytest==9.1.1",
