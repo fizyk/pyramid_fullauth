@@ -83,19 +83,19 @@ source-include = [ "CHANGES.rst" ]
 target-version = "py310"
 line-length = 120
 
-[tool.ruff.lint]
-select = [
-    "E",   # pycodestyle
-    "F",   # pyflakes
-    "I",   # isort
-    "D",   # pydocstyle
-    "PL",  # pylint
-    "FBT", # flake8-boolean-trap
-]
-
 [tool.ruff.lint.pylint]
 max-args = 6
 max-returns = 7
+
+[tool.ruff.lint]
+select = [
+    "D",   # pydocstyle
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "FBT", # flake8-boolean-trap
+    "I",   # isort
+    "PL",  # pylint
+]
 
 [tool.pyproject-fmt]
 column_width = 120
