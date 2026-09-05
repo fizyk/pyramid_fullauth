@@ -1,1 +1,0 @@
-Enable `flake8-boolean-trap` linter

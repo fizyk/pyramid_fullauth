@@ -4,7 +4,7 @@ requires = [ "uv-build>=0.12,<0.13" ]
 
 [project]
 name = "pyramid-fullauth"
-version = "2.2.0"
+version = "3.0.0"
 description = "pyramid_fullauth provides full authentication / authorisation implementation for pyramid applications"
 readme = "README.rst"
 keywords = [ "authentication", "authorisation", "pyramid", "user" ]
@@ -50,7 +50,7 @@ docs = [ "sphinx" ]
 [project.urls]
 Source = "https://github.com/fizyk/pyramid_fullauth/"
 "Bug Tracker" = "https://github.com/fizyk/pyramid_fullauth/issues"
-Changelog = "https://github.com/fizyk/pyramid_fullauth/blob/v2.2.0/CHANGES.rst"
+Changelog = "https://github.com/fizyk/pyramid_fullauth/blob/v3.0.0/CHANGES.rst"
 Documentation = "https://fizyk.dev/pyramid_fullauth/"
 
 [dependency-groups]
@@ -143,7 +143,7 @@ message_template = "Release {new_version}"
 tag_template = "v{new_version}"
 
 [tool.tbump.version]
-current = "2.2.0"
+current = "3.0.0"
 regex = '''
   (?P<major>\d+)
   \.

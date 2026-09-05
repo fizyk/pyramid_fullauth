@@ -1,1 +1,0 @@
-Add pyproject-fmt formatter to the pre-commit config.
