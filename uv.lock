@@ -923,7 +923,7 @@ dev = [
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "pytest-mysql", specifier = "==4.0.0" },
-    { name = "pytest-postgresql", specifier = "==8.1.0" },
+    { name = "pytest-postgresql", specifier = "==9.0.0" },
     { name = "pytest-pyramid", specifier = "==1.1.0" },
     { name = "sphinx", marker = "python_full_version >= '3.11'", specifier = "==8.2.3" },
     { name = "sqlalchemy", specifier = "==2.0.52" },
@@ -1023,7 +1023,7 @@ wheels = [
 
 [[package]]
 name = "pytest-postgresql"
-version = "8.1.0"
+version = "9.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mirakuru" },
@@ -1032,9 +1032,9 @@ dependencies = [
     { name = "psycopg" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/54/e5/3855f2e69cab10968564d797db2c3a4a7eabad68964047984a2533cddd46/pytest_postgresql-8.1.0.tar.gz", hash = "sha256:ffd24027a28aba3d05a909fb03ee87d1d474574c3504f332d6047e8699170adc", size = 58995, upload-time = "2026-05-15T19:59:36.85Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/b0/2710419ebaec55f9bba613f72ecda7b08fddb6d339fa4c4965b7485f5ce5/pytest_postgresql-9.0.0.tar.gz", hash = "sha256:6b648d23fce07718593b44057fed2aec6ece6e0ee8081dd353955b68a61f36d8", size = 44981, upload-time = "2026-08-28T11:40:17.451Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fe/5a/1a9dbe730bfeeebf0e442225285550148cc85efcbfe0ad85b02b74a12e91/pytest_postgresql-8.1.0-py3-none-any.whl", hash = "sha256:0868bb3374fa4f454efd73ac1d7b23d2da623782044371b84d39f83a0893f56f", size = 42311, upload-time = "2026-05-15T19:59:34.955Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/bc/406f28309498eac372343f6cb5e1b16348818f439f1b7e7ba579ad54bd5c/pytest_postgresql-9.0.0-py3-none-any.whl", hash = "sha256:22df5ad1e569911c0cd0c43f32df8efb0b01e5a33449897c0cc5ee1aeeac6585", size = 40464, upload-time = "2026-08-28T11:40:16.242Z" },
 ]
 
 [[package]]
