@@ -844,7 +844,7 @@ wheels = [
 
 [[package]]
 name = "pyramid-basemodel"
-version = "0.7.1"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "inflect" },
@@ -856,9 +856,9 @@ dependencies = [
     { name = "zope-interface" },
     { name = "zope-sqlalchemy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e1/03/10fcf4e1db6aaf03d54c2bdbe176e45b0a44c9acbb31a1b1df9e8de10edd/pyramid_basemodel-0.7.1.tar.gz", hash = "sha256:ac90ccfc2da53e3f84a99117c5cdd4adcbd1481532ae4771d7957d26d6a78ab1", size = 14245, upload-time = "2026-08-14T17:06:34.719Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/fd/142f255f8d84dc9c25355be8a3b8bbe14485ea1d2db51f629cb0850e2fdb/pyramid_basemodel-1.0.0.tar.gz", hash = "sha256:dd3f07eaa82aac1657d17be2fdf52101d8633b3fbb9f0663c0a095b87ebb3083", size = 16141, upload-time = "2026-09-05T11:31:44.46Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7b/4c/c4d376878c9cf1592365a69a9b1da5b8f345ff5a1f0b0043d0c771bf56b0/pyramid_basemodel-0.7.1-py3-none-any.whl", hash = "sha256:e98dd2a5254ebf3aa74577a31b8f643c6b3a2d37f9fc22d1ff002edacbe840a2", size = 14754, upload-time = "2026-08-14T17:06:33.411Z" },
+    { url = "https://files.pythonhosted.org/packages/91/7e/86b713994fcbcd359f2cd951253d76ef2c42da1b699579b262c832c4e7a3/pyramid_basemodel-1.0.0-py3-none-any.whl", hash = "sha256:e84545f061746b386df501afa0e89f1493be581785f628012456387ea6de0285", size = 17108, upload-time = "2026-09-05T11:31:43.097Z" },
 ]
 
 [[package]]
@@ -917,7 +917,7 @@ provides-extras = ["docs"]
 dev = [
     { name = "mock", specifier = "==5.2.0" },
     { name = "pyramid", specifier = "==2.1.0" },
-    { name = "pyramid-basemodel", specifier = "==0.7.1" },
+    { name = "pyramid-basemodel", specifier = "==1.0.0" },
     { name = "pyramid-localize", specifier = "==1.0.8" },
     { name = "pyramid-mako", specifier = "==1.1.0" },
     { name = "pytest", specifier = "==9.1.1" },
