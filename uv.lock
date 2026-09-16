@@ -918,7 +918,7 @@ dev = [
     { name = "mock", specifier = "==5.2.0" },
     { name = "pyramid", specifier = "==2.1.0" },
     { name = "pyramid-basemodel", specifier = "==1.0.0" },
-    { name = "pyramid-localize", specifier = "==1.0.8" },
+    { name = "pyramid-localize", specifier = "==2.0.0" },
     { name = "pyramid-mako", specifier = "==1.1.0" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-cov", specifier = "==7.1.0" },
@@ -934,17 +934,19 @@ release = [{ name = "tbump", specifier = "==6.11.0" }]
 
 [[package]]
 name = "pyramid-localize"
-version = "1.0.8"
+version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pycountry" },
     { name = "pyramid" },
     { name = "pyramid-basemodel" },
     { name = "pyramid-mako" },
+    { name = "sqlalchemy" },
+    { name = "translationstring" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f9/b0/f73495998afa3ec5e9f935428f08ab665c29231f2e7e0afdf54301912bbb/pyramid_localize-1.0.8.tar.gz", hash = "sha256:0997a02153395be367e77d7c089f857e033a088922e4f6d85ff452d454132487", size = 16754, upload-time = "2026-01-12T12:05:38.958Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/89/524309b4ff0b9a93ab9fd25df81d4c71c63a64fca5b6fc836abe042765ac/pyramid_localize-2.0.0.tar.gz", hash = "sha256:56944a9d88f0f1dfcd6168316330424928e70b1e9c48125935f82a4ae46f41be", size = 11670, upload-time = "2026-09-05T11:31:40.07Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fa/5b/ec009daef2028d97e9a704910d573bc7e8bf0a7084472b835a4e284db066/pyramid_localize-1.0.8-py3-none-any.whl", hash = "sha256:87af5a87043b2819d8e57f500ac79138e7135595e42e28ae68ab138f7eec2bd5", size = 15066, upload-time = "2026-01-12T12:05:36.765Z" },
+    { url = "https://files.pythonhosted.org/packages/b9/60/904deac9059490628db21ee4c5adb3c619ecf66b60adeca3abb08abfaaef/pyramid_localize-2.0.0-py3-none-any.whl", hash = "sha256:d8f3efc96f9ff64f8e5f073c1127339b283aaab202ac104928cb247206a5547a", size = 16355, upload-time = "2026-09-05T11:31:38.972Z" },
 ]
 
 [[package]]
