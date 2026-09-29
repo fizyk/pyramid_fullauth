@@ -3,6 +3,31 @@ CHANGELOG
 
 .. towncrier release notes start
 
+pyramid-fullauth 3.0.0 (2026-09-05)
+===================================
+
+Breaking changes
+----------------
+
+- `remember_me` parameter on `login_perform` request method is now keyword only. (`#942 <https://github.com/fizyk/pyramid_fullauth/issues/942>`_)
+
+
+Miscellaneous
+-------------
+
+- Drop ``ruff`` (and related ``black`` tooling) from Pipfile dev-dependencies; no code changes. (`#876 <https://github.com/fizyk/pyramid_fullauth/issues/876>`_)
+- Add pyproject-fmt formatter to the pre-commit config. (`#938 <https://github.com/fizyk/pyramid_fullauth/issues/938>`_)
+- Add zizmor to pre-commit and address its findings. (`#939 <https://github.com/fizyk/pyramid_fullauth/issues/939>`_)
+- Migrate development environment to uv (`#940 <https://github.com/fizyk/pyramid_fullauth/issues/940>`_)
+- Add Python 3.15 to CI (`#941 <https://github.com/fizyk/pyramid_fullauth/issues/941>`_)
+- Enable `flake8-boolean-trap` linter (`#942 <https://github.com/fizyk/pyramid_fullauth/issues/942>`_)
+- Add release-schedule workflow. (`#944 <https://github.com/fizyk/pyramid_fullauth/issues/944>`_)
+- Migrated the Automerge workflow to `fizyk/actions-reuse` version 5.4.1. (`#949 <https://github.com/fizyk/pyramid_fullauth/issues/949>`_)
+- Configure Dependabot to update pre-commit dependencies. (`#963 <https://github.com/fizyk/pyramid_fullauth/issues/963>`_)
+- Adjust pytest configuration to the toml-native.
+- Pin setuptools to lower than 82. Since pkg_resources is no longer available, but required by pyramid.
+
+
 pyramid_fullauth 2.2.0 (2025-12-18)
 ===================================
 

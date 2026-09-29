@@ -17,7 +17,7 @@ jobs:
   release:
     permissions:
       contents: read
-    uses: fizyk/actions-reuse/.github/workflows/shared-release.yml@42b61e053c1d70a61deb42b323c1a2229e2e7fe0 # v5.5.0
+    uses: fizyk/actions-reuse/.github/workflows/shared-release.yml@432d7575c4cc00724bb43d408cc75e2830c51ae2 # v5.9.0
     with:
       version: ${{ inputs.version }}
       dependency-manager: 'uv'

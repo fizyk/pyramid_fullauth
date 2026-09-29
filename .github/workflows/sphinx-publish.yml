@@ -27,7 +27,7 @@ jobs:
       with:
         fetch-depth: 0 # otherwise, will fail to push refs to dest repo
         persist-credentials: false
-    - uses: fizyk/actions-reuse/.github/actions/uv@42b61e053c1d70a61deb42b323c1a2229e2e7fe0 # v5.5.0
+    - uses: fizyk/actions-reuse/.github/actions/uv@432d7575c4cc00724bb43d408cc75e2830c51ae2 # v5.9.0
       with:
         python-version: "3.14"
         command: "sphinx-build -b html docs/source build/html"
@@ -40,4 +40,4 @@ jobs:
         path: 'build/html'
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+      uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
