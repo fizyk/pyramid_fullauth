@@ -1,4 +1,7 @@
 ---
+ci:
+  autofix_prs: false
+  autoupdate_schedule: quarterly
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 minimum_pre_commit_version: 4.0.0
@@ -47,3 +50,8 @@ repos:
     hooks:
       - id: zizmor
         args: [ --no-progress, --fix ]
+
+  - repo: https://github.com/kjanat/actionlint
+    rev: v1.17.0
+    hooks:
+      - id: actionlint
