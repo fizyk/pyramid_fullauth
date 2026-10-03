@@ -5,7 +5,7 @@
 """Views submodule."""
 
 
-class BaseView(object):
+class BaseView:
     """Basic view class."""
 
     def __init__(self, request):

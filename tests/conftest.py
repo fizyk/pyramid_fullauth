@@ -2,10 +2,11 @@
 
 # ruff: noqa: PLC0415
 
+from unittest.mock import Mock
+
 import pyramid_basemodel
 import pytest
 import transaction
-from mock import Mock
 from pytest_postgresql.factories import postgresql_proc as postgresql_proc_factory
 from pytest_pyramid import factories
 from sqlalchemy import create_engine

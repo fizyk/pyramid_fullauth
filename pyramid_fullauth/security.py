@@ -1,7 +1,6 @@
 """Fullauth Security Policy."""
 
 # Based on: https://docs.pylonsproject.org/projects/pyramid/en/latest/whatsnew-2.0.html#upgrading-from-built-in-policies
-from typing import Dict, Optional
 
 from pyramid.authentication import AuthTktCookieHelper
 from pyramid.authorization import ACLHelper, Authenticated, Everyone
@@ -13,11 +12,11 @@ from pyramid_fullauth.auth import groupfinder
 class FullAuthSecurityPolicy:
     """Fullauth Security Policy."""
 
-    def __init__(self, authtkt_settings: Dict) -> None:
+    def __init__(self, authtkt_settings: dict) -> None:
         """Initialise fullauth security."""
         self.helper = AuthTktCookieHelper(**authtkt_settings)
 
-    def identity(self, request: Request) -> Optional[Dict]:
+    def identity(self, request: Request) -> dict | None:
         """Get user identity."""
         # define our simple identity as None or a dict with userid and principals keys
         userid = self.authenticated_userid(request)

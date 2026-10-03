@@ -10,7 +10,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from pyramid_fullauth.models import User
 
 
-class UserPathHashRoutePredicate(object):
+class UserPathHashRoutePredicate:
     """Check reset hash from url."""
 
     def __init__(self, val, _):

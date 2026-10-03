@@ -15,7 +15,7 @@ from sqlalchemy.orm import validates
 from pyramid_fullauth.exceptions import EmptyError
 
 
-class UserPasswordMixin(object):
+class UserPasswordMixin:
     """Authentication field definition along with appropriate methods."""
 
     #: password field
