@@ -25,7 +25,7 @@ PATTERN_MAIL = re.compile(
 )
 
 
-class UserEmailMixin(object):
+class UserEmailMixin:
     """User email fields and functionality."""
 
     _email = Column("email", Unicode(254), unique=True, nullable=False)  # RFC5321 and RFC3696(errata)

@@ -1,10 +1,10 @@
 """All events related tests."""
 
 import http
+from unittest.mock import MagicMock
 
 import pytest
 import transaction
-from mock import MagicMock
 from pyramid import testing
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config

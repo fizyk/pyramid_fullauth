@@ -6,7 +6,7 @@
 """pyramid_fullauth emits these events during whole cycle."""
 
 
-class _BaseRegisterEvent(object):
+class _BaseRegisterEvent:
     """Base fullauth event.
 
     most of the fullauth's event will provide both request and user
@@ -103,7 +103,7 @@ class AfterReset(_BaseRegisterEvent):
     """
 
 
-class AlreadyLoggedIn(object):
+class AlreadyLoggedIn:
     """Allow execute custom logic, when logged in user tries to log in again.
 
     .. note::

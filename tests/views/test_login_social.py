@@ -1,9 +1,9 @@
 """Social network login test."""
 
+from unittest.mock import MagicMock
 from urllib.parse import parse_qs, urlparse
 
 import transaction
-from mock import MagicMock
 from pyramid import testing
 from velruse import AuthenticationComplete
 

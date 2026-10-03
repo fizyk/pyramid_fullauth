@@ -42,7 +42,7 @@ def groupfinder(userid, request):
     return None
 
 
-class BaseACLRootFactoryMixin(object):
+class BaseACLRootFactoryMixin:
     """ACL list factory Mixin.
 
     __acl__ is the attribute which stores the list.
