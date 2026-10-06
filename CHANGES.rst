@@ -3,6 +3,30 @@ CHANGELOG
 
 .. towncrier release notes start
 
+pyramid-fullauth 3.1.0 (2026-10-06)
+===================================
+
+Features
+--------
+
+- Add Support for Python 3.15 and drop support for Python 3.10 (`#979 <https://github.com/fizyk/pyramid_fullauth/issues/979>`_)
+
+
+Documentation
+-------------
+
+- Document how to override the root factory. (`#974 <https://github.com/fizyk/pyramid_fullauth/issues/974>`_)
+
+
+Miscellaneous
+-------------
+
+- Add actionlint to pre-commit (`#953 <https://github.com/fizyk/pyramid_fullauth/issues/953>`_)
+- Turn off autofix_prs and change pre-commit's autoupdate schedule to quarterly (`#977 <https://github.com/fizyk/pyramid_fullauth/issues/977>`_)
+- Autofix workflows with zizmor 1.30 (`#981 <https://github.com/fizyk/pyramid_fullauth/issues/981>`_)
+- Enable UP and PYI ruff rulesets. (`#982 <https://github.com/fizyk/pyramid_fullauth/issues/982>`_)
+
+
 pyramid-fullauth 3.0.0 (2026-09-05)
 ===================================
 
