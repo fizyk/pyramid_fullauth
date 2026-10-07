@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -797,7 +797,7 @@ dev = [
     { name = "pyramid-mako", specifier = "==1.1.0" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-cov", specifier = "==7.1.0" },
-    { name = "pytest-mysql", specifier = "==4.0.0" },
+    { name = "pytest-mysql", specifier = "==5.0.0" },
     { name = "pytest-postgresql", specifier = "==9.1.0" },
     { name = "pytest-pyramid", specifier = "==1.1.1" },
     { name = "sphinx", marker = "python_full_version >= '3.11'", specifier = "==9.0.4" },
@@ -882,7 +882,7 @@ wheels = [
 
 [[package]]
 name = "pytest-mysql"
-version = "4.0.0"
+version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mirakuru" },
@@ -891,9 +891,9 @@ dependencies = [
     { name = "pymysql" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/4a/2506fd098f89d994b3443925a524c629badabe129bafeac32d1eb56d45af/pytest_mysql-4.0.0.tar.gz", hash = "sha256:00cd9c352ee69b7f943934bc670e75e95c71de38415dacbc056dda0dac34a743", size = 39193, upload-time = "2026-04-12T19:24:22.615Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/c1/ed199ef608d54886693d7f66bae1563571ebcfb9e5e6251a0d05705454cd/pytest_mysql-5.0.0.tar.gz", hash = "sha256:a9fea408b3ae5a639040e32fa2548aa8083a9a8871d46aa52f69bf19acbe35e0", size = 20735, upload-time = "2026-09-08T12:23:03.066Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5e/fe/e8e02488bf10a1f20d90346def5d9d4dcd988d4bbaeae91df8c8594fa203/pytest_mysql-4.0.0-py3-none-any.whl", hash = "sha256:a58ddf5b19dd233808840d28dd856dfec7f4e50a1982afc384ed181f32de7e6e", size = 34944, upload-time = "2026-04-12T19:24:21.326Z" },
+    { url = "https://files.pythonhosted.org/packages/cb/c5/12534212ccaec97a4f6676053971aa382bcff7c59079efd2fa31267b1cb1/pytest_mysql-5.0.0-py3-none-any.whl", hash = "sha256:570b78cfdfde4c79b94a295543b01efb48a9f38cd9210e6ac8b7ceaf5c6134fa", size = 19649, upload-time = "2026-09-08T12:23:01.563Z" },
 ]
 
 [[package]]
