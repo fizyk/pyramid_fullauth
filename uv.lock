@@ -797,7 +797,7 @@ dev = [
     { name = "pyramid-mako", specifier = "==1.1.0" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-cov", specifier = "==7.1.0" },
-    { name = "pytest-mysql", specifier = "==5.0.0" },
+    { name = "pytest-mysql", specifier = "==5.0.1" },
     { name = "pytest-postgresql", specifier = "==9.1.1" },
     { name = "pytest-pyramid", specifier = "==1.1.1" },
     { name = "sphinx", marker = "python_full_version >= '3.11'", specifier = "==9.0.4" },
@@ -882,7 +882,7 @@ wheels = [
 
 [[package]]
 name = "pytest-mysql"
-version = "5.0.0"
+version = "5.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mirakuru" },
@@ -891,9 +891,9 @@ dependencies = [
     { name = "pymysql" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/c1/ed199ef608d54886693d7f66bae1563571ebcfb9e5e6251a0d05705454cd/pytest_mysql-5.0.0.tar.gz", hash = "sha256:a9fea408b3ae5a639040e32fa2548aa8083a9a8871d46aa52f69bf19acbe35e0", size = 20735, upload-time = "2026-09-08T12:23:03.066Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8d/70/0b2840bc17ca1a196bf570e534fecae318c621b5a93dc5bc5c1c2a3c1baf/pytest_mysql-5.0.1.tar.gz", hash = "sha256:4909fece5dad295fdbfca41e5eb1a89e5e3c0488af45a97c486f67470fb20d5e", size = 21201, upload-time = "2026-10-08T14:48:23.304Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/c5/12534212ccaec97a4f6676053971aa382bcff7c59079efd2fa31267b1cb1/pytest_mysql-5.0.0-py3-none-any.whl", hash = "sha256:570b78cfdfde4c79b94a295543b01efb48a9f38cd9210e6ac8b7ceaf5c6134fa", size = 19649, upload-time = "2026-09-08T12:23:01.563Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/af/09dcfccb96495eb25a4edd43d2bc111b27e6ce576627054b28d72ceb18b6/pytest_mysql-5.0.1-py3-none-any.whl", hash = "sha256:69e97fcdecbad01f8184dcfdcccab47f589a290bef2e404e0effd8d1f5d756b5", size = 19879, upload-time = "2026-10-08T14:48:21.995Z" },
 ]
 
 [[package]]
