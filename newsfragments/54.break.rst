@@ -1,0 +1,1 @@
+Views are now registered imperatively with ``config.add_view`` instead of ``@view_config`` decorators picked up by ``config.scan``. Scanning ``pyramid_fullauth.views`` yourself no longer registers any views; use ``config.include('pyramid_fullauth')`` instead.

@@ -5,13 +5,10 @@
 """De-authentication related view."""
 
 from pyramid.httpexceptions import HTTPSeeOther
-from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config
 
 from pyramid_fullauth.views import BaseView
 
 
-@view_config(route_name="logout", permission=NO_PERMISSION_REQUIRED)
 class LogoutView(BaseView):
     """Logout view."""
 

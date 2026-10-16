@@ -117,16 +117,16 @@ def includeme(configurator: Configurator) -> None:
         pattern="/email/change/{hash}",
         user_path_hash="email_change_key",
     )
-    # scan base views
-    configurator.scan("pyramid_fullauth.views.basic")
+    # add base views
+    configurator.include("pyramid_fullauth.views.basic")
 
     # check for the social.
     # If social is not available, we will not turn it on!
     if "social" in fullauth_settings:
         # Velruse init (for social auth)
 
-        # scan social views
-        configurator.scan("pyramid_fullauth.views.social")
+        # add social views
+        configurator.include("pyramid_fullauth.views.social")
         providers = fullauth_settings["social"]
         for provider in providers:
             # Ugly hack for using google oauth2, not OpenID + Oauth2 from google

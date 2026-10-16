@@ -5,7 +5,6 @@
 """Forbidden views."""
 
 from pyramid.httpexceptions import HTTPFound
-from pyramid.view import forbidden_view_config
 
 from pyramid_fullauth.views import BaseView
 
@@ -18,7 +17,6 @@ class ForbiddenViews(BaseView):
         super().__init__(request)
         self.request.response.status_code = 403
 
-    @forbidden_view_config(renderer="pyramid_fullauth:resources/templates/403.mako")
     def forbidden(self):
         """Forbidden page view."""
         # do not allow a user to login if they are already logged in
@@ -28,7 +26,6 @@ class ForbiddenViews(BaseView):
         loc = self.request.route_path("login", _query=(("after", self.request.path),))
         return HTTPFound(location=loc)
 
-    @forbidden_view_config(xhr=True, renderer="json")
     def forbidden_json(self):
         """Forbidden xhr response."""
         # do not allow a user to login if they are already logged in
