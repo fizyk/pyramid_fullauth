@@ -6,8 +6,6 @@
 
 import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection
-from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config
 from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.events import AfterActivate
@@ -15,11 +13,6 @@ from pyramid_fullauth.models import User
 from pyramid_fullauth.views import BaseView
 
 
-@view_config(
-    route_name="register:activate",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/activate.mako",
-)
 class ActivateView(BaseView):
     """Activate account views."""
 

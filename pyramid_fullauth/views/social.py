@@ -7,9 +7,9 @@
 import logging
 
 import pyramid_basemodel
+from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPRedirection
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -26,11 +26,6 @@ from pyramid_fullauth.views import BaseView
 LOG = logging.getLogger(__name__)
 
 
-@view_config(
-    context="velruse.AuthenticationComplete",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/register.mako",
-)
 class SocialLoginViews(BaseView):
     """Social login views definition."""
 
@@ -203,3 +198,16 @@ class SocialLoginViews(BaseView):
             return context.profile["emails"][0]["value"]
         # generating some random email address based on social userid and provider domain
         return f"{context.profile['accounts'][0]['userid']}@{context.profile['accounts'][0]['domain']}"
+
+
+def includeme(configurator: Configurator) -> None:
+    """Register social login views.
+
+    :param pyramid.configurator.Configurator configurator: pyramid's configurator object
+    """
+    configurator.add_view(
+        SocialLoginViews,
+        context="velruse.AuthenticationComplete",
+        permission=NO_PERMISSION_REQUIRED,
+        renderer="pyramid_fullauth:resources/templates/register.mako",
+    )

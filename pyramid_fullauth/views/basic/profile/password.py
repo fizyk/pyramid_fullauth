@@ -6,8 +6,6 @@
 
 import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
-from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.events import AfterReset, AfterResetRequest, BeforeReset
@@ -17,22 +15,15 @@ from pyramid_fullauth.tools import validate_passsword
 from pyramid_fullauth.views import BaseView
 
 
-@view_defaults(
-    route_name="password:reset",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/reset.mako",
-)
 class PasswordResetView(BaseView):
     """Profile related views."""
 
-    @view_config()
     def get(self):
         """Password reset request view."""
         csrf_token = self.request.session.get_csrf_token()
 
         return {"status": True, "csrf_token": csrf_token}
 
-    @view_config(request_method="POST")
     def post(self):
         """View processing requests to reset password."""
         csrf_token = self.request.session.get_csrf_token()
@@ -59,24 +50,17 @@ class PasswordResetView(BaseView):
         return HTTPSeeOther(location="/")
 
 
-@view_defaults(
-    route_name="password:reset:continue",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/reset.proceed.mako",
-)
 class PasswordResetContinueView(BaseView):
     """Password reset views.
 
     These views display actual reset password views.
     """
 
-    @view_config(request_method="GET")
     def get(self):
         """Display actual password reset form."""
         self.request.logout()
         return {"status": True, "csrf_token": self.request.session.get_csrf_token()}
 
-    @view_config(request_method="POST")
     def post(self):
         """Validate and possibly accept new email."""
         user = self.request.matchdict.get("user")

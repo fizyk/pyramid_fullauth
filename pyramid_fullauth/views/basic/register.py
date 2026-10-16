@@ -6,8 +6,6 @@
 
 import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection
-from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config, view_defaults
 
 from pyramid_fullauth import tools
 from pyramid_fullauth.events import AfterRegister, BeforeRegister
@@ -16,22 +14,14 @@ from pyramid_fullauth.models import AuthenticationProvider, User
 from pyramid_fullauth.views import BaseView
 
 
-@view_defaults(
-    route_name="register",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/register.mako",
-)
 class RegisterView(BaseView):
     """Registration views."""
 
-    @view_config(request_method="GET")
     def get(self):
         """Display registration form."""
         csrf_token = self.request.session.get_csrf_token()
         return {"status": True, "msg": None, "csrf_token": csrf_token, "errors": {}}
 
-    @view_config(request_method="POST")
-    @view_config(request_method="POST", xhr=True, renderer="json")
     def post(self):
         """Process registration request."""
         response = {

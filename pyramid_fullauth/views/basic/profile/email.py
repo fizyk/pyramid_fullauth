@@ -6,8 +6,6 @@
 
 import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
-from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config, view_defaults
 
 from pyramid_fullauth.events import AfterEmailChange, AfterEmailChangeActivation, BeforeEmailChange
 from pyramid_fullauth.exceptions import EmailValidationError, EmptyError
@@ -15,21 +13,13 @@ from pyramid_fullauth.models import User
 from pyramid_fullauth.views import BaseView
 
 
-@view_defaults(
-    route_name="email:change",
-    permission="email_change",
-    renderer="pyramid_fullauth:resources/templates/email_change.mako",
-)
 class EmailChangeViews(BaseView):
     """Email change related views."""
 
-    @view_config(request_method="GET")
     def get(self):
         """Display email change request form."""
         return {"status": True, "csrf_token": self.request.session.get_csrf_token()}
 
-    @view_config(request_method="POST")
-    @view_config(request_method="POST", xhr=True, renderer="json")
     def post(self):
         """Process email change request."""
         user = self.request.user
@@ -95,11 +85,6 @@ class EmailChangeViews(BaseView):
         return None
 
 
-@view_config(
-    route_name="email:change:continue",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/email_change.mako",
-)
 class EmailChangeAccept(BaseView):
     """Display email change success."""
 

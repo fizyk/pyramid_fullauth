@@ -6,8 +6,6 @@
 
 import pyramid_basemodel
 from pyramid.httpexceptions import HTTPRedirection, HTTPSeeOther
-from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid_fullauth.events import AfterLogIn, AlreadyLoggedIn, BeforeLogIn
@@ -15,11 +13,6 @@ from pyramid_fullauth.models import User
 from pyramid_fullauth.views import BaseView
 
 
-@view_defaults(
-    route_name="login",
-    permission=NO_PERMISSION_REQUIRED,
-    renderer="pyramid_fullauth:resources/templates/login.mako",
-)
 class BaseLoginView(BaseView):
     """Basic logic for login views."""
 
@@ -50,7 +43,6 @@ class BaseLoginView(BaseView):
         return redirect
 
 
-@view_config(request_method="GET")
 class LoginView(BaseLoginView):
     """Login view."""
 
@@ -66,8 +58,6 @@ class LoginView(BaseLoginView):
         return self.response
 
 
-@view_config(request_method="POST")
-@view_config(request_method="POST", xhr=True, renderer="json")
 class LoginViewPost(BaseLoginView):
     """Login view POST method."""
 
