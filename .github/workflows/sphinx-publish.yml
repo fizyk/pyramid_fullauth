@@ -27,7 +27,7 @@ jobs:
       with:
         fetch-depth: 0 # otherwise, will fail to push refs to dest repo
         persist-credentials: false
-    - uses: fizyk/actions-reuse/.github/actions/uv@06f5123d5a89db10f394aaa1533a5c119b34a48f # v5.10.1
+    - uses: fizyk/actions-reuse/.github/actions/uv@f291c85379e7f30693e73f06b88f4b122eaf0812 # v5.10.2
       with:
         python-version: "3.14"
         command: "sphinx-build -b html docs/source build/html"
