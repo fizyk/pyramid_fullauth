@@ -799,7 +799,7 @@ dev = [
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "pytest-mysql", specifier = "==5.0.1" },
     { name = "pytest-postgresql", specifier = "==9.1.1" },
-    { name = "pytest-pyramid", specifier = "==1.1.1" },
+    { name = "pytest-pyramid", specifier = "==2.0.0" },
     { name = "sphinx", marker = "python_full_version >= '3.11'", specifier = "==9.0.4" },
     { name = "sqlalchemy", specifier = "==2.1.4" },
     { name = "towncrier", specifier = "==26.9.0" },
@@ -914,16 +914,16 @@ wheels = [
 
 [[package]]
 name = "pytest-pyramid"
-version = "1.1.1"
+version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyramid" },
     { name = "pytest" },
     { name = "webtest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/85/26/5c51be902532364267832ec215e04b52622e3bbbd0c8f4338b55de1a97c1/pytest_pyramid-1.1.1.tar.gz", hash = "sha256:f24c0bcce66aacf2754fc4409560c07af7f034e07384a90f814eb61583316fe3", size = 6536, upload-time = "2026-09-05T11:34:49.531Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/91/c7/396e5cf689365b84cbc6c51649ece20c9ff5a8995c7a119c68a5469729bb/pytest_pyramid-2.0.0.tar.gz", hash = "sha256:34e98ee17f5c352949671c87917ac04be765ad83b06c846593ecee774fcdfe63", size = 6905, upload-time = "2026-10-05T16:30:26.909Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/e3/0536862fb97756d470ab7e3892f0a62d3ac610eebf3085ab9d054c8e6b98/pytest_pyramid-1.1.1-py3-none-any.whl", hash = "sha256:b42d958598652a1c94d7b545b6b04b1fdf4bd57cedc2f5b422c6b4cb6c65d068", size = 6096, upload-time = "2026-09-05T11:34:48.402Z" },
+    { url = "https://files.pythonhosted.org/packages/70/8a/0b937621cefed89e1824c6a45c2cfa5be41f10970ab33cb7121c463ceb25/pytest_pyramid-2.0.0-py3-none-any.whl", hash = "sha256:daae2124c4ac16a6e1a2a8b007fc360548d162aada9eeac2f127ee7e919482d2", size = 6107, upload-time = "2026-10-05T16:30:25.576Z" },
 ]
 
 [[package]]
