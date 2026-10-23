@@ -1,6 +1,7 @@
 """Test groupfinder."""
 
 import pytest
+import transaction
 
 from pyramid_fullauth.auth import groupfinder
 
@@ -23,3 +24,13 @@ def test_groupfinder(web_request, db_session, user, is_admin, is_active, groups)
     web_request.user = user
     assigned_groups = groupfinder(user.id, web_request)
     assert groups == assigned_groups
+
+
+def test_groupfinder_detached_user(web_request, db_session, active_user):
+    """Return groups even if request.user got detached by the transaction commit."""
+    user = db_session.merge(active_user)
+    user_id = user.id
+    web_request.user = user
+    transaction.commit()
+
+    assert groupfinder(user_id, web_request) == ["s:user"]
