@@ -1,6 +1,7 @@
 """Tools used for fullauth tests."""
 
 from pyramid.config import Configurator
+from pyramid.tweens import INGRESS
 from pyramid.view import view_config
 
 DEFAULT_USER = {
@@ -56,6 +57,23 @@ def include_views(config):
 def csrf(config: Configurator) -> None:
     """Turn on CSRF for tests."""
     config.set_default_csrf_options(require_csrf=True)
+
+
+def identity_after_commit_tween_factory(handler, _):
+    """Read request.identity after pyramid_tm committed the transaction, like pyramid_debugtoolbar does."""
+
+    def tween(request):
+        response = handler(request)
+        identity = request.identity
+        response.headers["X-Principals"] = ",".join(identity["principals"]) if identity else ""
+        return response
+
+    return tween
+
+
+def identity_after_commit(config: Configurator) -> None:
+    """Add tween reading request.identity outside of pyramid_tm."""
+    config.add_tween("tests.tools.identity_after_commit_tween_factory", under=INGRESS)
 
 
 @view_config(route_name="secret", permission="super_high", renderer="json")

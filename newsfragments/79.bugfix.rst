@@ -1,0 +1,1 @@
+Fix ``DetachedInstanceError`` raised by ``groupfinder`` when ``request.identity`` was read after the transaction got committed, e.g. by ``pyramid_debugtoolbar``.

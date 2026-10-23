@@ -173,3 +173,12 @@ def test_login_invalid_cookie(db_session, active_user, extended_app):
     # will rise Attribute error
     res = extended_app.get("/login")
     assert res.status_code == http.HTTPStatus.OK, "Should stay since user is no longer valid!"
+
+
+@pytest.mark.usefixtures("active_user")
+def test_identity_after_commit(identity_after_commit_app):
+    """Read identity of logged in user after transaction commit (pyramid_debugtoolbar case)."""
+    authenticate(identity_after_commit_app)
+    # login page loads request.user, and redirects already logged in user, so transaction gets committed
+    res = identity_after_commit_app.get("/login", status=http.HTTPStatus.SEE_OTHER)
+    assert res.headers["X-Principals"] == "s:user"

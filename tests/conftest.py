@@ -162,6 +162,21 @@ extended_config = factories.pyramid_config(
 extended_app = factories.pyramid_app("extended_config")
 
 
+identity_after_commit_config = factories.pyramid_config(
+    settings={
+        "pyramid.includes": [
+            "pyramid_tm",
+            "pyramid_fullauth",
+            "tests.tools.include_views",
+            "tests.tools.identity_after_commit",
+        ]
+    }
+)
+
+
+identity_after_commit_app = factories.pyramid_app("identity_after_commit_config")
+
+
 short_config = factories.pyramid_config(
     settings={
         "fullauth.authtkt.timeout": 2,
