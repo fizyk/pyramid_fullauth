@@ -4,7 +4,11 @@
 # the MIT License (MIT): http://opensource.org/licenses/MIT
 """Auth related methods and classes."""
 
+import pyramid_basemodel
 from pyramid.authorization import ALL_PERMISSIONS, Allow, Everyone
+from sqlalchemy import inspect
+
+from pyramid_fullauth.models import User
 
 
 def groupfinder(userid, request):
@@ -24,6 +28,9 @@ def groupfinder(userid, request):
     :rtype: list
     """
     user = request.user
+    if user is not None and inspect(user).detached:
+        # request.user outlives the transaction it was loaded in (e.g. when read by a tween outside of pyramid_tm)
+        user = pyramid_basemodel.Session.get(User, inspect(user).identity)
     groups = []
     if user and user.id == userid:
         groups = [group.name for group in user.groups]
