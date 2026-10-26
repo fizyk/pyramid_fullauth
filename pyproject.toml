@@ -66,7 +66,7 @@ dev = [
     "pytest-postgresql==9.1.1",
     "pytest-pyramid==2.0.0",
     "sphinx==9.0.4; python_version>='3.11'",
-    "sqlalchemy==2.1.4",
+    "sqlalchemy==2.1.5",
     "towncrier==26.9.0",
     "velruse==1.1.1",
 ]
