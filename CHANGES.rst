@@ -3,6 +3,22 @@ CHANGELOG
 
 .. towncrier release notes start
 
+pyramid-fullauth 4.0.0 (2026-11-05)
+===================================
+
+Breaking changes
+----------------
+
+- Views are now registered imperatively with ``config.add_view`` instead of ``@view_config`` decorators picked up by ``config.scan``. Scanning ``pyramid_fullauth.views`` yourself no longer registers any views; use ``config.include('pyramid_fullauth')`` instead. (`#54 <https://github.com/fizyk/pyramid_fullauth/issues/54>`_)
+- Require SQLAlchemy 2.0 or newer.
+
+
+Bugfixes
+--------
+
+- Fix ``DetachedInstanceError`` raised by ``groupfinder`` when ``request.identity`` was read after the transaction got committed, e.g. by ``pyramid_debugtoolbar``. (`#79 <https://github.com/fizyk/pyramid_fullauth/issues/79>`_)
+
+
 pyramid-fullauth 3.1.0 (2026-10-06)
 ===================================
 
