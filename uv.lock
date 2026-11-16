@@ -810,7 +810,7 @@ dev = [
     { name = "mock", specifier = "==5.2.0" },
     { name = "pyramid", specifier = "==2.1.0" },
     { name = "pyramid-basemodel", specifier = "==1.1.0" },
-    { name = "pyramid-localize", specifier = "==2.0.0" },
+    { name = "pyramid-localize", specifier = "==2.1.0" },
     { name = "pyramid-mako", specifier = "==1.1.0" },
     { name = "pytest", specifier = "==9.2.0" },
     { name = "pytest-cov", specifier = "==7.1.0" },
@@ -826,7 +826,7 @@ release = [{ name = "tbump", specifier = "==6.11.0" }]
 
 [[package]]
 name = "pyramid-localize"
-version = "2.0.0"
+version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pycountry" },
@@ -836,9 +836,9 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "translationstring" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bd/89/524309b4ff0b9a93ab9fd25df81d4c71c63a64fca5b6fc836abe042765ac/pyramid_localize-2.0.0.tar.gz", hash = "sha256:56944a9d88f0f1dfcd6168316330424928e70b1e9c48125935f82a4ae46f41be", size = 11670, upload-time = "2026-09-05T11:31:40.07Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/92/d5/9d5d5ebe1915de1bd5f0cdedf5c7066c55ed44f02d03ba31c92b5facaa1b/pyramid_localize-2.1.0.tar.gz", hash = "sha256:fd9be46eb27f80e523804485b03b2a2f908da30567fa1557f266a37f8b777a3b", size = 14230, upload-time = "2026-11-05T15:42:58.121Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b9/60/904deac9059490628db21ee4c5adb3c619ecf66b60adeca3abb08abfaaef/pyramid_localize-2.0.0-py3-none-any.whl", hash = "sha256:d8f3efc96f9ff64f8e5f073c1127339b283aaab202ac104928cb247206a5547a", size = 16355, upload-time = "2026-09-05T11:31:38.972Z" },
+    { url = "https://files.pythonhosted.org/packages/ca/2e/009b58b5a6053af0a52c21c356372d1e7839ace98dfc0037e6c144df6897/pyramid_localize-2.1.0-py3-none-any.whl", hash = "sha256:fdedd2318ee05ad8d8a5ac7719457733a45b0860163db825f2b5a8f57622b3dd", size = 17187, upload-time = "2026-11-05T15:42:56.985Z" },
 ]
 
 [[package]]
