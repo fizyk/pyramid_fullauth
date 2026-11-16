@@ -58,7 +58,7 @@ dev = [
     "mock==5.2.0",
     "pyramid==2.1.0",
     "pyramid-basemodel==1.1.0",
-    "pyramid-localize==2.0.0",
+    "pyramid-localize==2.1.0",
     "pyramid-mako==1.1.0",
     "pytest==9.2.0",
     "pytest-cov==7.1.0",
